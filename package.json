@@ -1,0 +1,46 @@
+{
+  "name": "@stlib/testing",
+  "version": "0.0.1",
+  "description": "Testing framework for node.js",
+  "main": "dist/stutil.js",
+  "types": "stutil.d.ts",
+  "repository": "https://github.com/stbestichhh/stlib-testing",
+  "author": "Kiril Yakymchuk <stbestich@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "npx tsc",
+    "lint": "eslint .",
+    "format": "prettier . --write",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "files": [
+    "dist",
+    "stutil.d.ts",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "Utils",
+    "Utilities",
+    "Lib",
+    "Library",
+    "Testing",
+    "Framework"
+  ],
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.10",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
