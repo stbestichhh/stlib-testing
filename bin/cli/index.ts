@@ -1,4 +1,4 @@
-import { FileLoader } from './fileloader';
+import { FileLoader } from '../loader';
 import { TestRunner } from '../runner';
 
 async function main() {
