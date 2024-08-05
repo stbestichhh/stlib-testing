@@ -1,8 +1,8 @@
 # Package manager
 .yarn
 
-# test
-lib/test_usage.ts
+# usage tests
+usage*.ts
 
 # IDE
 .idea/
