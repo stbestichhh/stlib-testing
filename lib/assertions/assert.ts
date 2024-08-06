@@ -2,6 +2,12 @@ import { IAssertion } from '../interfaces';
 import { AssertionException } from './assertionException';
 
 export function assertThat(actual: any): IAssertion {
+  function assertFunction() {
+    if (typeof actual !== 'function') {
+      throw new AssertionException(`Expected ${actual} to be a function`);
+    }
+  }
+
   return {
     toEqual(expected: any): void {
       if (actual != expected) {
@@ -104,16 +110,14 @@ export function assertThat(actual: any): IAssertion {
     },
 
     toThrow(expectedError?: ErrorConstructor) {
-      if (typeof actual !== 'function') {
-        throw new AssertionException(`Expected ${actual} to be a function`);
-      }
+      assertFunction();
 
       let threw: boolean = false;
-
       try {
         actual();
       } catch (e: unknown) {
         threw = true;
+
         if (expectedError && !(e instanceof expectedError)) {
           if (e instanceof Error) {
             throw new AssertionException(`Expected ${actual.name} to throw ${expectedError.name}, but threw ${e.constructor.name}`)
@@ -127,9 +131,7 @@ export function assertThat(actual: any): IAssertion {
     },
 
     toNotThrow() {
-      if (typeof actual !== 'function') {
-        throw new AssertionException(`Expected ${actual} to be a function`);
-      }
+      assertFunction();
 
       try {
         actual();
