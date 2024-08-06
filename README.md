@@ -5,9 +5,6 @@
 
 # @stlib/testing
 
-> [!CAUTION]
-> The package is in beta version. Do not recommend to use it in your projects!  
-
 ## Table of contents
 
 * [Description](#about)
@@ -25,16 +22,78 @@
 
 ## Getting started
 
-### Installation
-
-```shell
-$ yarn add @stlib/testing
-```
-
 > [!IMPORTANT]
 > **Node.js 18.x+** version must be installed in your OS.
 
+### Installation
+
+* Install dependency
+  ```shell
+  $ yarn add @stlib/testing
+  ```
+
+* Enable decorators in your `tsconfing.json`
+  ```json
+  {
+    "experimentalDecorators": true
+  }
+  ```
+
 ### Usage
+
+#### How to create tests and run tests
+
+First you need is to create a `.spec.ts` or `.test.ts` file.
+
+This testing framework uses decorators to define tests. You need to create a class with `@Test('Test suite name')` decorator. Each test must be a class method with decorator `@Case('test case name')`.
+
+**Example**:
+
+```TypeScript
+import { assertThat, Test, Case } from '@stlib/testing';
+
+@Test('Example testing suite')
+class MyTests {
+
+  @Case('Example pass test case')
+  checkIfTenIsMoreThatFive() {
+    assertThat(10).toBeGreaterThan(5);
+  }
+  
+  @Case('Example fail test case')
+  checkIfTenIsString() {
+    assertThat(10).toBeTypeOf('string');
+  }
+}
+```
+
+To run tests, use cli command
+```shell
+$ stest
+```
+
+#### API
+`assertThat(actual)`.to*(expected);
+
+| Method                                      | Description                                                                                                                     |
+|---------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| `toEqual(expected: any)`                    | Check equality between actual and expected                                                                                      |
+| `toStrictEqual(expected: any)`              | Check strict equality between actual and expected                                                                               |
+| `toBe(expected: any)`                       | Check if actual is expected                                                                                                     |
+| `toBeTruthy()`                              | Check if actual is true                                                                                                         |
+| `toBeFalsy()`                               | Check if actual is false                                                                                                        |
+| `toBeGreaterThan(expected: number)`         | Check if actual is greater than expected                                                                                        |
+| `toBeGreaterThanOrEqual(expected: number)`  | Check if actual is greater than or equals expected                                                                              |
+| `toBeLessThan(expected: number)`            | Check if actual is less than expected                                                                                           |
+| `toBeLessThanOrEqual(expected: number)`     | Check if actual is less than or equal expected                                                                                  |
+| `toBeDefined()`                             | Check if actual is defined                                                                                                      |
+| `toBeUndefined()`                           | Check if actual is undefined                                                                                                    |
+| `toBeNull()`                                | Check if actual is null                                                                                                         |
+| `toBeNotNull()`                             | Check if actual is not null                                                                                                     |
+| `toBeTypeOf(type: any)`                     | Check if actual is type of expected. Example: `assertThat('a').toBeTypeOf('string')`, `assertThat(TypeError).toBeTypeOf(Error)` |
+| `toHaveProperty(property: any)`             | Check if actual has expected property                                                                                           |
+| `toThrow(expectedError?: ErrorConstructor)` | Check if actual throw an error or expected error                                                                                |
+| `toNotThrow()`                              | Check if actual do not throw an error                                                                                           |
 
 ## Contributing
 
