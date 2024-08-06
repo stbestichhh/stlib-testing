@@ -5,6 +5,9 @@
 
 # @stlib/testing
 
+> [!CAUTION]
+> The package is in beta version. Do not recommend to use it in your projects!  
+
 ## Table of contents
 
 * [Description](#about)
