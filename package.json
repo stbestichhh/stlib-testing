@@ -22,6 +22,7 @@
     "bin",
     "lib",
     "stutil.d.ts",
+    "tsconfig.json",
     "CHANGELOG.md",
     "README.md",
     "LICENSE"
