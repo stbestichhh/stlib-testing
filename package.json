@@ -2,8 +2,11 @@
   "name": "@stlib/testing",
   "version": "0.0.1",
   "description": "Testing framework for node.js",
-  "main": "dist/stutil.js",
+  "main": "stutil.ts",
   "types": "stutil.d.ts",
+  "bin": {
+    "stest": "./bin/run-stest.sh"
+  },
   "repository": "https://github.com/stbestichhh/stlib-testing",
   "author": "Kiril Yakymchuk <stbestich@gmail.com>",
   "license": "MIT",
@@ -16,8 +19,10 @@
     "test:watch": "jest --watch"
   },
   "files": [
-    "dist",
+    "bin",
+    "lib",
     "stutil.d.ts",
+    "tsconfig.json",
     "CHANGELOG.md",
     "README.md",
     "LICENSE"
@@ -42,5 +47,8 @@
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "fast-glob": "^3.3.2"
   }
 }
