@@ -9,7 +9,7 @@ export class FileLoader {
 
     await Promise.all(
       files.map(async (file) => {
-        await require(path.resolve(file));
+        await import(path.resolve(file));
       }),
     );
   }
