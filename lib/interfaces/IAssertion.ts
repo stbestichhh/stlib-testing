@@ -14,4 +14,6 @@ export interface IAssertion {
   toBeNotNull(): void;
   toBeTypeOf(type: any): void;
   toHaveProperty(property: any): void;
+  toThrow(error?: ErrorConstructor): void;
+  toNotThrow(): void;
 }

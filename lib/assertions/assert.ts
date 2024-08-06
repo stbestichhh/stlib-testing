@@ -101,6 +101,43 @@ export function assertThat(actual: any): IAssertion {
       if (!Object.hasOwn(actual, property)) {
         throw new AssertionException(`Expected ${actual} to has own property ${JSON.stringify(property)}`);
       }
-    }
+    },
+
+    toThrow(expectedError?: ErrorConstructor) {
+      if (typeof actual !== 'function') {
+        throw new AssertionException(`Expected ${actual} to be a function`);
+      }
+
+      let threw: boolean = false;
+
+      try {
+        actual();
+      } catch (e: unknown) {
+        threw = true;
+        if (expectedError && !(e instanceof expectedError)) {
+          if (e instanceof Error) {
+            throw new AssertionException(`Expected ${actual.name} to throw ${expectedError.name}, but threw ${e.constructor.name}`)
+          }
+        }
+      }
+
+      if (!threw) {
+       throw new AssertionException(`Expected ${actual.name} to throw an error`);
+      }
+    },
+
+    toNotThrow() {
+      if (typeof actual !== 'function') {
+        throw new AssertionException(`Expected ${actual} to be a function`);
+      }
+
+      try {
+        actual();
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          throw new AssertionException(`Expected ${actual.name} to not throw an error, but threw ${e.constructor.name}`);
+        }
+      }
+    },
   };
 }
