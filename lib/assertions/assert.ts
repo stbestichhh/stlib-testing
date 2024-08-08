@@ -9,12 +9,24 @@ export function assertThat(actual: any): IAssertion {
   }
 
   return {
-    toEqual(expected: any): void {
+    toEqual(expected: any) {
       if (actual != expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to equal ${JSON.stringify(expected)}`,
         );
       }
+
+      return this;
+    },
+
+    toNotEqual(expected: any) {
+      if (actual == expected) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to not equal ${JSON.stringify(expected)}`,
+        );
+      }
+
+      return this;
     },
 
     toStrictEqual(expected: any) {
@@ -23,38 +35,58 @@ export function assertThat(actual: any): IAssertion {
           `Expected ${JSON.stringify(actual)} to strictly equal ${JSON.stringify(expected)}`,
         );
       }
+
+      return this;
     },
 
-    toBe(expected: any): void {
+    toStrictNotEqual(expected: any) {
+      if (actual === expected) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to strictly not equal ${JSON.stringify(expected)}`,
+        );
+      }
+
+      return this;
+    },
+
+    toBe(expected: any) {
       if (actual != expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be ${JSON.stringify(expected)}`,
         );
       }
+
+      return this;
     },
 
-    toBeTruthy(): void {
+    toBeTruthy() {
       if (!actual) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be truthy`,
         );
       }
+
+      return this;
     },
 
-    toBeFalsy(): void {
+    toBeFalsy() {
       if (!actual) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be falsy`,
         );
       }
+
+      return this;
     },
 
-    toBeGreaterThan(expected: number): void {
+    toBeGreaterThan(expected: number) {
       if (actual <= expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be greater than ${JSON.stringify(expected)}`,
         );
       }
+
+      return this;
     },
 
     toBeGreaterThanOrEqual(expected: number) {
@@ -63,14 +95,18 @@ export function assertThat(actual: any): IAssertion {
           `Expected ${JSON.stringify(actual)} to be greater than or equal ${JSON.stringify(expected)}`,
         );
       }
+
+      return this;
     },
 
-    toBeLessThan(expected: number): void {
+    toBeLessThan(expected: number) {
       if (actual >= expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be less than ${JSON.stringify(expected)}`,
         );
       }
+
+      return this;
     },
 
     toBeLessThanOrEqual(expected: number) {
@@ -79,22 +115,28 @@ export function assertThat(actual: any): IAssertion {
           `Expected ${JSON.stringify(actual)} to be less than or equal ${JSON.stringify(expected)}`,
         );
       }
+
+      return this;
     },
 
-    toBeDefined(): void {
+    toBeDefined() {
       if (actual === undefined) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be defined`,
         );
       }
+
+      return this;
     },
 
-    toBeUndefined(): void {
+    toBeUndefined() {
       if (actual !== undefined) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be undefined`,
         );
       }
+
+      return this;
     },
 
     toBeNull() {
@@ -103,6 +145,8 @@ export function assertThat(actual: any): IAssertion {
           `Expected ${JSON.stringify(actual)} to be null`,
         );
       }
+
+      return this;
     },
 
     toBeNotNull() {
@@ -111,6 +155,8 @@ export function assertThat(actual: any): IAssertion {
           `Expected ${JSON.stringify(actual)} to be not null`,
         );
       }
+
+      return this;
     },
 
     toBeTypeOf(type: any | string) {
@@ -127,6 +173,8 @@ export function assertThat(actual: any): IAssertion {
           );
         }
       }
+
+      return this;
     },
 
     toHaveProperty(property: any) {
@@ -135,6 +183,8 @@ export function assertThat(actual: any): IAssertion {
           `Expected ${actual} to has own property ${JSON.stringify(property)}`,
         );
       }
+
+      return this;
     },
 
     toThrow(expectedError?: ErrorConstructor) {
@@ -160,6 +210,8 @@ export function assertThat(actual: any): IAssertion {
           `Expected ${actual.name} to throw an error`,
         );
       }
+
+      return this;
     },
 
     toNotThrow() {
@@ -174,6 +226,8 @@ export function assertThat(actual: any): IAssertion {
           );
         }
       }
+
+      return this;
     },
   };
 }

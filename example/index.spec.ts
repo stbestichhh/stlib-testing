@@ -2,7 +2,6 @@ import { assertThat, Case, Test } from '@stlib/testing';
 
 @Test('First test suite')
 class TestClass {
-
   @Case('First case')
   testCaseOne() {
     assertThat(10).toBeGreaterThan(5);
