@@ -373,6 +373,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@colors/colors@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@colors/colors@npm:1.6.0"
+  checksum: 10c0/9328a0778a5b0db243af54455b79a69e3fb21122d6c15ef9e9fcc94881d8d17352d8b2b2590f9bdd46fac5c2d6c1636dcfc14358a20c70e22daf89e1a759b629
+  languageName: node
+  linkType: hard
+
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -850,6 +857,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@stlib/testing@workspace:."
   dependencies:
+    "@colors/colors": "npm:^1.6.0"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.12.10"
     "@typescript-eslint/eslint-plugin": "npm:^7.8.0"
@@ -857,6 +865,7 @@ __metadata:
     eslint: "npm:^8.57.0"
     fast-glob: "npm:^3.3.2"
     jest: "npm:^29.7.0"
+    nanospinner: "npm:^1.1.0"
     nodemon: "npm:^3.1.0"
     prettier: "npm:^3.2.5"
     ts-jest: "npm:^29.1.2"
@@ -3491,6 +3500,15 @@ __metadata:
   version: 2.1.2
   resolution: "ms@npm:2.1.2"
   checksum: 10c0/a437714e2f90dbf881b5191d35a6db792efbca5badf112f87b9e1c712aace4b4b9b742dd6537f3edf90fd6f684de897cec230abde57e87883766712ddda297cc
+  languageName: node
+  linkType: hard
+
+"nanospinner@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "nanospinner@npm:1.1.0"
+  dependencies:
+    picocolors: "npm:^1.0.0"
+  checksum: 10c0/2f89e48bfb1452b5f3afd8034753bbc45040a6830fec913ec228d7a8a8eab1e2c8193bd41e2203806a1f454907641ffa035b14f3a8462cf374e874eb29fd57f1
   languageName: node
   linkType: hard
 

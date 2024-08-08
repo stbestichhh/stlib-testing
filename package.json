@@ -49,6 +49,8 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "fast-glob": "^3.3.2"
+    "@colors/colors": "^1.6.0",
+    "fast-glob": "^3.3.2",
+    "nanospinner": "^1.1.0"
   }
 }
