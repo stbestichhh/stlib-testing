@@ -22,16 +22,30 @@ export class TestRunner {
     });
   }
 
-  private static runTestCase(testSuiteInstance: any, methodName: string, caseDescription: string) {
+  private static runTestCase(
+    testSuiteInstance: any,
+    methodName: string,
+    caseDescription: string,
+  ) {
     try {
       testSuiteInstance[methodName]();
-      this.logTestResult(caseDescription || methodName, 'PASSED', 'brightGreen', 'bgGreen');
+      this.logTestResult(
+        caseDescription || methodName,
+        'PASSED',
+        'brightGreen',
+        'bgGreen',
+      );
     } catch (e: unknown) {
       this.handleError(e, methodName, caseDescription, testSuiteInstance);
     }
   }
 
-  private static logTestResult(description: string, result: 'PASSED' | 'FAILED', textColor: 'brightGreen' | 'brightRed', bgColor: 'bgGreen' | 'bgBrightRed') {
+  private static logTestResult(
+    description: string,
+    result: 'PASSED' | 'FAILED',
+    textColor: 'brightGreen' | 'brightRed',
+    bgColor: 'bgGreen' | 'bgBrightRed',
+  ) {
     console.log(`✓ ${description[textColor]} - ${result[bgColor]}`);
   }
 
@@ -41,7 +55,12 @@ export class TestRunner {
     caseDescription: string,
     testSuite: string,
   ) {
-    this.logTestResult(caseDescription || methodName, 'FAILED', 'brightRed', 'bgBrightRed');
+    this.logTestResult(
+      caseDescription || methodName,
+      'FAILED',
+      'brightRed',
+      'bgBrightRed',
+    );
     if (e instanceof Error) {
       const testClassName = testSuite.constructor.name;
       const errorInfo = findWhereErrorHasBeenThrown(e, testClassName);
