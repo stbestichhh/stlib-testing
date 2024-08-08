@@ -13,6 +13,7 @@ export class FileLoader {
     await Promise.all(
       files.map(async (file) => {
         await import(path.join(projectPath, file));
+        // await import(path.resolve(file));
       }),
     );
   }
