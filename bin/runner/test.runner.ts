@@ -15,7 +15,9 @@ export class TestRunner {
       testCases.forEach(({ methodName, caseDescription }: ITestCase) => {
         try {
           testSuite[methodName]();
-          console.log(`${`✓ ${caseDescription || methodName}`.brightGreen} - ${'PASSED'.bgGreen}`);
+          console.log(
+            `${`✓ ${caseDescription || methodName}`.brightGreen} - ${'PASSED'.bgGreen}`,
+          );
         } catch (e: unknown) {
           this.handleError(e, methodName, caseDescription, testSuite);
         }
@@ -23,8 +25,15 @@ export class TestRunner {
     });
   }
 
-  private static handleError(e: unknown, methodName: string, caseDescription: string, testSuite: string) {
-    console.error(`${`✗ ${caseDescription || methodName}`.brightRed} - ${'FAILED'.bgBrightRed}`);
+  private static handleError(
+    e: unknown,
+    methodName: string,
+    caseDescription: string,
+    testSuite: string,
+  ) {
+    console.error(
+      `${`✗ ${caseDescription || methodName}`.brightRed} - ${'FAILED'.bgBrightRed}`,
+    );
     if (e instanceof Error) {
       const testClassName = testSuite.constructor.name;
       const errorInfo = findWhereErrorHasBeenThrown(e, testClassName);
