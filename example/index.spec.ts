@@ -1,19 +1,19 @@
 import { assertThat, Case, Test } from '@stlib/testing';
 
-@Test()
+@Test('First test suite')
 class TestClass {
 
-  @Case()
+  @Case('First case')
   testCaseOne() {
     assertThat(10).toBeGreaterThan(5);
   }
 
-  @Case()
+  @Case('Second case')
   testCaseTwo() {
     assertThat(10).toBeTypeOf('string');
   }
 
-  @Case()
+  @Case('Third case')
   testCaseThreee() {
     assertThat(10).toBeGreaterThan(5);
   }
@@ -21,12 +21,12 @@ class TestClass {
 
 @Test('Other suite')
 class TestTwo {
-  @Case()
+  @Case('First case')
   testCaseOne() {
     assertThat(10).toBeGreaterThan(5);
   }
 
-  @Case()
+  @Case('Second case')
   testCaseTwo() {
     assertThat(10).toBeTypeOf('string');
   }
