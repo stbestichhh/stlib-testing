@@ -45,7 +45,8 @@
 
 First you need is to create a `.spec.ts` or `.test.ts` file.
 
-This testing framework uses decorators to define tests. You need to create a class with `@Test('Test suite name')` decorator. Each test must be a class method with decorator `@Case('test case name')`.
+This testing framework uses decorators to define tests. You need to create a class with `@Test('Test suite name')` decorator. Each test must be a class method with decorator `@Case('test case description')`.
+@Case description and @Test name can be ignored
 
 **Example**:
 
@@ -60,7 +61,7 @@ class MyTests {
     assertThat(10).toBeGreaterThan(5);
   }
   
-  @Case('Example fail test case')
+  @Case()
   checkIfTenIsString() {
     assertThat(10).toBeTypeOf('string');
   }
@@ -78,7 +79,9 @@ $ stest
 | Method                                      | Description                                                                                                                     |
 |---------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
 | `toEqual(expected: any)`                    | Check equality between actual and expected                                                                                      |
+| `toNotEqual(expected: any)`                 | Check if actual and expected are not equal                                                                                      |
 | `toStrictEqual(expected: any)`              | Check strict equality between actual and expected                                                                               |
+| `toStrictNotEqual(expected: any)`           | Check if actual and expected are strict not equal                                                                               |
 | `toBe(expected: any)`                       | Check if actual is expected                                                                                                     |
 | `toBeTruthy()`                              | Check if actual is true                                                                                                         |
 | `toBeFalsy()`                               | Check if actual is false                                                                                                        |
