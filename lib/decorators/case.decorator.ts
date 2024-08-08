@@ -1,4 +1,4 @@
-export function Case(caseDescription: string): MethodDecorator {
+export function Case(caseDescription?: string): MethodDecorator {
   return function (
     target: object,
     key: string | symbol,
