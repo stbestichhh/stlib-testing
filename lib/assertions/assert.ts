@@ -169,7 +169,7 @@ export function assertThat(actual: any): IAssertion {
       } else {
         if (!(actual instanceof type)) {
           throw new AssertionException(
-            `Expected ${actual} to be an instance of ${type.name}`,
+            `Expected ${JSON.stringify(actual)} to be an instance of ${JSON.stringify(type.name)}`,
           );
         }
       }
@@ -180,26 +180,26 @@ export function assertThat(actual: any): IAssertion {
     toHaveProperty(property: any) {
       if (!Object.hasOwn(actual, property)) {
         throw new AssertionException(
-          `Expected ${actual} to has own property ${JSON.stringify(property)}`,
+          `Expected ${JSON.stringify(actual)} to has own property ${JSON.stringify(property)}`,
         );
       }
 
       return this;
     },
 
-    toThrow(expectedError?: ErrorConstructor) {
+    toThrow(expectedError?: ErrorConstructor, ...args: any[]) {
       assertFunction();
 
       let threw: boolean = false;
       try {
-        actual();
+        actual(...args);
       } catch (e: unknown) {
         threw = true;
 
         if (expectedError && !(e instanceof expectedError)) {
           if (e instanceof Error) {
             throw new AssertionException(
-              `Expected ${actual.name} to throw ${expectedError.name}, but threw ${e.constructor.name}`,
+              `Expected ${JSON.stringify(actual.name)} to throw ${JSON.stringify(expectedError.name)}, but threw ${JSON.stringify(e.constructor.name)}`,
             );
           }
         }
@@ -207,22 +207,28 @@ export function assertThat(actual: any): IAssertion {
 
       if (!threw) {
         throw new AssertionException(
-          `Expected ${actual.name} to throw an error`,
+          `Expected ${JSON.stringify(actual.name)} to throw an error`,
         );
       }
 
       return this;
     },
 
-    toNotThrow() {
+    toNotThrow(expectedError?: ErrorConstructor, ...args: any[]) {
       assertFunction();
 
       try {
-        actual();
+        actual(...args);
       } catch (e: unknown) {
+        if (expectedError && e instanceof expectedError) {
+          throw new AssertionException(`Expected ${JSON.stringify(actual.name)} to not throw an error instance of ${JSON.stringify(expectedError.name)}`);
+        } else if (expectedError && !(e instanceof expectedError)) {
+          return this;
+        }
+
         if (e instanceof Error) {
           throw new AssertionException(
-            `Expected ${actual.name} to not throw an error, but threw ${e.constructor.name}`,
+            `Expected ${JSON.stringify(actual.name)} to not throw an error, but threw ${JSON.stringify(e.constructor.name)}`,
           );
         }
       }
