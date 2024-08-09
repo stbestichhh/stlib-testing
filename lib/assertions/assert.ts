@@ -221,7 +221,9 @@ export function assertThat(actual: any): IAssertion {
         actual(...args);
       } catch (e: unknown) {
         if (expectedError && e instanceof expectedError) {
-          throw new AssertionException(`Expected ${JSON.stringify(actual.name)} to not throw an error instance of ${JSON.stringify(expectedError.name)}`);
+          throw new AssertionException(
+            `Expected ${JSON.stringify(actual.name)} to not throw an error instance of ${JSON.stringify(expectedError.name)}`,
+          );
         } else if (expectedError && !(e instanceof expectedError)) {
           return this;
         }

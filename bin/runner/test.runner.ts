@@ -47,7 +47,9 @@ export class TestRunner {
     bgColor: 'bgGreen' | 'bgBrightRed',
   ) {
     const statusBadge = result === 'PASSED' ? '✓'.brightGreen : '✗'.brightRed;
-    console.log(`${statusBadge} ${description[textColor]} - ${result[bgColor]}`);
+    console.log(
+      `${statusBadge} ${description[textColor]} - ${result[bgColor]}`,
+    );
   }
 
   private static handleError(
