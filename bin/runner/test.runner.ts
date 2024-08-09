@@ -4,17 +4,21 @@ import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
 
 export class TestRunner {
-  public static run() {
-    console.log(colors.gray('ⓘ  Running test...'));
+  private static isAllPassed: boolean = true;
 
+  public static run() {
     TestRegistry.get().forEach(({ testName, target }: ITestSuite) => {
       this.runTestSuite(testName, target);
     });
+
+    if (!this.isAllPassed) {
+      process.exit(1);
+    }
   }
 
   private static runTestSuite(testName: string, target: any) {
     const testSuite = new target();
-    console.log(`\nⓘ  Test Suite: ${testName}`);
+    console.log(colors.white(`\nⓘ  Test Suite: ${testName}`));
 
     const testCases: ITestCase[] = target.testCases || [];
     testCases.forEach(({ methodName, caseDescription }: ITestCase) => {
@@ -36,6 +40,7 @@ export class TestRunner {
         'bgGreen',
       );
     } catch (e: unknown) {
+      this.isAllPassed = false;
       this.handleError(e, methodName, caseDescription, testSuiteInstance);
     }
   }
