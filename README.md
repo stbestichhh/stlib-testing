@@ -74,29 +74,29 @@ $ stest
 ```
 
 #### API
-`assertThat(actual)`.to*(expected);
+`assertThat(actual).to*(expected);`
 
-| Method                                      | Description                                                                                                                     |
-|---------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| `toEqual(expected: any)`                    | Check equality between actual and expected                                                                                      |
-| `toNotEqual(expected: any)`                 | Check if actual and expected are not equal                                                                                      |
-| `toStrictEqual(expected: any)`              | Check strict equality between actual and expected                                                                               |
-| `toStrictNotEqual(expected: any)`           | Check if actual and expected are strict not equal                                                                               |
-| `toBe(expected: any)`                       | Check if actual is expected                                                                                                     |
-| `toBeTruthy()`                              | Check if actual is true                                                                                                         |
-| `toBeFalsy()`                               | Check if actual is false                                                                                                        |
-| `toBeGreaterThan(expected: number)`         | Check if actual is greater than expected                                                                                        |
-| `toBeGreaterThanOrEqual(expected: number)`  | Check if actual is greater than or equals expected                                                                              |
-| `toBeLessThan(expected: number)`            | Check if actual is less than expected                                                                                           |
-| `toBeLessThanOrEqual(expected: number)`     | Check if actual is less than or equal expected                                                                                  |
-| `toBeDefined()`                             | Check if actual is defined                                                                                                      |
-| `toBeUndefined()`                           | Check if actual is undefined                                                                                                    |
-| `toBeNull()`                                | Check if actual is null                                                                                                         |
-| `toBeNotNull()`                             | Check if actual is not null                                                                                                     |
-| `toBeTypeOf(type: any)`                     | Check if actual is type of expected. Example: `assertThat('a').toBeTypeOf('string')`, `assertThat(TypeError).toBeTypeOf(Error)` |
-| `toHaveProperty(property: any)`             | Check if actual has expected property                                                                                           |
-| `toThrow(expectedError?: ErrorConstructor)` | Check if actual throw an error or expected error                                                                                |
-| `toNotThrow()`                              | Check if actual do not throw an error                                                                                           |
+| Method                                                         | Description                                                                                                                                             |
+|----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `toEqual(expected: any)`                                       | Check equality between actual and expected                                                                                                              |
+| `toNotEqual(expected: any)`                                    | Check if actual and expected are not equal                                                                                                              |
+| `toStrictEqual(expected: any)`                                 | Check strict equality between actual and expected                                                                                                       |
+| `toStrictNotEqual(expected: any)`                              | Check if actual and expected are strict not equal                                                                                                       |
+| `toBe(expected: any)`                                          | Check if actual is expected                                                                                                                             |
+| `toBeTruthy()`                                                 | Check if actual is true                                                                                                                                 |
+| `toBeFalsy()`                                                  | Check if actual is false                                                                                                                                |
+| `toBeGreaterThan(expected: number)`                            | Check if actual is greater than expected                                                                                                                |
+| `toBeGreaterThanOrEqual(expected: number)`                     | Check if actual is greater than or equals expected                                                                                                      |
+| `toBeLessThan(expected: number)`                               | Check if actual is less than expected                                                                                                                   |
+| `toBeLessThanOrEqual(expected: number)`                        | Check if actual is less than or equal expected                                                                                                          |
+| `toBeDefined()`                                                | Check if actual is defined                                                                                                                              |
+| `toBeUndefined()`                                              | Check if actual is undefined                                                                                                                            |
+| `toBeNull()`                                                   | Check if actual is null                                                                                                                                 |
+| `toBeNotNull()`                                                | Check if actual is not null                                                                                                                             |
+| `toBeTypeOf(type: any)`                                        | Check if actual is type of expected. Example: `assertThat('a').toBeTypeOf('string')`, `assertThat(TypeError).toBeTypeOf(Error)`                         |
+| `toHaveProperty(property: any)`                                | Check if actual has expected property                                                                                                                   |
+| `toThrow(expectedError?: ErrorConstructor, ...args: any[])`    | Check if actual throw an error or expected error. Also you can provide arguments for actual function                                                    |
+| `toNotThrow(expectedError?: ErrorConstructor, ...args: any[])` | Check if actual do not throw an error or do not throw an error provided to as 'expectedError' param. Also you can provide arguments for actual function |
 
 ## Contributing
 
