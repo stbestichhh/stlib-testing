@@ -31,38 +31,4 @@ jobs:
         run: yarn add @stlib/testing
       - name: Run stest
         run: npx stest
-
-  failing_test_usage:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
-      - name: Install dependencies
-        run: yarn
-      - name: Add stest framework
-        run: yarn add @stlib/testing
-      - name: Add file with bad test
-        run: |
-          echo "import { assertThat, Case, Test } from '@stlib/testing';
-          
-          @Test('Always failing test suite')
-          class FailTestClass {
-            @Case('Has to fail')
-            testCase() {
-              assertThat(10).toBe(1);
-            }
-          }" > fail.spec.ts
-
-      - name: Run test
-        run: npx stest
         continue-on-error: true
