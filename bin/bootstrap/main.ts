@@ -1,12 +1,10 @@
 import { FileLoader } from '../loader';
 import { TestRunner } from '../runner';
-import { spinner } from '../spinner';
+import { spinnerWrapper } from '../spinner';
 
 async function main() {
   try {
-    spinner.start();
-    await FileLoader.loadTestFiles();
-    spinner.success();
+    await spinnerWrapper(FileLoader.loadTestFiles);
     TestRunner.run();
   } catch (e) {
     console.error(e);

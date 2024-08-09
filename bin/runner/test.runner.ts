@@ -18,7 +18,7 @@ export class TestRunner {
 
   private static runTestSuite(testName: string, target: any) {
     const testSuite = new target();
-    console.log(colors.white(`\nⓘ  Test Suite: ${testName}`));
+    console.log(colors.white.bold(`\nTest Suite: ${testName}`));
 
     const testCases: ITestCase[] = target.testCases || [];
     testCases.forEach(({ methodName, caseDescription }: ITestCase) => {
@@ -36,8 +36,7 @@ export class TestRunner {
       this.logTestResult(
         caseDescription || methodName,
         'PASSED',
-        'brightGreen',
-        'bgGreen',
+        'grey',
       );
     } catch (e: unknown) {
       this.isAllPassed = false;
@@ -48,12 +47,11 @@ export class TestRunner {
   private static logTestResult(
     description: string,
     result: 'PASSED' | 'FAILED',
-    textColor: 'brightGreen' | 'brightRed',
-    bgColor: 'bgGreen' | 'bgBrightRed',
+    textColor: 'brightGreen' | 'brightRed' | 'grey',
   ) {
     const statusBadge = result === 'PASSED' ? '✓'.brightGreen : '✗'.brightRed;
     console.log(
-      `${statusBadge} ${description[textColor]} - ${result[bgColor]}`,
+      `  ${statusBadge} ${description[textColor]}`,
     );
   }
 
@@ -66,13 +64,12 @@ export class TestRunner {
     this.logTestResult(
       caseDescription || methodName,
       'FAILED',
-      'brightRed',
-      'bgBrightRed',
+      'grey',
     );
     if (e instanceof Error) {
       const testClassName = testSuite.constructor.name;
       const errorInfo = findWhereErrorHasBeenThrown(e, testClassName);
-      console.error(`  ⚠︎ ${errorInfo || e}`.red);
+      console.error(`    ⚠︎ ${errorInfo || e}`.brightRed);
     }
   }
 }
