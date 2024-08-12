@@ -858,6 +858,7 @@ __metadata:
   resolution: "@stlib/testing@workspace:."
   dependencies:
     "@colors/colors": "npm:^1.6.0"
+    "@stlib/utils": "npm:^0.0.13"
     "@types/exit": "npm:^0.1.33"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.12.10"
@@ -877,6 +878,13 @@ __metadata:
     stest: ./bin/run-stest.sh
   languageName: unknown
   linkType: soft
+
+"@stlib/utils@npm:^0.0.13":
+  version: 0.0.13
+  resolution: "@stlib/utils@npm:0.0.13"
+  checksum: 10c0/55a453428028295724c2e62acf43312565f9c6fa1cac674f25626f50fbfaa06b675846cec22379048495d5f1f3948a934f6fac9e41e6d19f2edaef7a1c56fedb
+  languageName: node
+  linkType: hard
 
 "@tsconfig/node10@npm:^1.0.7":
   version: 1.0.11
