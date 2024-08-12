@@ -5,21 +5,21 @@ import { Config, ConfigType } from '../config';
 //? Commented code is only for testing while developing
 export class FileLoader {
   public static async loadTestFiles() {
-    const projectPath = path.resolve('../../../'); // go out of node_modules
-    // const projectPath = path.resolve();
+    const projectPath = path.resolve('../../../'); //* prod
+    // const projectPath = path.resolve(); //* dev
 
     const config: ConfigType | undefined =
       await Config.handleConfiguration(projectPath);
 
     const files = await glob(config?.pattern || '**/*.{spec,test}.ts', {
       ignore: config?.ignore || ['node_modules/**'],
-      cwd: projectPath,
+      cwd: projectPath, //* prod
     });
 
     await Promise.all(
       files.map(async (file) => {
-        await import(path.join(projectPath, file));
-        // await import(path.resolve(file));
+        await import(path.join(projectPath, file)); //* prod
+        // await import(path.resolve(file)); //* dev
       }),
     );
   }
