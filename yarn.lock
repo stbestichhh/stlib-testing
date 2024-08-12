@@ -858,11 +858,13 @@ __metadata:
   resolution: "@stlib/testing@workspace:."
   dependencies:
     "@colors/colors": "npm:^1.6.0"
+    "@types/exit": "npm:^0.1.33"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.12.10"
     "@typescript-eslint/eslint-plugin": "npm:^7.8.0"
     "@typescript-eslint/parser": "npm:^7.8.0"
     eslint: "npm:^8.57.0"
+    exit: "npm:^0.1.2"
     fast-glob: "npm:^3.3.2"
     jest: "npm:^29.7.0"
     nanospinner: "npm:^1.1.0"
@@ -942,6 +944,15 @@ __metadata:
   dependencies:
     "@babel/types": "npm:^7.20.7"
   checksum: 10c0/7ba7db61a53e28cac955aa99af280d2600f15a8c056619c05b6fc911cbe02c61aa4f2823299221b23ce0cce00b294c0e5f618ec772aa3f247523c2e48cf7b888
+  languageName: node
+  linkType: hard
+
+"@types/exit@npm:^0.1.33":
+  version: 0.1.33
+  resolution: "@types/exit@npm:0.1.33"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/082ee94d1b1bd7e61a53256e548a9d0c525185f30e22d76bee83671f30ba5a866c6e4ca69a05dd61d6776090b31fbce73c50941dd8c7a9b12de74916e24ecfe2
   languageName: node
   linkType: hard
 

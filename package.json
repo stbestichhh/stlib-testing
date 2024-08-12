@@ -36,6 +36,7 @@
     "Framework"
   ],
   "devDependencies": {
+    "@types/exit": "^0.1.33",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.10",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
@@ -50,6 +51,7 @@
   },
   "dependencies": {
     "@colors/colors": "^1.6.0",
+    "exit": "^0.1.2",
     "fast-glob": "^3.3.2",
     "nanospinner": "^1.1.0"
   }

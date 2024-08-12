@@ -2,6 +2,7 @@ import { TestRegistry } from '../testRegistry';
 import { ITestCase, ITestSuite } from '../../lib/interfaces';
 import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
+import exit from 'exit';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
@@ -12,7 +13,7 @@ export class TestRunner {
     });
 
     if (!this.isAllPassed) {
-      process.exit(1);
+      exit(1);
     }
   }
 

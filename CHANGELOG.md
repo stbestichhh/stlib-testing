@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed:
+* More secure process exiting for Windows
 * More minimalistic and beautiful output
 
 ## Patch 0.0.4
