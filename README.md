@@ -70,7 +70,7 @@ class MyTests {
 
 To run tests, use cli command
 ```shell
-$ stest
+$ npx stest
 ```
 
 #### API
