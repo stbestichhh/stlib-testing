@@ -1,13 +1,16 @@
 import { FileLoader } from '../loader';
 import { TestRunner } from '../runner';
-import { spinnerWrapper } from '../spinner';
+import { spinner, spinnerWrapper } from '../spinner';
 
 async function main() {
   try {
     await spinnerWrapper(FileLoader.loadTestFiles);
     TestRunner.run();
   } catch (e) {
-    console.error(e);
+    spinner.error();
+    if (e instanceof Error) {
+      console.error(e.message);
+    }
   }
 }
 main();
