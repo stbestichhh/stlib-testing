@@ -98,6 +98,17 @@ $ stest
 | `toThrow(expectedError?: ErrorConstructor, ...args: any[])`    | Check if actual throw an error or expected error. Also you can provide arguments for actual function                                                    |
 | `toNotThrow(expectedError?: ErrorConstructor, ...args: any[])` | Check if actual do not throw an error or do not throw an error provided to as 'expectedError' param. Also you can provide arguments for actual function |
 
+#### Configuration
+To provide custom configuration for `stest` create `stest.config.json` file in project base directory.
+
+**Example of config file**
+```json
+{
+  "pattern": "test/**/*.{spec,test}.ts",
+  "ignore": ["node_modules", "lib"]
+}
+```
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
