@@ -1,5 +1,5 @@
 import { IAssertion } from '../interfaces';
-import { AssertionException } from './assertionException';
+import { AssertionException } from '../exceptions';
 
 export function assertThat(actual: any): IAssertion {
   function assertFunction() {
