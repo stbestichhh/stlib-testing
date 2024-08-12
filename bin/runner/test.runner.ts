@@ -2,6 +2,7 @@ import { TestRegistry } from '../testRegistry';
 import { ITestCase, ITestSuite } from '../../lib/interfaces';
 import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
+import exit from 'exit';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
@@ -12,13 +13,13 @@ export class TestRunner {
     });
 
     if (!this.isAllPassed) {
-      process.exit(1);
+      exit(1);
     }
   }
 
   private static runTestSuite(testName: string, target: any) {
     const testSuite = new target();
-    console.log(colors.white(`\nⓘ  Test Suite: ${testName}`));
+    console.log(colors.white.bold(`\nTest Suite: ${testName}`));
 
     const testCases: ITestCase[] = target.testCases || [];
     testCases.forEach(({ methodName, caseDescription }: ITestCase) => {
@@ -33,12 +34,7 @@ export class TestRunner {
   ) {
     try {
       testSuiteInstance[methodName]();
-      this.logTestResult(
-        caseDescription || methodName,
-        'PASSED',
-        'brightGreen',
-        'bgGreen',
-      );
+      this.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
     } catch (e: unknown) {
       this.isAllPassed = false;
       this.handleError(e, methodName, caseDescription, testSuiteInstance);
@@ -48,13 +44,10 @@ export class TestRunner {
   private static logTestResult(
     description: string,
     result: 'PASSED' | 'FAILED',
-    textColor: 'brightGreen' | 'brightRed',
-    bgColor: 'bgGreen' | 'bgBrightRed',
+    textColor: 'brightGreen' | 'brightRed' | 'grey',
   ) {
     const statusBadge = result === 'PASSED' ? '✓'.brightGreen : '✗'.brightRed;
-    console.log(
-      `${statusBadge} ${description[textColor]} - ${result[bgColor]}`,
-    );
+    console.log(`  ${statusBadge} ${description[textColor]}`);
   }
 
   private static handleError(
@@ -63,16 +56,11 @@ export class TestRunner {
     caseDescription: string,
     testSuite: string,
   ) {
-    this.logTestResult(
-      caseDescription || methodName,
-      'FAILED',
-      'brightRed',
-      'bgBrightRed',
-    );
+    this.logTestResult(caseDescription || methodName, 'FAILED', 'grey');
     if (e instanceof Error) {
       const testClassName = testSuite.constructor.name;
       const errorInfo = findWhereErrorHasBeenThrown(e, testClassName);
-      console.error(`  ⚠︎ ${errorInfo || e}`.red);
+      console.error(`    ⚠︎ ${errorInfo || e}`.brightRed);
     }
   }
 }
