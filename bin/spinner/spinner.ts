@@ -11,4 +11,4 @@ export const spinnerWrapper = async (callback: Promise<any> | any) => {
     spinner.error();
     console.error(e);
   }
-}
+};

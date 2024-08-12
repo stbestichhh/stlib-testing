@@ -34,11 +34,7 @@ export class TestRunner {
   ) {
     try {
       testSuiteInstance[methodName]();
-      this.logTestResult(
-        caseDescription || methodName,
-        'PASSED',
-        'grey',
-      );
+      this.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
     } catch (e: unknown) {
       this.isAllPassed = false;
       this.handleError(e, methodName, caseDescription, testSuiteInstance);
@@ -51,9 +47,7 @@ export class TestRunner {
     textColor: 'brightGreen' | 'brightRed' | 'grey',
   ) {
     const statusBadge = result === 'PASSED' ? '✓'.brightGreen : '✗'.brightRed;
-    console.log(
-      `  ${statusBadge} ${description[textColor]}`,
-    );
+    console.log(`  ${statusBadge} ${description[textColor]}`);
   }
 
   private static handleError(
@@ -62,11 +56,7 @@ export class TestRunner {
     caseDescription: string,
     testSuite: string,
   ) {
-    this.logTestResult(
-      caseDescription || methodName,
-      'FAILED',
-      'grey',
-    );
+    this.logTestResult(caseDescription || methodName, 'FAILED', 'grey');
     if (e instanceof Error) {
       const testClassName = testSuite.constructor.name;
       const errorInfo = findWhereErrorHasBeenThrown(e, testClassName);
