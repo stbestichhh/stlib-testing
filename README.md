@@ -99,15 +99,24 @@ $ npx stest
 | `toNotThrow(expectedError?: ErrorConstructor, ...args: any[])` | Check if actual do not throw an error or do not throw an error provided to as 'expectedError' param. Also you can provide arguments for actual function |
 
 #### Configuration
-To provide custom configuration for `stest` create `stest.config.json` file in project base directory.
+To provide custom configuration for `stest` create `stest.config.json` or `stest.config.yml` file in project base directory.
 
 **Example of config file**
-```json
-{
-  "pattern": "test/**/*.{spec,test}.ts",
-  "ignore": ["node_modules", "lib"]
-}
-```
+* json:
+  ```json
+  {
+    "pattern": "test/**/*.{spec,test}.ts",
+    "ignore": ["node_modules", "lib"]
+  }
+  ```
+
+* yaml:
+  ```yaml
+  pattern: "test/**/*.{spec,test}.ts"
+  ignore:
+    - node_modules
+    - lib
+  ```
 
 ## Contributing
 
