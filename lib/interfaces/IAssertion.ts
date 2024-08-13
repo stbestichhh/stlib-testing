@@ -1,4 +1,12 @@
-export interface IAssertion extends IEqualityAssertion, ITruthinessAssertion, IComparisonAssertion, ITypeAssertion, IPropertyAssertion, IErrorAssertion, ICollectionAssertion, IStringAssertion {
+export interface IAssertion
+  extends IEqualityAssertion,
+    ITruthinessAssertion,
+    IComparisonAssertion,
+    ITypeAssertion,
+    IPropertyAssertion,
+    IErrorAssertion,
+    ICollectionAssertion,
+    IStringAssertion {
   toSatisfy(predicate: (value: any) => boolean): IAssertion;
 }
 

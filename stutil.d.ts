@@ -1,4 +1,12 @@
-export interface IAssertion extends IEqualityAssertion, ITruthinessAssertion, IComparisonAssertion, ITypeAssertion, IPropertyAssertion, IErrorAssertion, ICollectionAssertion, IStringAssertion {
+export interface IAssertion
+  extends IEqualityAssertion,
+    ITruthinessAssertion,
+    IComparisonAssertion,
+    ITypeAssertion,
+    IPropertyAssertion,
+    IErrorAssertion,
+    ICollectionAssertion,
+    IStringAssertion {
   toSatisfy(predicate: (value: any) => boolean): IAssertion;
 }
 
@@ -54,7 +62,6 @@ export interface IStringAssertion {
   toStartWith(expected: string): IAssertion;
   toEndWith(expected: string): IAssertion;
 }
-
 
 export function Case(caseDescription?: string): MethodDecorator;
 export function Test(testName?: string): ClassDecorator;
