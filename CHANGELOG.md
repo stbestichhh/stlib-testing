@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Unreleased
 ### Added:
 * Yaml parser for config. Now configurations can be written using both formats, `yaml` and `json`.
+* New 11 assertion methods. See [usage](README.md#api)
 
 ## Patch 0.0.5
 ### Added:
