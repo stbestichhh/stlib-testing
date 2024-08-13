@@ -14,8 +14,19 @@ export interface IAssertion {
   toBeUndefined(): IAssertion;
   toBeNull(): IAssertion;
   toBeNotNull(): IAssertion;
+  toBeNaN(): IAssertion;
+  toBeFinite(): IAssertion;
   toBeTypeOf(type: any): IAssertion;
   toHaveProperty(property: any): IAssertion;
   toThrow(error?: ErrorConstructor, ...args: any[]): IAssertion;
   toNotThrow(error?: ErrorConstructor, ...args: any[]): IAssertion;
+  toContain(expected: any): IAssertion;
+  toContainEqual(expected: any): IAssertion;
+  toMatch(expected: RegExp | string): IAssertion;
+  toHaveLength(expected: number): IAssertion;
+  toStartWith(expected: string): IAssertion;
+  toEndWith(expected: string): IAssertion;
+  toSatisfy(predicate: (value: any) => boolean): IAssertion;
+  toIncludeAllMembers(expected: any[]): IAssertion;
+  toIncludeAnyMembers(expected: any[]): IAssertion;
 }
