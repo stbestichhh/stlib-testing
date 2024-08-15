@@ -1,4 +1,5 @@
 import { assertThat, Test, Case, MockModule } from '@stlib/testing';
+import path from 'path';
 
 @Test('Mock Module Tests')
 class MockModuleTests {
@@ -22,7 +23,7 @@ class MockModuleTests {
 
     mockModule.restoreMethod('readFileSync');
     const fs = require('fs');
-    const content = fs.readFileSync('/path/to/file');
+    const content = fs.readFileSync(path.resolve(__dirname, '../../stest.config.json'));
 
     assertThat(content).toNotEqual('mocked content');
   }
