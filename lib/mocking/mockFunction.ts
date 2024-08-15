@@ -1,6 +1,5 @@
+import { AnyFunction } from '../types';
 import { MockingException } from '../exceptions';
-
-type AnyFunction = (...args: any[]) => any;
 
 export class MockFn {
   private readonly originalFunction: AnyFunction;
