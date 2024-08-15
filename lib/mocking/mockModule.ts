@@ -1,16 +1,16 @@
 import { AnyFunction } from '../types';
 
 export class MockModule {
-  private originalModules: Map<string, any>;
+  private originalMethods: Map<string, AnyFunction>;
 
   constructor(private moduleName: string) {
-    this.originalModules = new Map<string, any>();
+    this.originalMethods = new Map<string, AnyFunction>();
   }
 
   public mockMethod(methodName: string, implementation: AnyFunction) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const module = require(this.moduleName);
-    this.originalModules.set(methodName, module[methodName]);
+    this.originalMethods.set(methodName, module[methodName]);
     module[methodName] = implementation;
   }
 
@@ -18,9 +18,9 @@ export class MockModule {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const module = require(this.moduleName);
 
-    if(this.originalModules.has(methodName)) {
-      module[methodName] = this.originalModules.get(methodName);
-      this.originalModules.delete(methodName);
+    if(this.originalMethods.has(methodName)) {
+      module[methodName] = this.originalMethods.get(methodName);
+      this.originalMethods.delete(methodName);
     }
   }
 
@@ -28,10 +28,10 @@ export class MockModule {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const module = require(this.moduleName);
 
-    for (const [methodName, originalMethod] of this.originalModules.entries()) {
+    for (const [methodName, originalMethod] of this.originalMethods.entries()) {
       module[methodName] = originalMethod;
     }
 
-    this.originalModules.clear();
+    this.originalMethods.clear();
   }
 }
