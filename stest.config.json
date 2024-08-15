@@ -1,0 +1,3 @@
+{
+  "pattern": "example/**/*.{spec,test}.ts"
+}
