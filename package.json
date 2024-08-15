@@ -1,6 +1,6 @@
 {
   "name": "@stlib/testing",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Testing framework for TypeScript Node.js applications",
   "main": "stutil.ts",
   "types": "stutil.d.ts",
