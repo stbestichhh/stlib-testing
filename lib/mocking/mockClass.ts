@@ -76,7 +76,7 @@ export class Mock<T> {
     }
   }
 
-  public restore<K extends MethodNames<T> & string>(methodName: K) {
+  public restoreMethod<K extends MethodNames<T> & string>(methodName: K) {
     const originalMethod = this.originalMethods.get(methodName);
 
     if (originalMethod) {

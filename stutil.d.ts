@@ -1,3 +1,5 @@
+// Assertions
+
 export interface IAssertion
   extends IEqualityAssertion,
     ITruthinessAssertion,
@@ -66,3 +68,46 @@ export interface IStringAssertion {
 export function Case(caseDescription?: string): MethodDecorator;
 export function Test(testName?: string): ClassDecorator;
 export function assertThat(actual: any): IAssertion;
+
+// Mocking
+
+export type AnyFunction = (...args: any[]) => any;
+
+export type MethodNames<T> = {
+  [K in keyof T]: T[K] extends AnyFunction ? K : never;
+}[keyof T];
+
+export class Mock<T> {
+  constructor(target: T);
+  public mockMethod<K extends MethodNames<T> & string>(
+    methodName: K,
+    implementation: AnyFunction,
+  ): void;
+  public verifyCalled<K extends MethodNames<T> & string>(
+    methodName: K,
+    expectedCallCount: number,
+  ): void;
+  public verifyCalledWith<K extends MethodNames<T> & string>(
+    methodName: K,
+    expectedArgs: any[],
+  ): void;
+  public restoreMethod<K extends MethodNames<T> & string>(methodName: K): void;
+  public restoreAll(): void;
+}
+
+export class MockFn {
+  constructor(fn: AnyFunction);
+  public mock(implementation: AnyFunction): void;
+  public verifyCalled(expectedCallCount: number): void;
+  public verifyCalledWith(expectedArgs: any[]): void;
+  public restore(): void;
+  public getFunction(): AnyFunction;
+  public call(...args: any[]): any;
+}
+
+export class MockModule {
+  constructor(moduleName: string);
+  public mockMethod(methodName: string, implementation: AnyFunction): void;
+  public restoreMethod(methodName: string): void;
+  public restoreAll(): void;
+}
