@@ -96,7 +96,7 @@ export class Mock<T> {
 }
 
 export class MockFn {
-  constructor(fn: AnyFunction);
+  constructor(fn: AnyFunction, implementation?: AnyFunction);
   public mock(implementation: AnyFunction): void;
   public verifyCalled(expectedCallCount: number): void;
   public verifyCalledWith(expectedArgs: any[]): void;
@@ -108,6 +108,8 @@ export class MockFn {
 export class MockModule {
   constructor(moduleName: string);
   public mockMethod(methodName: string, implementation: AnyFunction): void;
+  public verifyCalled(methodName: string, expectedCallCount: number): void;
+  public verifyCalledWith(methodName: string, expectedArgs: any[]): void;
   public restoreMethod(methodName: string): void;
   public restoreAll(): void;
 }

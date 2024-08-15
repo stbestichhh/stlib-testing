@@ -6,8 +6,15 @@ export class MockFn {
   private callCount: number = 0;
   private args: any[][] = [];
 
-  constructor(private fn: AnyFunction) {
+  constructor(
+    private fn: AnyFunction,
+    implementation?: AnyFunction,
+  ) {
     this.originalFunction = fn;
+
+    if (implementation) {
+      this.mock(implementation);
+    }
   }
 
   public mock(implementation: AnyFunction) {
