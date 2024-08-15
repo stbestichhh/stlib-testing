@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Patch 0.0.6
+### Added:
+* Mocking functionality
+* Yaml parser for config. Now configurations can be written using both formats, `yaml` and `json`.
+* New 11 assertion methods. See [usage](README.md#api)
+
+#### Other:
+* Addded assertion interfaces to the package types`
+
 ## Patch 0.0.5
 ### Added:
 * Configuration file

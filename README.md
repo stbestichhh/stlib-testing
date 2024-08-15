@@ -11,6 +11,7 @@
 * [Getting started](#getting-started)
   * [Instalation](#installation)
   * [Usage](#usage)
+  * [Configuration](#configuration)
 * [Contributing](#contributing)
 * [Changelog](#changelog)
 * [Authors](#authors)
@@ -43,6 +44,9 @@
 
 #### How to create tests and run tests
 
+> [!NOTE]
+> You can see code examples [here](example)
+
 First you need is to create a `.spec.ts` or `.test.ts` file.
 
 This testing framework uses decorators to define tests. You need to create a class with `@Test('Test suite name')` decorator. Each test must be a class method with decorator `@Case('test case description')`.
@@ -73,7 +77,7 @@ To run tests, use cli command
 $ npx stest
 ```
 
-#### API
+#### Asserions API
 `assertThat(actual).to*(expected);`
 
 | Method                                                         | Description                                                                                                                                             |
@@ -93,21 +97,65 @@ $ npx stest
 | `toBeUndefined()`                                              | Check if actual is undefined                                                                                                                            |
 | `toBeNull()`                                                   | Check if actual is null                                                                                                                                 |
 | `toBeNotNull()`                                                | Check if actual is not null                                                                                                                             |
+| `toBeNaN()`                                                    | Check if actual is NaN                                                                                                                                  |
+| `toBeFinite()`                                                 | Check if actual is finite number                                                                                                                        |
 | `toBeTypeOf(type: any)`                                        | Check if actual is type of expected. Example: `assertThat('a').toBeTypeOf('string')`, `assertThat(TypeError).toBeTypeOf(Error)`                         |
 | `toHaveProperty(property: any)`                                | Check if actual has expected property                                                                                                                   |
 | `toThrow(expectedError?: ErrorConstructor, ...args: any[])`    | Check if actual throw an error or expected error. Also you can provide arguments for actual function                                                    |
 | `toNotThrow(expectedError?: ErrorConstructor, ...args: any[])` | Check if actual do not throw an error or do not throw an error provided to as 'expectedError' param. Also you can provide arguments for actual function |
+| `toContain(expected: any)`                                     | Check if actual contains a value from expected                                                                                                          |
+| `toContainEqual(expected: any)`                                | Check if actual contains a value which equal to value from expected                                                                                     |
+| `toMatch(expected: RegExp or string)`                          | Check if actual mathes to expected regular expression                                                                                                   |
+| `toHaveLength(expected: number)`                               | Check if actual has expected length                                                                                                                     |
+| `toStartWith(expected: string)`                                | Check if actual starts with expected string                                                                                                             |
+| `toEndWith(expected: string)`                                  | Check if actual ends with expected string                                                                                                               |
+| `toSatisfy(predicate: (value: any) => boolean)`                | Check if actual satisfies a predicate                                                                                                                   |
+| `toIncludeAllMembers(expected: any[])`                         | Check if actual includes all members of expected array                                                                                                  |
+| `toIncludeAnyMembers(expected: any[])`                         | Check if actual includes at least one member of expected array                                                                                          |
+
+#### Mocking API
+ 
+| Class        | Method                                                                   | Description                                               |
+|--------------|--------------------------------------------------------------------------|-----------------------------------------------------------|
+| `MockFn`     | `new MockFn(functionToMock: Function, implementation?: Function)`        | Creates function mock                                     |
+|              | `mockFn.mock(implementation?: Function)`                                 | Mocks a function                                          |
+|              | `mockFn.verifyCalled(expectedCallcount: number)`                         | Verifies function has been called expected times          |
+|              | `mockFn.verifyCalledWith(expectedArguments: any[])`                      | Verifies function has been called with expected arguments |
+|              | `mockFn.restore()`                                                       | Restores original function logic                          |
+|              | `mockFn.getFunction()`                                                   | Returns fuction                                           |
+|              | `mockFn.call(...args: any[])`                                            | Call function                                             |
+| `MockModule` | `new MockModule(moduleName: string)`                                     | Creates module mock                                       |
+|              | `mockModule.mockMethod(methodName: string, implementation: Function)`    | Mocks a function                                          |
+|              | `mockModule.verifyCalled(methodName: string, expectedCallcount: number)` | Verifies function has been called expected times          |
+|              | `mockFn.verifyCalledWith(expectedArguments: any[])`                      | Verifies function has been called with expected arguments |
+|              | `mockFn.restoreMethod(methodName: string)`                               | Restores original function logic                          |
+|              | `mockFn.restoreAll()`                                                    | Restores all functios                                     |
+| `Mock`       | `new Mock(instance: T)`                                                  | Creates class instance mock                               |
+|              | `mockClass.mockMethod(methodName: string, implementation: Function)`     | Mocks a function                                          |
+|              | `mockClass.verifyCalled(methodName: string, expectedCallcount: number)`  | Verifies function has been called expected times          |
+|              | `mockClass.verifyCalledWith(expectedArguments: any[])`                   | Verifies function has been called with expected arguments |
+|              | `mockClass.restoreMethod(methodName: string)`                            | Restores original function logic                          |
+|              | `mockClass.restoreAll()`                                                 | Restores all functios                                     |
 
 #### Configuration
-To provide custom configuration for `stest` create `stest.config.json` file in project base directory.
+To provide custom configuration for `stest` create `stest.config.json` or `stest.config.yml` file in project base directory.
 
-**Example of config file**
-```json
-{
-  "pattern": "test/**/*.{spec,test}.ts",
-  "ignore": ["node_modules", "lib"]
-}
-```
+Config file example:
+* json:
+  ```json
+  {
+    "pattern": "test/**/*.{spec,test}.ts",
+    "ignore": ["node_modules", "lib"]
+  }
+  ```
+
+* yaml:
+  ```yaml
+  pattern: "test/**/*.{spec,test}.ts"
+  ignore:
+    - node_modules
+    - lib
+  ```
 
 ## Contributing
 

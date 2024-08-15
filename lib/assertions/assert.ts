@@ -9,7 +9,7 @@ export function assertThat(actual: any): IAssertion {
   }
 
   return {
-    toEqual(expected: any) {
+    toEqual(expected: any): IAssertion {
       if (actual != expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to equal ${JSON.stringify(expected)}`,
@@ -19,7 +19,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toNotEqual(expected: any) {
+    toNotEqual(expected: any): IAssertion {
       if (actual == expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to not equal ${JSON.stringify(expected)}`,
@@ -29,7 +29,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toStrictEqual(expected: any) {
+    toStrictEqual(expected: any): IAssertion {
       if (actual !== expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to strictly equal ${JSON.stringify(expected)}`,
@@ -39,7 +39,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toStrictNotEqual(expected: any) {
+    toStrictNotEqual(expected: any): IAssertion {
       if (actual === expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to strictly not equal ${JSON.stringify(expected)}`,
@@ -49,7 +49,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBe(expected: any) {
+    toBe(expected: any): IAssertion {
       if (actual != expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be ${JSON.stringify(expected)}`,
@@ -59,7 +59,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBeTruthy() {
+    toBeTruthy(): IAssertion {
       if (!actual) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be truthy`,
@@ -69,7 +69,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBeFalsy() {
+    toBeFalsy(): IAssertion {
       if (!actual) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be falsy`,
@@ -79,7 +79,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBeGreaterThan(expected: number) {
+    toBeGreaterThan(expected: number): IAssertion {
       if (actual <= expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be greater than ${JSON.stringify(expected)}`,
@@ -89,7 +89,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBeGreaterThanOrEqual(expected: number) {
+    toBeGreaterThanOrEqual(expected: number): IAssertion {
       if (actual < expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be greater than or equal ${JSON.stringify(expected)}`,
@@ -99,7 +99,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBeLessThan(expected: number) {
+    toBeLessThan(expected: number): IAssertion {
       if (actual >= expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be less than ${JSON.stringify(expected)}`,
@@ -109,7 +109,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBeLessThanOrEqual(expected: number) {
+    toBeLessThanOrEqual(expected: number): IAssertion {
       if (actual > expected) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be less than or equal ${JSON.stringify(expected)}`,
@@ -119,7 +119,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBeDefined() {
+    toBeDefined(): IAssertion {
       if (actual === undefined) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be defined`,
@@ -129,7 +129,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBeUndefined() {
+    toBeUndefined(): IAssertion {
       if (actual !== undefined) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be undefined`,
@@ -139,7 +139,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBeNull() {
+    toBeNull(): IAssertion {
       if (actual !== null) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be null`,
@@ -149,7 +149,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBeNotNull() {
+    toBeNotNull(): IAssertion {
       if (actual === null) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be not null`,
@@ -159,7 +159,27 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toBeTypeOf(type: any | string) {
+    toBeFinite(): IAssertion {
+      if (!Number.isFinite(actual)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to be finite number`,
+        );
+      }
+
+      return this;
+    },
+
+    toBeNaN(): IAssertion {
+      if (!Number.isNaN(actual)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to be NaN`,
+        );
+      }
+
+      return this;
+    },
+
+    toBeTypeOf(type: any | string): IAssertion {
       if (typeof type === 'string') {
         if (typeof actual !== type) {
           throw new AssertionException(
@@ -177,7 +197,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toHaveProperty(property: any) {
+    toHaveProperty(property: any): IAssertion {
       if (!Object.hasOwn(actual, property)) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to has own property ${JSON.stringify(property)}`,
@@ -187,7 +207,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toThrow(expectedError?: ErrorConstructor, ...args: any[]) {
+    toThrow(expectedError?: ErrorConstructor, ...args: any[]): IAssertion {
       assertFunction();
 
       let threw: boolean = false;
@@ -214,7 +234,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toNotThrow(expectedError?: ErrorConstructor, ...args: any[]) {
+    toNotThrow(expectedError?: ErrorConstructor, ...args: any[]): IAssertion {
       assertFunction();
 
       try {
@@ -233,6 +253,135 @@ export function assertThat(actual: any): IAssertion {
             `Expected ${JSON.stringify(actual.name)} to not throw an error, but threw ${JSON.stringify(e.constructor.name)}`,
           );
         }
+      }
+
+      return this;
+    },
+
+    toContain(expected: any): IAssertion {
+      if (!Array.isArray(actual) && typeof actual !== 'string') {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to be an array or string`,
+        );
+      }
+
+      if (!actual.includes(expected)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to contain ${JSON.stringify(expected)}`,
+        );
+      }
+
+      return this;
+    },
+
+    toContainEqual(expected: any): IAssertion {
+      if (!Array.isArray(actual)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to be an array`,
+        );
+      }
+
+      const found = actual.some(
+        (item) => JSON.stringify(item) === JSON.stringify(expected),
+      );
+      if (!found) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to contain an element equal to ${JSON.stringify(expected)}`,
+        );
+      }
+
+      return this;
+    },
+
+    toMatch(expected: RegExp | string): IAssertion {
+      if (typeof actual !== 'string') {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to be a string`,
+        );
+      }
+
+      const regexp =
+        typeof expected === 'string' ? new RegExp(expected) : expected;
+      if (!regexp.test(actual)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to match ${JSON.stringify(expected)} regular expression`,
+        );
+      }
+
+      return this;
+    },
+
+    toHaveLength(expected: number): IAssertion {
+      if (actual.length !== expected) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to have length ${JSON.stringify(expected)}`,
+        );
+      }
+
+      return this;
+    },
+
+    toStartWith(expected: string): IAssertion {
+      if (typeof actual !== 'string' || !actual.startsWith(expected)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to start with ${JSON.stringify(expected)}`,
+        );
+      }
+
+      return this;
+    },
+
+    toEndWith(expected: string): IAssertion {
+      if (typeof actual !== 'string' || !actual.endsWith(expected)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to end with ${JSON.stringify(expected)}`,
+        );
+      }
+
+      return this;
+    },
+
+    toSatisfy(predicate: (value: any) => boolean): IAssertion {
+      if (!predicate(actual)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to satisfy the predicate`,
+        );
+      }
+
+      return this;
+    },
+
+    toIncludeAllMembers(expected: any[]): IAssertion {
+      if (!Array.isArray(actual)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to be an array`,
+        );
+      }
+
+      for (const item of expected) {
+        if (!actual.includes(item)) {
+          throw new AssertionException(
+            `Expected ${JSON.stringify(actual)} to include all members of ${JSON.stringify(expected)}, but missing ${JSON.stringify(item)}`,
+          );
+        }
+      }
+
+      return this;
+    },
+
+    toIncludeAnyMembers(expected: any[]): IAssertion {
+      if (!Array.isArray(actual)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to be an array`,
+        );
+      }
+
+      const found = expected.some((item) => actual.includes(item));
+
+      if (!found) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to include at least one element of ${JSON.stringify(expected)}`,
+        );
       }
 
       return this;
