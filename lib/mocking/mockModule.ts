@@ -18,7 +18,7 @@ export class MockModule {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const module = require(this.moduleName);
 
-    if(this.originalMethods.has(methodName)) {
+    if (this.originalMethods.has(methodName)) {
       module[methodName] = this.originalMethods.get(methodName);
       this.originalMethods.delete(methodName);
     }

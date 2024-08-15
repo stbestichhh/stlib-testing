@@ -12,9 +12,14 @@ export class Mock<T> {
     this.instance = target as any;
   }
 
-  public mockMethod<K extends MethodNames<T> & string>(methodName: K, implementation: AnyFunction) {
-    if (!(this.instance[methodName])) {
-      throw new MockingException(`Method ${methodName} does not exist on target.`);
+  public mockMethod<K extends MethodNames<T> & string>(
+    methodName: K,
+    implementation: AnyFunction,
+  ) {
+    if (!this.instance[methodName]) {
+      throw new MockingException(
+        `Method ${methodName} does not exist on target.`,
+      );
     }
 
     this.originalMethods.set(methodName, this.instance[methodName]);
@@ -28,31 +33,46 @@ export class Mock<T> {
         throw new MockingException(`Method ${methodName} was not mocked.`);
       }
 
-      this.callCounts.set(methodName, (this.callCounts.get(methodName) || 0) + 1);
+      this.callCounts.set(
+        methodName,
+        (this.callCounts.get(methodName) || 0) + 1,
+      );
       this.callArgs.get(methodName)?.push(args);
       return stub(...args);
     };
   }
 
-  public verifyCalled<K extends MethodNames<T> & string>(methodName: K, expectedCallCount: number) {
+  public verifyCalled<K extends MethodNames<T> & string>(
+    methodName: K,
+    expectedCallCount: number,
+  ) {
     const actualCallCount = this.callCounts.get(methodName) || 0;
     if (actualCallCount !== expectedCallCount) {
       throw new MockingException(
-        `Expected ${methodName} to be called ${expectedCallCount} times, but it was called ${actualCallCount} times.`
+        `Expected ${methodName} to be called ${expectedCallCount} times, but it was called ${actualCallCount} times.`,
       );
     }
   }
 
-  public verifyCalledWith<K extends MethodNames<T> & string>(methodName: K, expectedArgs: any[]) {
+  public verifyCalledWith<K extends MethodNames<T> & string>(
+    methodName: K,
+    expectedArgs: any[],
+  ) {
     const argsList = this.callArgs.get(methodName);
     if (!argsList || argsList.length === 0) {
       throw new MockingException(`Method ${methodName} was not called`);
     }
 
-    const match = argsList.some((args) => args.length === expectedArgs.length && args.every((arg, index) => arg === expectedArgs[index]));
+    const match = argsList.some(
+      (args) =>
+        args.length === expectedArgs.length &&
+        args.every((arg, index) => arg === expectedArgs[index]),
+    );
 
     if (!match) {
-      throw new MockingException(`Method ${methodName} was not called with expected arguments ${JSON.stringify(expectedArgs)}`);
+      throw new MockingException(
+        `Method ${methodName} was not called with expected arguments ${JSON.stringify(expectedArgs)}`,
+      );
     }
   }
 

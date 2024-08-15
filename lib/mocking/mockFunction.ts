@@ -20,15 +20,21 @@ export class MockFn {
 
   public verifyCalled(expectedCallCount: number) {
     if (this.callCount !== expectedCallCount) {
-      throw new MockingException(`Expected function to be called ${JSON.stringify(expectedCallCount)} times, but it was called ${JSON.stringify(this.callCount)} times`);
+      throw new MockingException(
+        `Expected function to be called ${JSON.stringify(expectedCallCount)} times, but it was called ${JSON.stringify(this.callCount)} times`,
+      );
     }
   }
 
   public verifyCalledWith(expectedArgs: any[]) {
-    const wasCalledWith = this.args.some((callArgs) => JSON.stringify(callArgs) === JSON.stringify(expectedArgs));
+    const wasCalledWith = this.args.some(
+      (callArgs) => JSON.stringify(callArgs) === JSON.stringify(expectedArgs),
+    );
 
     if (!wasCalledWith) {
-      throw new MockingException(`Expected function to be called with ${JSON.stringify(expectedArgs)} arguments`);
+      throw new MockingException(
+        `Expected function to be called with ${JSON.stringify(expectedArgs)} arguments`,
+      );
     }
   }
 
