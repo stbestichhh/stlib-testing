@@ -33,7 +33,7 @@ export class Config {
     ];
 
     if (options.config && typeof options.config === 'string') {
-      await this.setConfigPathIterator([options.config])
+      await this.setConfigPathIterator([options.config]);
     } else {
       await this.setConfigPathIterator(configFileNames);
     }
@@ -77,7 +77,9 @@ export class Config {
       const importedConfig = await import(filePath);
       return importedConfig.default || importedConfig;
     } catch (error) {
-      console.error(new ConfigException(`Failed to load configuration from ${filePath}`));
+      console.error(
+        new ConfigException(`Failed to load configuration from ${filePath}`),
+      );
       return undefined;
     }
   }
