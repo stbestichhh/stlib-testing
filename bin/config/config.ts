@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { isExists } from '@stlib/utils';
+import { isExists, options } from '@stlib/utils';
 import fs from 'fs';
 import YAML from 'yaml';
 import { ConfigException } from '../../lib/exceptions';
@@ -31,6 +31,12 @@ export class Config {
       'stest.config.js',
       'stest.config.ts',
     ];
+
+    if (options.config && typeof options.config === 'string') {
+      await this.setConfigPathIterator([options.config])
+    } else {
+      await this.setConfigPathIterator(configFileNames);
+    }
   }
 
   private static async setConfigPathIterator(configFileNames: string[]) {
