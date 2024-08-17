@@ -138,24 +138,46 @@ $ npx stest
 |              | `mockClass.restoreAll()`                                                    | Restores all functios                                     |
 
 #### Configuration
-To provide custom configuration for `stest` create `stest.config.json` or `stest.config.yml` file in project base directory.
+To provide custom configuration for `stest` create `stest.config.{json,yml,ts,js}` file in project base directory.
 
-Config file example:
-* json:
-  ```json
-  {
-    "pattern": "test/**/*.{spec,test}.ts",
-    "ignore": ["node_modules", "lib"]
-  }
-  ```
+Also it is possible to define custom path to the config file using `--config` flag.
+```shell
+$ npx stest --config ./configs/test.conf.yml
+```
 
-* yaml:
-  ```yaml
-  pattern: "test/**/*.{spec,test}.ts"
-  ignore:
-    - node_modules
-    - lib
-  ```
+Config properties:
+* pattern - tests path pattern
+* ignore - files and directories to ignore
+
+* Config file example:
+
+  * json:
+    ```json
+    {
+      "pattern": "test/**/*.{spec,test}.ts",
+      "ignore": ["node_modules", "lib"]
+    }
+    ```
+
+  * yaml:
+    ```yaml
+    pattern: "test/**/*.{spec,test}.ts"
+    ignore:
+      - node_modules
+      - lib
+    ```
+  
+  * TS/JS:
+    ```TypeScript
+    import { StestConfig } from "@stlib/testing";
+
+    const config: StestConfig = {
+      pattern: "**/examples/**/*.ts",
+      ignore: ["node_modules", "lib"],
+    };
+    export default config;
+
+    ```
 
 ## Contributing
 

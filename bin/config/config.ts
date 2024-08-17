@@ -1,7 +1,8 @@
 import path from 'node:path';
-import { isExists } from '@stlib/utils';
+import { isExists, options } from '@stlib/utils';
 import fs from 'fs';
 import YAML from 'yaml';
+import { ConfigException } from '../../lib/exceptions';
 
 export type ConfigType = {
   pattern?: string;
@@ -31,6 +32,14 @@ export class Config {
       'stest.config.ts',
     ];
 
+    if (options.config && typeof options.config === 'string') {
+      await this.setConfigPathIterator([options.config]);
+    } else {
+      await this.setConfigPathIterator(configFileNames);
+    }
+  }
+
+  private static async setConfigPathIterator(configFileNames: string[]) {
     for (const fileName of configFileNames) {
       const configPath = path.join(this.projectPath, fileName);
       if (await isExists(configPath)) {
@@ -68,7 +77,9 @@ export class Config {
       const importedConfig = await import(filePath);
       return importedConfig.default || importedConfig;
     } catch (error) {
-      console.error(`Failed to load configuration from ${filePath}:`, error);
+      console.error(
+        new ConfigException(`Failed to load configuration from ${filePath}`),
+      );
       return undefined;
     }
   }
