@@ -1,1 +1,1 @@
-export * from './config';
+export { Config, ConfigType as StestConfig } from './config';

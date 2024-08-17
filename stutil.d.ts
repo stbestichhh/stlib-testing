@@ -113,3 +113,9 @@ export class MockModule {
   public restoreMethod(methodName: string): void;
   public restoreAll(): void;
 }
+
+// Config Type
+export type StestConfig = {
+  pattern?: string;
+  ignore?: string[];
+};

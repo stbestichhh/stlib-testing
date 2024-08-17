@@ -9,52 +9,67 @@ export type ConfigType = {
 };
 
 export class Config {
-  private static configPath: string | undefined;
-  private static useYml: boolean = false;
+  private static configPath?: string;
+  private static useYml = false;
+  private static isScriptFile = false;
+  private static projectPath: string;
 
   public static async handleConfiguration(
     projectPath: string,
   ): Promise<ConfigType | undefined> {
-    const unparsedConfig = await this.readConfiguration(projectPath);
+    this.projectPath = projectPath;
 
-    if (unparsedConfig) {
-      return await this.parseConfig(unparsedConfig);
-    }
-
-    return undefined;
+    await this.setConfigPath();
+    return this.configPath ? this.parseConfig() : undefined;
   }
 
-  private static async readConfiguration(projectPath: string) {
-    await this.defineConfigPath(projectPath);
+  private static async setConfigPath(): Promise<void> {
+    const configFileNames = [
+      'stest.config.json',
+      'stest.config.yml',
+      'stest.config.js',
+      'stest.config.ts',
+    ];
 
-    if (this.configPath) {
-      return await fs.promises.readFile(this.configPath);
-    }
-
-    return undefined;
-  }
-
-  private static async parseConfig(unparsedConfig: string | Buffer) {
-    if (unparsedConfig) {
-      let configuration: ConfigType;
-      if (this.useYml) {
-        configuration = YAML.parse(unparsedConfig.toString());
-      } else {
-        configuration = JSON.parse(unparsedConfig.toString());
+    for (const fileName of configFileNames) {
+      const configPath = path.join(this.projectPath, fileName);
+      if (await isExists(configPath)) {
+        this.configPath = configPath;
+        this.useYml = configPath.endsWith('.yml');
+        this.isScriptFile =
+          configPath.endsWith('.js') || configPath.endsWith('.ts');
+        break;
       }
-      return { pattern: configuration.pattern, ignore: configuration.ignore };
     }
   }
 
-  private static async defineConfigPath(projectPath: string): Promise<void> {
-    const configPathJson = path.join(projectPath, 'stest.config.json');
-    const configPathYml = path.join(projectPath, 'stest.config.yml');
+  private static async parseConfig(): Promise<ConfigType | undefined> {
+    if (this.isScriptFile) {
+      return this.importConfigFromScript(this.configPath!);
+    } else {
+      const fileContent = await this.readConfigFile();
+      return fileContent ? this.parseFileContent(fileContent) : undefined;
+    }
+  }
 
-    if (await isExists(configPathJson)) {
-      this.configPath = configPathJson;
-    } else if (await isExists(configPathYml)) {
-      this.useYml = true;
-      this.configPath = configPathYml;
+  private static async readConfigFile(): Promise<string | Buffer> {
+    return fs.promises.readFile(this.configPath!);
+  }
+
+  private static parseFileContent(content: string | Buffer): ConfigType {
+    const contentStr = content.toString();
+    return this.useYml ? YAML.parse(contentStr) : JSON.parse(contentStr);
+  }
+
+  private static async importConfigFromScript(
+    filePath: string,
+  ): Promise<ConfigType | undefined> {
+    try {
+      const importedConfig = await import(filePath);
+      return importedConfig.default || importedConfig;
+    } catch (error) {
+      console.error(`Failed to load configuration from ${filePath}:`, error);
+      return undefined;
     }
   }
 }
