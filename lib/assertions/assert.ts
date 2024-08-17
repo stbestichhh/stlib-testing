@@ -70,7 +70,7 @@ export function assertThat(actual: any): IAssertion {
     },
 
     toBeFalsy(): IAssertion {
-      if (!actual) {
+      if (actual) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to be falsy`,
         );
