@@ -14,7 +14,9 @@ export class Config {
   private static isScriptFile = false;
   private static projectPath: string;
 
-  public static async handleConfiguration(projectPath: string): Promise<ConfigType | undefined> {
+  public static async handleConfiguration(
+    projectPath: string,
+  ): Promise<ConfigType | undefined> {
     this.projectPath = projectPath;
 
     await this.setConfigPath();
@@ -22,14 +24,20 @@ export class Config {
   }
 
   private static async setConfigPath(): Promise<void> {
-    const configFileNames = ['stest.config.json', 'stest.config.yml', 'stest.config.js', 'stest.config.ts'];
+    const configFileNames = [
+      'stest.config.json',
+      'stest.config.yml',
+      'stest.config.js',
+      'stest.config.ts',
+    ];
 
     for (const fileName of configFileNames) {
       const configPath = path.join(this.projectPath, fileName);
       if (await isExists(configPath)) {
         this.configPath = configPath;
         this.useYml = configPath.endsWith('.yml');
-        this.isScriptFile = configPath.endsWith('.js') || configPath.endsWith('.ts');
+        this.isScriptFile =
+          configPath.endsWith('.js') || configPath.endsWith('.ts');
         break;
       }
     }
@@ -53,7 +61,9 @@ export class Config {
     return this.useYml ? YAML.parse(contentStr) : JSON.parse(contentStr);
   }
 
-  private static async importConfigFromScript(filePath: string): Promise<ConfigType | undefined> {
+  private static async importConfigFromScript(
+    filePath: string,
+  ): Promise<ConfigType | undefined> {
     try {
       const importedConfig = await import(filePath);
       return importedConfig.default || importedConfig;
