@@ -1,1 +1,1 @@
-export * from './config.patterns'
+export * from './config.patterns';
