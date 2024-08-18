@@ -172,11 +172,10 @@ Config properties:
     import { StestConfig } from "@stlib/testing";
 
     const config: StestConfig = {
-      pattern: "**/examples/**/*.ts",
+      pattern: "test/**/*.{spec,test}.ts",
       ignore: ["node_modules", "lib"],
     };
     export default config;
-
     ```
 
 ## Contributing
