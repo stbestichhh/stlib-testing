@@ -40,14 +40,14 @@ export class TestRunner {
   private static runLifecycleMethods(
     testSuiteInstance: any,
     lifecycleMethods: IAfter_Before[],
-    lifecuclePahse: LifecycleType,
+    lifecyclePhase: LifecycleType,
   ) {
     try {
       lifecycleMethods.forEach(({ methodName }: IAfter_Before) => {
         testSuiteInstance[methodName]();
       });
     } catch (e) {
-      console.error(`    ⚠︎ Error during ${lifecuclePahse}: ${e}`.brightRed);
+      console.error(`    ⚠︎ Error during ${lifecyclePhase}: ${e}`.brightRed);
     }
   }
 
