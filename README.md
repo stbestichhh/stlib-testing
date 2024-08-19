@@ -9,7 +9,8 @@
 
 * [Description](#about)
 * [Getting started](#getting-started)
-  * [Instalation](#installation)
+  * [Command Line Interface](#cli)
+  * [Installation](#installation)
   * [Usage](#usage)
   * [Configuration](#configuration)
 * [Contributing](#contributing)
@@ -25,6 +26,15 @@
 
 > [!IMPORTANT]
 > **Node.js 18.x+** version must be installed in your OS.
+
+### CLI
+```shell
+$ npx stest       Runs tests
+
+Options:
+  --config                      Define custom path to the config file
+  --init <'ts|js|json|yml'>     Creates new config file. JSON format by default
+```
 
 ### Installation
 
@@ -76,6 +86,16 @@ To run tests, use cli command
 ```shell
 $ npx stest
 ```
+
+#### Decorators API
+| Decorator                           | Description                               |
+|-------------------------------------|-------------------------------------------|
+| `@Test(description?: string)`       | Define a class as a test suite            |
+| `@Case(description?: string)`       | Define method as a test case              |
+| `@AfterAll(description?: string)`   | Force method to run after all test cases  |
+| `@BeforeAll(description?: string)`  | Force method to run before all test cases |
+| `@AfterEach(description?: string)`  | Runs after each test case                 |
+| `@BeforeEach(description?: string)` | Runs before each test case                |
 
 #### Asserions API
 `assertThat(actual).to*(expected);`
@@ -153,7 +173,7 @@ Config properties:
 * pattern - tests path pattern
 * ignore - files and directories to ignore
 
-* Config file example:
+Config file example:
 
   * json:
     ```json
