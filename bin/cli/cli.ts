@@ -17,9 +17,8 @@ export class Cli {
       this.options = options;
       if (options.init) {
         await initializeConfig(options.init);
+        exit(0);
       }
-
-      exit(0);
     } catch (e) {
       console.error(e);
       exit(1);
