@@ -1,1 +1,5 @@
-export type LifecycleType = 'beforeAll' | 'beforeEach' | 'afterAll' | 'afterEach';
+export type LifecycleType =
+  | 'beforeAll'
+  | 'beforeEach'
+  | 'afterAll'
+  | 'afterEach';

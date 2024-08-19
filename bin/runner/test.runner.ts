@@ -37,7 +37,11 @@ export class TestRunner {
     this.runLifecycleMethods(testSuite, afterAll, 'afterAll');
   }
 
-  private static runLifecycleMethods(testSuiteInstance: any, lifecycleMethods: IAfter_Before[], lifecuclePahse: LifecycleType) {
+  private static runLifecycleMethods(
+    testSuiteInstance: any,
+    lifecycleMethods: IAfter_Before[],
+    lifecuclePahse: LifecycleType,
+  ) {
     try {
       lifecycleMethods.forEach(({ methodName }: IAfter_Before) => {
         testSuiteInstance[methodName]();

@@ -1,19 +1,27 @@
 export function BeforeAll(description?: string): MethodDecorator {
-  return function(target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
+  return function (
+    target: object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<any>,
+  ) {
     const constructor = target.constructor as any;
 
     if (!constructor.beforeAll) {
       constructor.beforeAll = [];
     }
 
-    constructor.beforeAll.push({ methodName: propertyKey, description })
+    constructor.beforeAll.push({ methodName: propertyKey, description });
 
     return descriptor;
-  }
+  };
 }
 
 export function BeforeEach(description?: string): MethodDecorator {
-  return function(target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
+  return function (
+    target: object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<any>,
+  ) {
     const constructor = target.constructor as any;
 
     if (!constructor.beforeEach) {
@@ -23,5 +31,5 @@ export function BeforeEach(description?: string): MethodDecorator {
     constructor.beforeEach.push({ methodName: propertyKey, description });
 
     return descriptor;
-  }
+  };
 }
