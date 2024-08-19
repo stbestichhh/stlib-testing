@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Unreleased
 ### Added:
+* Lifecycle decorators 
 * --config flag to define custom config file path
 * New config file formats: .js and .ts
 * --init flag for initializing config file
