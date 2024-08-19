@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Unreleased
 ### Added:
+* Watch mode
 * Lifecycle decorators 
 * --config flag to define custom config file path
 * New config file formats: .js and .ts
@@ -23,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * New 11 assertion methods. See [usage](README.md#api)
 
 #### Other:
-* Addded assertion interfaces to the package types`
+* Added assertion interfaces to the package types`
 
 ## Patch 0.0.5
 ### Added:
