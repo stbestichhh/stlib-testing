@@ -864,6 +864,7 @@ __metadata:
     "@types/node": "npm:^20.12.10"
     "@typescript-eslint/eslint-plugin": "npm:^7.8.0"
     "@typescript-eslint/parser": "npm:^7.8.0"
+    chokidar: "npm:^3.6.0"
     eslint: "npm:^8.57.0"
     exit: "npm:^0.1.2"
     fast-glob: "npm:^3.3.2"
@@ -1575,7 +1576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:^3.5.2":
+"chokidar@npm:^3.5.2, chokidar@npm:^3.6.0":
   version: 3.6.0
   resolution: "chokidar@npm:3.6.0"
   dependencies:

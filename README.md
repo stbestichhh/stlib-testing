@@ -34,6 +34,7 @@ $ npx stest       Runs tests
 Options:
   --config                      Define custom path to the config file
   --init <'ts|js|json|yml'>     Creates new config file. JSON format by default
+  --watch                       Runs tests in the watch mode
 ```
 
 ### Installation
