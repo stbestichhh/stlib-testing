@@ -1,11 +1,10 @@
-import { FileLoader } from '../loader';
-import { TestRunner } from '../runner';
-import { spinner, spinnerWrapper } from '../spinner';
+import { spinner } from '../spinner';
+import { Cli } from '../cli';
+import { options } from '@stlib/utils';
 
 async function main() {
   try {
-    await spinnerWrapper(FileLoader.loadTestFiles);
-    TestRunner.run();
+    await Cli.handleOptions(options);
   } catch (e) {
     spinner.error();
     if (e instanceof Error) {

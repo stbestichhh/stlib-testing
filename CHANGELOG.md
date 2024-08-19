@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Version 1.0.0
+### Added:
+* Watch mode
+* Lifecycle decorators 
+* --config flag to define custom config file path
+* New config file formats: .js and .ts
+* --init flag for initializing config file
+
+### Fixed:
+* Fixed toBeFalsy() assertion
+* Fixed mocking api docs 
+
 ### Patch 0.0.6
 ### Added:
 * Mocking functionality
@@ -12,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * New 11 assertion methods. See [usage](README.md#api)
 
 #### Other:
-* Addded assertion interfaces to the package types`
+* Added assertion interfaces to the package types`
 
 ## Patch 0.0.5
 ### Added:

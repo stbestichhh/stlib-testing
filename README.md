@@ -9,7 +9,8 @@
 
 * [Description](#about)
 * [Getting started](#getting-started)
-  * [Instalation](#installation)
+  * [Command Line Interface](#cli)
+  * [Installation](#installation)
   * [Usage](#usage)
   * [Configuration](#configuration)
 * [Contributing](#contributing)
@@ -25,6 +26,16 @@
 
 > [!IMPORTANT]
 > **Node.js 18.x+** version must be installed in your OS.
+
+### CLI
+```shell
+$ npx stest       Runs tests
+
+Options:
+  --config                      Define custom path to the config file
+  --init <'ts|js|json|yml'>     Creates new config file. JSON format by default
+  --watch                       Runs tests in the watch mode
+```
 
 ### Installation
 
@@ -76,6 +87,16 @@ To run tests, use cli command
 ```shell
 $ npx stest
 ```
+
+#### Decorators API
+| Decorator                           | Description                               |
+|-------------------------------------|-------------------------------------------|
+| `@Test(description?: string)`       | Define a class as a test suite            |
+| `@Case(description?: string)`       | Define method as a test case              |
+| `@AfterAll(description?: string)`   | Force method to run after all test cases  |
+| `@BeforeAll(description?: string)`  | Force method to run before all test cases |
+| `@AfterEach(description?: string)`  | Runs after each test case                 |
+| `@BeforeEach(description?: string)` | Runs before each test case                |
 
 #### Asserions API
 `assertThat(actual).to*(expected);`
@@ -138,24 +159,49 @@ $ npx stest
 |              | `mockClass.restoreAll()`                                                    | Restores all functios                                     |
 
 #### Configuration
-To provide custom configuration for `stest` create `stest.config.json` or `stest.config.yml` file in project base directory.
+To provide custom configuration for `stest` create `stest.config.{json,yml,ts,js}` file in project base directory. \
+Or use this command to initialize config file. By default it has `json` format. Override it by adding one of the possible options for the `--init` flag: `ts, js, json, yml`
+```shell
+$ npx stest --init
+```
+
+Also it is possible to define custom path to the config file using `--config` flag.
+```shell
+$ npx stest --config ./configs/test.conf.yml
+```
+
+Config properties:
+* pattern - tests path pattern
+* ignore - files and directories to ignore
 
 Config file example:
-* json:
-  ```json
-  {
-    "pattern": "test/**/*.{spec,test}.ts",
-    "ignore": ["node_modules", "lib"]
-  }
-  ```
 
-* yaml:
-  ```yaml
-  pattern: "test/**/*.{spec,test}.ts"
-  ignore:
-    - node_modules
-    - lib
-  ```
+  * json:
+    ```json
+    {
+      "pattern": "test/**/*.{spec,test}.ts",
+      "ignore": ["node_modules", "lib"]
+    }
+    ```
+
+  * yaml:
+    ```yaml
+    pattern: "test/**/*.{spec,test}.ts"
+    ignore:
+      - node_modules
+      - lib
+    ```
+  
+  * TS/JS:
+    ```TypeScript
+    import { StestConfig } from "@stlib/testing";
+
+    const config: StestConfig = {
+      pattern: "test/**/*.{spec,test}.ts",
+      ignore: ["node_modules", "lib"],
+    };
+    export default config;
+    ```
 
 ## Contributing
 

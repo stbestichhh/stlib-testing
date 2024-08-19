@@ -1,8 +1,10 @@
 import { TestRegistry } from '../testRegistry';
-import { ITestCase, ITestSuite } from '../../lib/interfaces';
+import { IAfter_Before, ITestCase, ITestSuite } from '../../lib/interfaces';
 import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
 import exit from 'exit';
+import { LifecycleType } from '../../lib/types';
+import { Cli } from '../cli';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
@@ -12,7 +14,7 @@ export class TestRunner {
       this.runTestSuite(testName, target);
     });
 
-    if (!this.isAllPassed) {
+    if (!this.isAllPassed && !Cli.getOptions('watch')) {
       exit(1);
     }
   }
@@ -22,9 +24,32 @@ export class TestRunner {
     console.log(colors.white.bold(`\nTest Suite: ${testName}`));
 
     const testCases: ITestCase[] = target.testCases || [];
+    const beforeAll: IAfter_Before[] = target.beforeAll || [];
+    const beforeEach: IAfter_Before[] = target.beforeEach || [];
+    const afterAll: IAfter_Before[] = target.afterAll || [];
+    const afterEach: IAfter_Before[] = target.afterEach || [];
+
+    this.runLifecycleMethods(testSuite, beforeAll, 'beforeAll');
     testCases.forEach(({ methodName, caseDescription }: ITestCase) => {
+      this.runLifecycleMethods(testSuite, beforeEach, 'beforeEach');
       this.runTestCase(testSuite, methodName, caseDescription);
+      this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
     });
+    this.runLifecycleMethods(testSuite, afterAll, 'afterAll');
+  }
+
+  private static runLifecycleMethods(
+    testSuiteInstance: any,
+    lifecycleMethods: IAfter_Before[],
+    lifecyclePhase: LifecycleType,
+  ) {
+    try {
+      lifecycleMethods.forEach(({ methodName }: IAfter_Before) => {
+        testSuiteInstance[methodName]();
+      });
+    } catch (e) {
+      console.error(`    ⚠︎ Error during ${lifecyclePhase}: ${e}`.brightRed);
+    }
   }
 
   private static runTestCase(
