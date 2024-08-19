@@ -4,6 +4,7 @@ import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
 import exit from 'exit';
 import { LifecycleType } from '../../lib/types';
+import { Cli } from '../cli';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
@@ -13,7 +14,7 @@ export class TestRunner {
       this.runTestSuite(testName, target);
     });
 
-    if (!this.isAllPassed) {
+    if (!this.isAllPassed && !Cli.getOptions('watch')) {
       exit(1);
     }
   }
