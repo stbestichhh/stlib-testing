@@ -65,9 +65,16 @@ export interface IStringAssertion {
   toEndWith(expected: string): IAssertion;
 }
 
+export function assertThat(actual: any): IAssertion;
+
+// Decorators
+
 export function Case(caseDescription?: string): MethodDecorator;
 export function Test(testName?: string): ClassDecorator;
-export function assertThat(actual: any): IAssertion;
+export function BeforeAll(description?: string): MethodDecorator;
+export function BeforeEach(description?: string): MethodDecorator;
+export function AfterAll(description?: string): MethodDecorator;
+export function AfterEach(description?: string): MethodDecorator;
 
 // Mocking
 
