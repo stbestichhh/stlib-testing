@@ -48,6 +48,7 @@ export class Cli {
     const watcher = new Watcher([config?.pattern || '**/*.{spec,test}.ts'], {
       ignored: config?.ignore,
       persistent: true,
+      ignoreInitial: true,
     });
     await watcher.start();
   }
