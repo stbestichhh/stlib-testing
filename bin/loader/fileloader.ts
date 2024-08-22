@@ -5,27 +5,35 @@ import { LoadFileException } from '../../lib/exceptions';
 
 //? Commented code is only for testing while developing
 export class FileLoader {
-  public static async loadTestFiles() {
-    const projectPath = path.resolve('../../../'); //* prod
-    // const projectPath = path.resolve(); //* dev
+  private static readonly projectPath = path.resolve('../../../'); //* prod
+  // private static readonly projectPath = path.resolve(); //* dev
 
-    const config: ConfigType | undefined =
-      await Config.handleConfiguration(projectPath);
+  public static async loadTestFiles(changedFiles: string[] = []) {
+    const testFiles = changedFiles.length > 0 ? changedFiles : await FileLoader.getAllTestFiles();
 
-    const files = await glob(config?.pattern || '**/*.{spec,test}.ts', {
-      ignore: config?.ignore || ['node_modules/**'],
-      cwd: projectPath, //* prod
-    });
-
-    if (!files.length) {
+    if (!testFiles.length) {
       throw new LoadFileException('  ⚠︎ No test files found.'.brightRed);
     }
 
-    await Promise.all(
-      files.map(async (file) => {
-        await import(path.join(projectPath, file)); //* prod
-        // await import(path.resolve(file)); //* dev
-      }),
-    );
+    for (const file of testFiles) {
+      FileLoader.deleteModuleCache(file);
+      await import(file);
+    }
+  }
+
+  private static async getAllTestFiles() {
+    const config: ConfigType | undefined =
+      await Config.handleConfiguration(this.projectPath);
+
+    const files = await glob(config?.pattern || '**/*.{spec,test}.ts', {
+      ignore: config?.ignore || ['node_modules/**'],
+      cwd: this.projectPath, //* prod
+    });
+
+    return files.map((file) => path.join(this.projectPath, file));
+  }
+
+  private static deleteModuleCache(filePath: string) {
+    delete require.cache[require.resolve(filePath)];
   }
 }

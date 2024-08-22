@@ -6,6 +6,7 @@ import { spinner, spinnerWrapper } from '../spinner';
 
 export class Watcher {
   private watcher: chokidar.FSWatcher;
+  private changedFiles: Set<string> = new Set<string>();
   private readonly projectPath = path.resolve('../../../');
 
   constructor(
@@ -19,27 +20,28 @@ export class Watcher {
   }
 
   public async start() {
-    this.watcher.once('change', (filePath) => {
-      console.log(`File changed: ${filePath}`);
-      this.runTests();
-    });
+    this.watcher.once('change', (filePath) => this.onFileChange(filePath));
+    this.watcher.once('add', (filePath) => this.onFileChange(filePath));
+    this.watcher.once('unlink', (filePath) => this.onFileChange(filePath));
 
-    this.watcher.once('add', (filepath) => {
-      console.log(`New file added: ${filepath}`);
-      this.runTests();
-    });
+    await this.runTests();
+  }
 
-    this.watcher.once('unlink', (filepath) => {
-      console.log(`File removed: ${filepath}`);
-      this.runTests();
-    });
+  private async onFileChange(filepath: string) {
+    console.log(`File changed: ${filepath}`);
+    this.changedFiles.add(path.join(this.projectPath, filepath));
+
+    if (this.changedFiles.size === 0) {
+      return;
+    }
 
     await this.runTests();
   }
 
   private async runTests() {
     try {
-      await spinnerWrapper(FileLoader.loadTestFiles, [], 'Loading test files');
+      await spinnerWrapper(FileLoader.loadTestFiles, [[...this.changedFiles]], 'Loading test files');
+      this.changedFiles.clear();
       TestRunner.run();
     } catch (e) {
       spinner.error();
