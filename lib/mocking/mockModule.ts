@@ -14,7 +14,7 @@ export class MockModule {
 
     if (!module[methodName]) {
       throw new MockingException(
-        `Method ${methodName} does not exist on target.`,
+        `Method ${JSON.stringify(methodName)} does not exist on target.`,
       );
     }
 
@@ -39,7 +39,7 @@ export class MockModule {
     const actualCallCount = this.callCounts.get(methodName) || 0;
     if (actualCallCount !== expectedCallCount) {
       throw new MockingException(
-        `Expected ${methodName} to be called ${expectedCallCount} times, but it was called ${actualCallCount} times.`,
+        `Expected ${JSON.stringify(methodName)} to be called ${expectedCallCount} times, but it was called ${actualCallCount} times.`,
       );
     }
   }
@@ -58,7 +58,7 @@ export class MockModule {
 
     if (!match) {
       throw new MockingException(
-        `Method ${methodName} was not called with expected arguments ${JSON.stringify(expectedArgs)}.`,
+        `Method ${JSON.stringify(methodName)} was not called with expected arguments ${JSON.stringify(expectedArgs)}.`,
       );
     }
   }
