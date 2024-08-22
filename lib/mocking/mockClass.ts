@@ -30,7 +30,9 @@ export class Mock<T> {
     this.instance[methodName] = (...args: any[]) => {
       const stub = this.methodStubs.get(methodName);
       if (!stub) {
-        throw new MockingException(`Method ${JSON.stringify(methodName)} was not mocked.`);
+        throw new MockingException(
+          `Method ${JSON.stringify(methodName)} was not mocked.`,
+        );
       }
 
       this.callCounts.set(
@@ -60,7 +62,9 @@ export class Mock<T> {
   ) {
     const argsList = this.callArgs.get(methodName);
     if (!argsList || argsList.length === 0) {
-      throw new MockingException(`Method ${JSON.stringify(methodName)} was not called`);
+      throw new MockingException(
+        `Method ${JSON.stringify(methodName)} was not called`,
+      );
     }
 
     const match = argsList.some(
