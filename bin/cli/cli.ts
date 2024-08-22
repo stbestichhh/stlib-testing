@@ -1,5 +1,4 @@
 import { Config, ConfigType, initializeConfig } from '../config';
-import exit from 'exit';
 import { Watcher } from '../watcher';
 import path from 'node:path';
 import { spinnerWrapper } from '../spinner';
@@ -20,12 +19,7 @@ export class Cli {
 
   public static async handleOptions(options: StestOptions) {
     this.options = options;
-    try {
-      await this.executeOptionMethods();
-    } catch (e) {
-      console.error(e);
-      exit(1);
-    }
+    await this.executeOptionMethods();
   }
 
   public static getOptions(key?: keyof StestOptions) {
@@ -36,17 +30,12 @@ export class Cli {
     const { init, watch } = this.options;
 
     if (init) {
-      await this.initializeConfig();
+      await initializeConfig(this.options.init!);
     } else if (watch) {
       await this.startWatcher();
     } else {
       await this.runTests();
     }
-  }
-
-  private static async initializeConfig() {
-    await initializeConfig(this.options.init!);
-    exit(0);
   }
 
   private static async startWatcher() {
@@ -59,6 +48,7 @@ export class Cli {
     const watcher = new Watcher([config?.pattern || '**/*.{spec,test}.ts'], {
       ignored: config?.ignore,
       persistent: true,
+      ignoreInitial: true,
     });
     await watcher.start();
   }

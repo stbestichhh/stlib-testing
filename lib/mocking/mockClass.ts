@@ -18,7 +18,7 @@ export class Mock<T> {
   ) {
     if (!this.instance[methodName]) {
       throw new MockingException(
-        `Method ${methodName} does not exist on target.`,
+        `Method ${JSON.stringify(methodName)} does not exist on target.`,
       );
     }
 
@@ -30,7 +30,9 @@ export class Mock<T> {
     this.instance[methodName] = (...args: any[]) => {
       const stub = this.methodStubs.get(methodName);
       if (!stub) {
-        throw new MockingException(`Method ${methodName} was not mocked.`);
+        throw new MockingException(
+          `Method ${JSON.stringify(methodName)} was not mocked.`,
+        );
       }
 
       this.callCounts.set(
@@ -49,7 +51,7 @@ export class Mock<T> {
     const actualCallCount = this.callCounts.get(methodName) || 0;
     if (actualCallCount !== expectedCallCount) {
       throw new MockingException(
-        `Expected ${methodName} to be called ${expectedCallCount} times, but it was called ${actualCallCount} times.`,
+        `Expected ${JSON.stringify(methodName)} to be called ${expectedCallCount} times, but it was called ${actualCallCount} times.`,
       );
     }
   }
@@ -60,7 +62,9 @@ export class Mock<T> {
   ) {
     const argsList = this.callArgs.get(methodName);
     if (!argsList || argsList.length === 0) {
-      throw new MockingException(`Method ${methodName} was not called`);
+      throw new MockingException(
+        `Method ${JSON.stringify(methodName)} was not called`,
+      );
     }
 
     const match = argsList.some(
@@ -71,7 +75,7 @@ export class Mock<T> {
 
     if (!match) {
       throw new MockingException(
-        `Method ${methodName} was not called with expected arguments ${JSON.stringify(expectedArgs)}`,
+        `Method ${JSON.stringify(methodName)} was not called with expected arguments ${JSON.stringify(expectedArgs)}`,
       );
     }
   }

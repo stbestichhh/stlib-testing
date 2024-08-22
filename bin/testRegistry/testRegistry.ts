@@ -10,4 +10,8 @@ export class TestRegistry {
   public static get(): ITestSuite[] {
     return this.registry;
   }
+
+  public static clear() {
+    this.registry = [];
+  }
 }

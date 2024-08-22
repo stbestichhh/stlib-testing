@@ -17,6 +17,8 @@ export class TestRunner {
     if (!this.isAllPassed && !Cli.getOptions('watch')) {
       exit(1);
     }
+
+    TestRegistry.clear();
   }
 
   private static runTestSuite(testName: string, target: any) {
