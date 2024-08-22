@@ -2,7 +2,7 @@ import chokidar from 'chokidar';
 import path from 'node:path';
 import { TestRunner } from '../runner';
 import { FileLoader } from '../loader';
-import { spinnerWrapper } from '../spinner';
+import { spinner, spinnerWrapper } from '../spinner';
 
 export class Watcher {
   private watcher: chokidar.FSWatcher;
@@ -19,20 +19,22 @@ export class Watcher {
   }
 
   public async start() {
-    this.watcher.on('change', (filePath) => {
+    this.watcher.once('change', (filePath) => {
       console.log(`File changed: ${filePath}`);
       this.runTests();
     });
 
-    this.watcher.on('add', (filepath) => {
+    this.watcher.once('add', (filepath) => {
       console.log(`New file added: ${filepath}`);
       this.runTests();
     });
 
-    this.watcher.on('unlink', (filepath) => {
+    this.watcher.once('unlink', (filepath) => {
       console.log(`File removed: ${filepath}`);
       this.runTests();
     });
+
+    await this.runTests();
   }
 
   private async runTests() {
@@ -40,7 +42,10 @@ export class Watcher {
       await spinnerWrapper(FileLoader.loadTestFiles, [], 'Loading test files');
       TestRunner.run();
     } catch (e) {
-      console.log(e);
+      spinner.error();
+      if (e instanceof Error) {
+        console.error(e.message);
+      }
     }
   }
 }
