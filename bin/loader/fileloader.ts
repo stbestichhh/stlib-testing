@@ -9,7 +9,10 @@ export class FileLoader {
   // private static readonly projectPath = path.resolve(); //* dev
 
   public static async loadTestFiles(changedFiles: string[] = []) {
-    const testFiles = changedFiles.length > 0 ? changedFiles : await FileLoader.getAllTestFiles();
+    const testFiles =
+      changedFiles.length > 0
+        ? changedFiles
+        : await FileLoader.getAllTestFiles();
 
     if (!testFiles.length) {
       throw new LoadFileException('  ⚠︎ No test files found.'.brightRed);
@@ -22,8 +25,9 @@ export class FileLoader {
   }
 
   private static async getAllTestFiles() {
-    const config: ConfigType | undefined =
-      await Config.handleConfiguration(this.projectPath);
+    const config: ConfigType | undefined = await Config.handleConfiguration(
+      this.projectPath,
+    );
 
     const files = await glob(config?.pattern || '**/*.{spec,test}.ts', {
       ignore: config?.ignore || ['node_modules/**'],

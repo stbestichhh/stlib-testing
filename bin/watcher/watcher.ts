@@ -40,7 +40,11 @@ export class Watcher {
 
   private async runTests() {
     try {
-      await spinnerWrapper(FileLoader.loadTestFiles, [[...this.changedFiles]], 'Loading test files');
+      await spinnerWrapper(
+        FileLoader.loadTestFiles,
+        [[...this.changedFiles]],
+        'Loading test files',
+      );
       this.changedFiles.clear();
       TestRunner.run();
     } catch (e) {
