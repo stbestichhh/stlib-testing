@@ -3,6 +3,7 @@ import path from 'node:path';
 import { TestRunner } from '../runner';
 import { FileLoader } from '../loader';
 import { spinner, spinnerWrapper } from '../spinner';
+import { Config } from '../config';
 
 type ActionSymbolType = {
   add: string;
@@ -32,9 +33,9 @@ export class Watcher {
     });
   }
 
-  public async start(isCachingEnabled?: boolean) {
-    this.isCachingEnabled =
-      isCachingEnabled !== undefined ? isCachingEnabled : true;
+  public async start() {
+    const isCachingEnabledConf = Config.getConfig('cacheWatcher');
+    this.isCachingEnabled = typeof isCachingEnabledConf === 'boolean' ? isCachingEnabledConf : true;
 
     this.watcher.on('change', (filePath) =>
       this.onFileChange(filePath, 'change'),
