@@ -21,11 +21,11 @@ module.exports = config;
   "pattern": "test/**/*.{spec,test}.ts",
   "ignore": ["node_modules"],
   "autoClearMocks": true,
-  "cacheWatcher": false,
+  "cacheWatcher": false
 }`,
   yml: `pattern: "test/**/*.{spec,test}.ts"
 ignore:
   - node_modules
 autoClearMocks: true,
-cacheWatcher: false,`,
+cacheWatcher: false`,
 };

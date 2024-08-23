@@ -136,27 +136,28 @@ $ npx stest
 
 #### Mocking API
  
-| Class        | Method                                                                      | Description                                               |
-|--------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| `MockFn`     | `new MockFn(functionToMock: Function, implementation?: Function)`           | Creates function mock                                     |
-|              | `mockFn.mock(implementation?: Function)`                                    | Mocks a function                                          |
-|              | `mockFn.verifyCalled(expectedCallcount: number)`                            | Verifies function has been called expected times          |
-|              | `mockFn.verifyCalledWith(expectedArguments: any[])`                         | Verifies function has been called with expected arguments |
-|              | `mockFn.restore()`                                                          | Restores original function logic                          |
-|              | `mockFn.getFunction()`                                                      | Returns fuction                                           |
-|              | `mockFn.call(...args: any[])`                                               | Call function                                             |
-| `MockModule` | `new MockModule(moduleName: string)`                                        | Creates module mock                                       |
-|              | `mockModule.mockMethod(methodName: string, implementation: Function)`       | Mocks a function                                          |
-|              | `mockModule.verifyCalled(methodName: string, expectedCallcount: number)`    | Verifies function has been called expected times          |
-|              | `mockModule.verifyCalledWith(methodName: string, expectedArguments: any[])` | Verifies function has been called with expected arguments |
-|              | `mockModule.restoreMethod(methodName: string)`                              | Restores original function logic                          |
-|              | `mockModule.restoreAll()`                                                   | Restores all functios                                     |
-| `Mock`       | `new Mock(instance: T)`                                                     | Creates class instance mock                               |
-|              | `mockClass.mockMethod(methodName: string, implementation: Function)`        | Mocks a function                                          |
-|              | `mockClass.verifyCalled(methodName: string, expectedCallcount: number)`     | Verifies function has been called expected times          |
-|              | `mockClass.verifyCalledWith(methodName: string, expectedArguments: any[])`  | Verifies function has been called with expected arguments |
-|              | `mockClass.restoreMethod(methodName: string)`                               | Restores original function logic                          |
-|              | `mockClass.restoreAll()`                                                    | Restores all functios                                     |
+| Class          | Method                                                                      | Description                                               |
+|----------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
+| `MockRegistry` | `restoreAll()`                                                              | Restores all created mocks                                |
+| `MockFn`       | `new MockFn(functionToMock: Function, implementation?: Function)`           | Creates function mock                                     |
+|                | `mockFn.mock(implementation?: Function)`                                    | Mocks a function                                          |
+|                | `mockFn.verifyCalled(expectedCallcount: number)`                            | Verifies function has been called expected times          |
+|                | `mockFn.verifyCalledWith(expectedArguments: any[])`                         | Verifies function has been called with expected arguments |
+|                | `mockFn.restore()`                                                          | Restores original function logic                          |
+|                | `mockFn.getFunction()`                                                      | Returns fuction                                           |
+|                | `mockFn.call(...args: any[])`                                               | Call function                                             |
+| `MockModule`   | `new MockModule(moduleName: string)`                                        | Creates module mock                                       |
+|                | `mockModule.mockMethod(methodName: string, implementation: Function)`       | Mocks a function                                          |
+|                | `mockModule.verifyCalled(methodName: string, expectedCallcount: number)`    | Verifies function has been called expected times          |
+|                | `mockModule.verifyCalledWith(methodName: string, expectedArguments: any[])` | Verifies function has been called with expected arguments |
+|                | `mockModule.restoreMethod(methodName: string)`                              | Restores original function logic                          |
+|                | `mockModule.restoreAll()`                                                   | Restores all functios                                     |
+| `Mock`         | `new Mock(instance: T)`                                                     | Creates class instance mock                               |
+|                | `mockClass.mockMethod(methodName: string, implementation: Function)`        | Mocks a function                                          |
+|                | `mockClass.verifyCalled(methodName: string, expectedCallcount: number)`     | Verifies function has been called expected times          |
+|                | `mockClass.verifyCalledWith(methodName: string, expectedArguments: any[])`  | Verifies function has been called with expected arguments |
+|                | `mockClass.restoreMethod(methodName: string)`                               | Restores original function logic                          |
+|                | `mockClass.restoreAll()`                                                    | Restores all functios                                     |
 
 #### Configuration
 To provide custom configuration for `stest` create `stest.config.{json,yml,ts,js}` file in project base directory. \
@@ -173,6 +174,8 @@ $ npx stest --config ./configs/test.conf.yml
 Config properties:
 * pattern - tests path pattern
 * ignore - files and directories to ignore
+* autoClearMocks - clears all created mocks after each test,
+* cacheWatcher - enables caching in watch mode, to run only new or changed tests
 
 Config file example:
 
@@ -180,7 +183,9 @@ Config file example:
     ```json
     {
       "pattern": "test/**/*.{spec,test}.ts",
-      "ignore": ["node_modules", "lib"]
+      "ignore": ["node_modules", "lib"],
+      "autoClearMocks": true,
+      "cacheWatcher": false
     }
     ```
 
@@ -190,6 +195,8 @@ Config file example:
     ignore:
       - node_modules
       - lib
+    autoClearMocks: true
+    cacheWatcher: false
     ```
   
   * TS/JS:
@@ -199,6 +206,8 @@ Config file example:
     const config: StestConfig = {
       pattern: "test/**/*.{spec,test}.ts",
       ignore: ["node_modules", "lib"],
+      autoClearMocks: true,
+      cacheWatcher: false,
     };
     export default config;
     ```
