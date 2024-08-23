@@ -19,6 +19,7 @@ const actionSymbol: ActionSymbolType = {
 export class Watcher {
   private watcher: chokidar.FSWatcher;
   private changedFiles: Set<string> = new Set<string>();
+  private isCachingEnabled: boolean = true;
   private readonly projectPath = path.resolve('../../../');
 
   constructor(
@@ -31,17 +32,23 @@ export class Watcher {
     });
   }
 
-  public async start() {
-    this.watcher.once('change', (filePath) => this.onFileChange(filePath, 'change'));
-    this.watcher.once('add', (filePath) => this.onFileChange(filePath, 'add'));
-    this.watcher.once('unlink', (filePath) => this.onFileChange(filePath, 'unlink'));
+  public async start(isCachingEnabled?: boolean) {
+    this.isCachingEnabled = isCachingEnabled !== undefined ? isCachingEnabled : true;
+
+    this.watcher.on('change', (filePath) => this.onFileChange(filePath, 'change'));
+    this.watcher.on('add', (filePath) => this.onFileChange(filePath, 'add'));
+    this.watcher.on('unlink', (filePath) => this.onFileChange(filePath, 'unlink'));
 
     await this.runTests();
   }
 
   private async onFileChange(filepath: string, action: keyof ActionSymbolType) {
-    console.log(`\n${actionSymbol[action]} ${filepath}`);
-    this.changedFiles.add(path.join(this.projectPath, filepath));
+    this.clearConsole();
+    console.log(`${actionSymbol[action]} ${filepath}`);
+
+    if (action !== 'unlink') {
+      this.changedFiles.add(path.join(this.projectPath, filepath));
+    }
 
     if (this.changedFiles.size === 0) {
       return;
@@ -52,9 +59,11 @@ export class Watcher {
 
   private async runTests() {
     try {
+      const changedFilesArray = this.isCachingEnabled ? [...this.changedFiles] : undefined;
+
       await spinnerWrapper(
         FileLoader.loadTestFiles,
-        [[...this.changedFiles]],
+        [changedFilesArray],
         'Loading test files',
       );
       this.changedFiles.clear();
@@ -65,5 +74,11 @@ export class Watcher {
         console.error(e.message);
       }
     }
+  }
+
+  private clearConsole() {
+    console.clear();
+    process.stdout.write('\u001b[3J\u001b[2J\u001b[1J');
+    console.log('\u001b[0;0H');  // Move cursor to top-left corner
   }
 }
