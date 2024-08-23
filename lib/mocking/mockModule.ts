@@ -1,12 +1,15 @@
 import { AnyFunction } from '../types';
 import { MockingException } from '../exceptions';
+import { MockRegistry } from './mock.registry';
 
 export class MockModule {
   private originalMethods = new Map<string, AnyFunction>();
   private callCounts = new Map<string, number>();
   private callArgs = new Map<string, any[][]>();
 
-  constructor(private moduleName: string) {}
+  constructor(private moduleName: string) {
+    MockRegistry.registerMock(this);
+  }
 
   public mockMethod(methodName: string, implementation: AnyFunction) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires

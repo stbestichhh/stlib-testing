@@ -1,5 +1,6 @@
 import { AnyFunction, MethodNames } from '../types';
 import { MockingException } from '../exceptions';
+import { MockRegistry } from './mock.registry';
 
 export class Mock<T> {
   private callCounts = new Map<string, number>();
@@ -10,6 +11,7 @@ export class Mock<T> {
 
   constructor(private target: T) {
     this.instance = target as any;
+    MockRegistry.registerMock(this);
   }
 
   public mockMethod<K extends MethodNames<T> & string>(
