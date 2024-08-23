@@ -43,11 +43,14 @@ export class Cli {
   }
 
   private static async startWatcher() {
-    const watcher = new Watcher([this.config?.pattern || '**/*.{spec,test}.ts'], {
-      ignored: this.config?.ignore,
-      persistent: true,
-      ignoreInitial: true,
-    });
+    const watcher = new Watcher(
+      [this.config?.pattern || '**/*.{spec,test}.ts'],
+      {
+        ignored: this.config?.ignore,
+        persistent: true,
+        ignoreInitial: true,
+      },
+    );
     await watcher.start();
   }
 

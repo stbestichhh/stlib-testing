@@ -49,7 +49,10 @@ export class TestRunner {
 
   private static clearMocks() {
     const isAutoClearMocksEnabled = Config.getConfig('autoClearMocks');
-    if (isAutoClearMocksEnabled && typeof isAutoClearMocksEnabled === 'boolean') {
+    if (
+      isAutoClearMocksEnabled &&
+      typeof isAutoClearMocksEnabled === 'boolean'
+    ) {
       MockRegistry.restoreAll();
     }
   }

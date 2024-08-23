@@ -25,11 +25,15 @@ export class Config {
     this.projectPath = projectPath;
 
     await this.setConfigPath();
-    return this.configuration = this.configPath ? await this.parseConfig() : undefined;
+    return (this.configuration = this.configPath
+      ? await this.parseConfig()
+      : undefined);
   }
 
   public static getConfig(key?: keyof ConfigType) {
-    return key && this.configuration ? this.configuration[key] : this.configuration;
+    return key && this.configuration
+      ? this.configuration[key]
+      : this.configuration;
   }
 
   private static async setConfigPath(): Promise<void> {
