@@ -50,7 +50,7 @@ export class Cli {
       persistent: true,
       ignoreInitial: true,
     });
-    await watcher.start();
+    await watcher.start(config?.cacheWatcher);
   }
 
   private static async runTests() {

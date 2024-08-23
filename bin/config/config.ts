@@ -8,6 +8,7 @@ import { Cli } from '../cli';
 export type ConfigType = {
   pattern?: string;
   ignore?: string[];
+  cacheWatcher?: boolean;
 };
 
 export class Config {

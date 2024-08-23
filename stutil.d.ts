@@ -125,4 +125,5 @@ export class MockModule {
 export type StestConfig = {
   pattern?: string;
   ignore?: string[];
+  cacheWatcher?: boolean;
 };
