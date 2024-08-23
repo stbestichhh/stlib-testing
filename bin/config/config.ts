@@ -8,6 +8,8 @@ import { Cli } from '../cli';
 export type ConfigType = {
   pattern?: string;
   ignore?: string[];
+  cacheWatcher?: boolean;
+  autoClearMocks?: boolean;
 };
 
 export class Config {
@@ -15,6 +17,7 @@ export class Config {
   private static useYml = false;
   private static isScriptFile = false;
   private static projectPath: string;
+  private static configuration: ConfigType | undefined = {};
 
   public static async handleConfiguration(
     projectPath: string,
@@ -22,7 +25,15 @@ export class Config {
     this.projectPath = projectPath;
 
     await this.setConfigPath();
-    return this.configPath ? this.parseConfig() : undefined;
+    return (this.configuration = this.configPath
+      ? await this.parseConfig()
+      : undefined);
+  }
+
+  public static getConfig(key?: keyof ConfigType) {
+    return key && this.configuration
+      ? this.configuration[key]
+      : this.configuration;
   }
 
   private static async setConfigPath(): Promise<void> {

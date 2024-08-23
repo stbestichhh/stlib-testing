@@ -16,9 +16,13 @@ export interface StestOptions extends Partial<OptionsType> {
 
 export class Cli {
   private static options: StestOptions = {};
+  private static config: ConfigType | undefined = {};
+  private static readonly projectPath = path.resolve('../../../'); //* prod
+  // private static readonly projectPath = path.resolve(); //* dev
 
   public static async handleOptions(options: StestOptions) {
     this.options = options;
+    this.config = await Config.handleConfiguration(this.projectPath);
     await this.executeOptionMethods();
   }
 
@@ -39,17 +43,14 @@ export class Cli {
   }
 
   private static async startWatcher() {
-    const projectPath = path.resolve('../../../'); //* prod
-    // const projectPath = path.resolve(); //* dev
-
-    const config: ConfigType | undefined =
-      await Config.handleConfiguration(projectPath);
-
-    const watcher = new Watcher([config?.pattern || '**/*.{spec,test}.ts'], {
-      ignored: config?.ignore,
-      persistent: true,
-      ignoreInitial: true,
-    });
+    const watcher = new Watcher(
+      [this.config?.pattern || '**/*.{spec,test}.ts'],
+      {
+        ignored: this.config?.ignore,
+        persistent: true,
+        ignoreInitial: true,
+      },
+    );
     await watcher.start();
   }
 

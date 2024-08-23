@@ -5,6 +5,8 @@ import colors from '@colors/colors';
 import exit from 'exit';
 import { LifecycleType } from '../../lib/types';
 import { Cli } from '../cli';
+import { Config } from '../config';
+import { MockRegistry } from '../../lib';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
@@ -25,6 +27,10 @@ export class TestRunner {
     const testSuite = new target();
     console.log(colors.white.bold(`\nTest Suite: ${testName}`));
 
+    this.runTestCycle(target, testSuite);
+  }
+
+  private static runTestCycle(target: any, testSuite: any) {
     const testCases: ITestCase[] = target.testCases || [];
     const beforeAll: IAfter_Before[] = target.beforeAll || [];
     const beforeEach: IAfter_Before[] = target.beforeEach || [];
@@ -36,8 +42,19 @@ export class TestRunner {
       this.runLifecycleMethods(testSuite, beforeEach, 'beforeEach');
       this.runTestCase(testSuite, methodName, caseDescription);
       this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
+      this.clearMocks();
     });
     this.runLifecycleMethods(testSuite, afterAll, 'afterAll');
+  }
+
+  private static clearMocks() {
+    const isAutoClearMocksEnabled = Config.getConfig('autoClearMocks');
+    if (
+      isAutoClearMocksEnabled &&
+      typeof isAutoClearMocksEnabled === 'boolean'
+    ) {
+      MockRegistry.restoreAll();
+    }
   }
 
   private static runLifecycleMethods(

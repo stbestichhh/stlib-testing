@@ -84,6 +84,12 @@ export type MethodNames<T> = {
   [K in keyof T]: T[K] extends AnyFunction ? K : never;
 }[keyof T];
 
+type MockTypes = Mock<any> | MockModule | MockFn;
+
+export class MockRegistry {
+  public static restoreAll(): void;
+}
+
 export class Mock<T> {
   constructor(target: T);
   public mockMethod<K extends MethodNames<T> & string>(
@@ -125,4 +131,6 @@ export class MockModule {
 export type StestConfig = {
   pattern?: string;
   ignore?: string[];
+  cacheWatcher?: boolean;
+  autoClearMocks?: boolean;
 };

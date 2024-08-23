@@ -1,5 +1,6 @@
 import { AnyFunction } from '../types';
 import { MockingException } from '../exceptions';
+import { MockRegistry } from './mock.registry';
 
 export class MockFn {
   private readonly originalFunction: AnyFunction;
@@ -15,6 +16,8 @@ export class MockFn {
     if (implementation) {
       this.mock(implementation);
     }
+
+    MockRegistry.registerMock(this);
   }
 
   public mock(implementation: AnyFunction) {
