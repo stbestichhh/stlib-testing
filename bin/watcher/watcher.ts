@@ -5,16 +5,16 @@ import { FileLoader } from '../loader';
 import { spinner, spinnerWrapper } from '../spinner';
 
 type ActionSymbolType = {
-  add: string,
-  unlink: string,
-  change: string,
-}
+  add: string;
+  unlink: string;
+  change: string;
+};
 
 const actionSymbol: ActionSymbolType = {
   add: '+',
   unlink: '-',
   change: '↻',
-}
+};
 
 export class Watcher {
   private watcher: chokidar.FSWatcher;
@@ -33,11 +33,16 @@ export class Watcher {
   }
 
   public async start(isCachingEnabled?: boolean) {
-    this.isCachingEnabled = isCachingEnabled !== undefined ? isCachingEnabled : true;
+    this.isCachingEnabled =
+      isCachingEnabled !== undefined ? isCachingEnabled : true;
 
-    this.watcher.on('change', (filePath) => this.onFileChange(filePath, 'change'));
+    this.watcher.on('change', (filePath) =>
+      this.onFileChange(filePath, 'change'),
+    );
     this.watcher.on('add', (filePath) => this.onFileChange(filePath, 'add'));
-    this.watcher.on('unlink', (filePath) => this.onFileChange(filePath, 'unlink'));
+    this.watcher.on('unlink', (filePath) =>
+      this.onFileChange(filePath, 'unlink'),
+    );
 
     await this.runTests();
   }
@@ -59,7 +64,9 @@ export class Watcher {
 
   private async runTests() {
     try {
-      const changedFilesArray = this.isCachingEnabled ? [...this.changedFiles] : undefined;
+      const changedFilesArray = this.isCachingEnabled
+        ? [...this.changedFiles]
+        : undefined;
 
       await spinnerWrapper(
         FileLoader.loadTestFiles,
@@ -79,6 +86,6 @@ export class Watcher {
   private clearConsole() {
     console.clear();
     process.stdout.write('\u001b[3J\u001b[2J\u001b[1J');
-    console.log('\u001b[0;0H');  // Move cursor to top-left corner
+    console.log('\u001b[0;0H'); // Move cursor to top-left corner
   }
 }
