@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Unreleased
 ### Added:
 * Caching option in config for watch mode. Now it can be disabled
+* Auto clear mocks & restore all mocks function
 
 ### Updated:
 * Watch mode output
