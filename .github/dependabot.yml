@@ -4,8 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    allow:
-      - dependency-type: all
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
     ignore:
       - dependency-name: "@types/jest"
       - dependency-name: "@types/node"
