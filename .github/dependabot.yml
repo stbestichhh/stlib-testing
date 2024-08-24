@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    allow:
+      - dependency-type: all
+    ignore:
+      - dependency-name: "@types/jest"
+      - dependency-name: "@types/node"
+      - dependency-name: "@typescript-eslint/eslint-plugin"
+      - dependency-name: "@typescript-eslint/parser"
+      - dependency-name: "eslint"
+      - dependency-name: "jest"
+      - dependency-name: "nodemon"
+      - dependency-name: "prettier"
+      - dependency-name: "ts-jest"
+      - dependency-name: "ts-node"
+      - dependency-name: "typescript"

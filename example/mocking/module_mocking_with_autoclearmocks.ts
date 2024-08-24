@@ -2,7 +2,7 @@ import { assertThat, Test, Case, MockModule, BeforeAll } from '@stlib/testing';
 import path from 'path';
 import fs from 'fs';
 
-@Test('Mock Module Tests')
+@Test('Mock Module Tests with autoclear mocks')
 class MockModuleTests {
   private mockModule: MockModule = new MockModule('fs');
 

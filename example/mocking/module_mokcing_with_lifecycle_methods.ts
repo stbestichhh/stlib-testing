@@ -2,7 +2,7 @@ import { assertThat, Test, Case, MockModule, AfterEach, AfterAll, BeforeAll, Moc
 import path from 'path';
 import fs from 'fs';
 
-@Test('Mock Module Tests')
+@Test('Mock Module Tests with lifecycle methods')
 class MockModuleTests {
   private mockModule: MockModule = new MockModule('fs');
 
