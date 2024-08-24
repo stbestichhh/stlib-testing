@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added:
 * Now test cases can be asynchronous
 
+#### Security Updates:
+* Updated `micromatch` from 4.0.7 to 4.0.8
+
 ### Patch 1.0.2
 ### Added:
 * Caching option in config for watch mode. Now it can be disabled
