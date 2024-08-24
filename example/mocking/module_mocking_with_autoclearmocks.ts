@@ -1,4 +1,4 @@
-import { assertThat, Test, Case, MockModule, AfterEach, AfterAll, BeforeAll, MockRegistry } from '@stlib/testing';
+import { assertThat, Test, Case, MockModule, BeforeAll } from '@stlib/testing';
 import path from 'path';
 import fs from 'fs';
 
@@ -9,16 +9,6 @@ class MockModuleTests {
   @BeforeAll()
   createModuleMock() {
     this.mockModule.mockMethod('readFileSync', () => 'mocked content');
-  }
-
-  @AfterEach()
-  clearMocks() {
-    this.mockModule.restoreAll();
-  }
-
-  @AfterAll()
-  clearAllMocksFromAllTestFiles() {
-    MockRegistry.restoreAll();
   }
 
   @Case('Should mock module method')
