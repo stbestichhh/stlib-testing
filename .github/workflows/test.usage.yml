@@ -31,4 +31,3 @@ jobs:
         run: yarn add @stlib/testing
       - name: Run stest
         run: npx stest
-        continue-on-error: true
