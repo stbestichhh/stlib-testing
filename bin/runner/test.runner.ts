@@ -71,13 +71,18 @@ export class TestRunner {
     }
   }
 
-  private static runTestCase(
+  private static async runTestCase(
     testSuiteInstance: any,
     methodName: string,
     caseDescription: string,
   ) {
     try {
-      testSuiteInstance[methodName]();
+      const result = testSuiteInstance[methodName]();
+
+      if (result instanceof Promise) {
+        await result;
+      }
+
       this.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
     } catch (e: unknown) {
       this.isAllPassed = false;
