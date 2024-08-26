@@ -1,8 +1,5 @@
-import { Mock } from './mockClass';
-import { MockModule } from './mockModule';
 import { MockFn } from './mockFunction';
-
-type MockTypes = Mock<any> | MockModule | MockFn;
+import { MockTypes } from '../types';
 
 export class MockRegistry {
   private static activeMocks: MockTypes[] = [];

@@ -1,5 +1,5 @@
 import { TestRegistry } from '../testRegistry';
-import { IAfter_Before, ITestCase, ITestSuite } from '../../lib/interfaces';
+import { IAfter_Before, ITestCase } from '../../lib/interfaces';
 import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
 import exit from 'exit';
@@ -11,40 +11,45 @@ import { MockRegistry } from '../../lib';
 export class TestRunner {
   private static isAllPassed: boolean = true;
 
-  public static run() {
-    TestRegistry.get().forEach(({ testName, target }: ITestSuite) => {
-      this.runTestSuite(testName, target);
-    });
+  public static async run() {
+    try {
+      for (const { testName, target } of TestRegistry.get()) {
+        await this.runTestSuite(testName, target);
+      }
+      // TestRegistry.get().forEach(({ testName, target }: ITestSuite) => {
+      //   this.runTestSuite(testName, target);
+      // });
+    } finally {
+      if (!this.isAllPassed && !Cli.getOptions('watch')) {
+        exit(1);
+      }
 
-    if (!this.isAllPassed && !Cli.getOptions('watch')) {
-      exit(1);
+      TestRegistry.clear();
     }
-
-    TestRegistry.clear();
   }
 
-  private static runTestSuite(testName: string, target: any) {
+  private static async runTestSuite(testName: string, target: any) {
     const testSuite = new target();
     console.log(colors.white.bold(`\nTest Suite: ${testName}`));
 
-    this.runTestCycle(target, testSuite);
+    await this.runTestCycle(target, testSuite);
   }
 
-  private static runTestCycle(target: any, testSuite: any) {
+  private static async runTestCycle(target: any, testSuite: any) {
     const testCases: ITestCase[] = target.testCases || [];
     const beforeAll: IAfter_Before[] = target.beforeAll || [];
     const beforeEach: IAfter_Before[] = target.beforeEach || [];
     const afterAll: IAfter_Before[] = target.afterAll || [];
     const afterEach: IAfter_Before[] = target.afterEach || [];
 
-    this.runLifecycleMethods(testSuite, beforeAll, 'beforeAll');
-    testCases.forEach(({ methodName, caseDescription }: ITestCase) => {
-      this.runLifecycleMethods(testSuite, beforeEach, 'beforeEach');
-      this.runTestCase(testSuite, methodName, caseDescription);
-      this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
+    await this.runLifecycleMethods(testSuite, beforeAll, 'beforeAll');
+    for (const { methodName, caseDescription } of testCases) {
+      await this.runLifecycleMethods(testSuite, beforeEach, 'beforeEach');
+      await this.runTestCase(testSuite, methodName, caseDescription);
+      await this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
       this.clearMocks();
-    });
-    this.runLifecycleMethods(testSuite, afterAll, 'afterAll');
+    }
+    await this.runLifecycleMethods(testSuite, afterAll, 'afterAll');
   }
 
   private static clearMocks() {
@@ -57,27 +62,38 @@ export class TestRunner {
     }
   }
 
-  private static runLifecycleMethods(
+  private static async runLifecycleMethods(
     testSuiteInstance: any,
     lifecycleMethods: IAfter_Before[],
     lifecyclePhase: LifecycleType,
   ) {
     try {
-      lifecycleMethods.forEach(({ methodName }: IAfter_Before) => {
-        testSuiteInstance[methodName]();
-      });
+      for (const { methodName } of lifecycleMethods) {
+        const result = testSuiteInstance[methodName]();
+        if (result instanceof Promise) {
+          await result;
+        }
+      }
+      // lifecycleMethods.forEach(({ methodName }: IAfter_Before) => {
+      //   testSuiteInstance[methodName]();
+      // });
     } catch (e) {
       console.error(`    ⚠︎ Error during ${lifecyclePhase}: ${e}`.brightRed);
     }
   }
 
-  private static runTestCase(
+  private static async runTestCase(
     testSuiteInstance: any,
     methodName: string,
     caseDescription: string,
   ) {
     try {
-      testSuiteInstance[methodName]();
+      const result = testSuiteInstance[methodName]();
+
+      if (result instanceof Promise) {
+        await result;
+      }
+
       this.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
     } catch (e: unknown) {
       this.isAllPassed = false;

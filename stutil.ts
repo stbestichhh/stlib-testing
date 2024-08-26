@@ -1,2 +1,2 @@
 export * from './lib';
-export { StestConfig } from './bin/config';
+export { ConfigType as StestConfig } from './lib/types';

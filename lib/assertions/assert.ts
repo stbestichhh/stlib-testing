@@ -50,13 +50,11 @@ export function assertThat(actual: any): IAssertion {
     },
 
     toBe(expected: any): IAssertion {
-      if (actual != expected) {
-        throw new AssertionException(
-          `Expected ${JSON.stringify(actual)} to be ${JSON.stringify(expected)}`,
-        );
-      }
+      return this.toEqual(expected);
+    },
 
-      return this;
+    toNotBe(expected: any): IAssertion {
+      return this.toNotEqual(expected);
     },
 
     toBeTruthy(): IAssertion {
