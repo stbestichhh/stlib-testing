@@ -1,5 +1,5 @@
 import { TestRegistry } from '../testRegistry';
-import { IAfter_Before, ITestCase, ITestSuite } from '../../lib/interfaces';
+import { IAfter_Before, ITestCase } from '../../lib/interfaces';
 import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
 import exit from 'exit';
