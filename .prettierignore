@@ -3,6 +3,8 @@
 example
 *.md
 LICENSE
+stest.config.ts
+.github
 
 # Logs
 logs
