@@ -4,13 +4,7 @@ import fs from 'fs';
 import YAML from 'yaml';
 import { ConfigException } from '../../lib/exceptions';
 import { Cli } from '../cli';
-
-export type ConfigType = {
-  pattern?: string;
-  ignore?: string[];
-  cacheWatcher?: boolean;
-  autoClearMocks?: boolean;
-};
+import { ConfigType } from '../../lib/types';
 
 export class Config {
   private static configPath?: string;

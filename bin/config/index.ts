@@ -1,3 +1,2 @@
-export { Config, ConfigType } from './config';
-export { ConfigType as StestConfig } from './config'; // for package types
+export { Config } from './config';
 export * from './config.init';
