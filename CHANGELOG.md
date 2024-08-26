@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Unreleased
 ### Added:
 * Now test cases can be asynchronous
+* toNotBe assertion
+* Optimisation for better performance
 
 #### Security Updates:
 * Updated `micromatch` from 4.0.7 to 4.0.8
