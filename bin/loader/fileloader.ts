@@ -1,7 +1,8 @@
 import path from 'node:path';
 import glob from 'fast-glob';
-import { Config, ConfigType } from '../config';
+import { Config } from '../config';
 import { LoadFileException } from '../../lib/exceptions';
+import { ConfigType } from '../../lib/types';
 
 //? Commented code is only for testing while developing
 export class FileLoader {
