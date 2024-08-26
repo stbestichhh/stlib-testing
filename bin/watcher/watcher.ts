@@ -4,18 +4,7 @@ import { TestRunner } from '../runner';
 import { FileLoader } from '../loader';
 import { spinner, spinnerWrapper } from '../spinner';
 import { Config } from '../config';
-
-type ActionSymbolType = {
-  add: string;
-  unlink: string;
-  change: string;
-};
-
-const actionSymbol: ActionSymbolType = {
-  add: '+',
-  unlink: '-',
-  change: '↻',
-};
+import { actionSymbol, ActionSymbolType } from '../../lib/types';
 
 export class Watcher {
   private watcher: chokidar.FSWatcher;
@@ -76,7 +65,7 @@ export class Watcher {
         'Loading test files',
       );
       this.changedFiles.clear();
-      TestRunner.run();
+      await TestRunner.run();
     } catch (e) {
       spinner.error();
       if (e instanceof Error) {
