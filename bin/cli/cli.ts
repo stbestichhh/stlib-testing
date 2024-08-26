@@ -1,18 +1,13 @@
-import { Config, ConfigType, initializeConfig } from '../config';
+import { Config, initializeConfig } from '../config';
 import { Watcher } from '../watcher';
 import path from 'node:path';
 import { spinnerWrapper } from '../spinner';
 import { FileLoader } from '../loader';
 import { TestRunner } from '../runner';
-import { OptionsType } from '@stlib/utils';
+import { StestOptions } from '../../lib/interfaces';
+import { ConfigType } from '../../lib/types';
 
 export type InitValue = boolean | 'js' | 'ts' | 'json' | 'yml';
-
-export interface StestOptions extends Partial<OptionsType> {
-  config?: string;
-  init?: InitValue;
-  watch?: boolean;
-}
 
 export class Cli {
   private static options: StestOptions = {};
@@ -56,6 +51,6 @@ export class Cli {
 
   private static async runTests() {
     await spinnerWrapper(FileLoader.loadTestFiles, [], 'Loading test files');
-    TestRunner.run();
+    await TestRunner.run();
   }
 }
