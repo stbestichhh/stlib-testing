@@ -5,6 +5,8 @@ import { FileLoader } from '../loader';
 import { spinner, spinnerWrapper } from '../spinner';
 import { Config } from '../config';
 import { actionSymbol, ActionSymbolType } from '../../lib/types';
+import * as readline from 'readline';
+import exit from 'exit';
 
 export class Watcher {
   private watcher: chokidar.FSWatcher;
@@ -20,6 +22,8 @@ export class Watcher {
       cwd: this.projectPath,
       ...options,
     });
+
+    this.handleKeyPressed();
   }
 
   public async start() {
@@ -66,12 +70,31 @@ export class Watcher {
       );
       this.changedFiles.clear();
       await TestRunner.run();
+
+      console.log('\nR - rerun tests\nQ - Exit\n'.bold);
     } catch (e) {
       spinner.error();
       if (e instanceof Error) {
         console.error(e.message);
       }
     }
+  }
+
+  private async handleKeyPressed() {
+    readline.emitKeypressEvents(process.stdin);
+    if (process.stdin.isTTY) {
+      process.stdin.setRawMode(true);
+    }
+
+    process.stdin.on('keypress', async (chunk, key) => {
+      if (key && key.name === 'r') {
+        await this.runTests();
+      }
+
+      if (key && key.name === 'q') {
+        exit(0);
+      }
+    });
   }
 
   private clearConsole() {
