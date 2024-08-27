@@ -20,12 +20,16 @@ export class Watcher {
     private patterns: string[],
     private options: chokidar.WatchOptions = {},
   ) {
-    this.watcher = chokidar.watch(patterns, {
-      cwd: this.projectPath,
-      ...options,
-    });
+    this.watcher = this.createWatcher();
 
     this.handleKeyPressed();
+  }
+
+  private createWatcher() {
+    return chokidar.watch(this.patterns, {
+      cwd: this.projectPath,
+      ...this.options,
+    });
   }
 
   public async start() {
@@ -45,6 +49,7 @@ export class Watcher {
   }
 
   private async onFileChange(filepath: string, action: keyof ActionSymbolType) {
+    this.changedFiles.clear();
     this.clearConsole();
     console.log(`${actionSymbol[action]} ${filepath}`);
 
@@ -83,7 +88,10 @@ export class Watcher {
 
   private showBindingsHelp() {
     if (this.showHelp) {
-      console.log('\nR - rerun previous tests\nA - run all tests\nP - pause file watching\nT - toggle test caching\nC - clear console\nH - show/hide key bindings\nQ - Exit\n'.bold);
+      console.log(
+        '\nR - rerun previous tests\nA - run all tests\nP - pause file watching\nT - toggle test caching\nC - clear console\nH - show/hide key bindings\nQ - Exit\n'
+          .bold,
+      );
     }
   }
 
@@ -102,17 +110,37 @@ export class Watcher {
 
   private async handleKeyAction(key: string) {
     switch (key) {
-      case 'h': this.toggleHelp(); break;
-      case 't': this.toggleCache(); break;
-      case 'p': await this.togglePause(); break;
-      case 'a': await this.rerunAllTests(); break;
-      case 'r': await this.runTests(); break;
-      case 'c': this.clearConsole(); break;
-      case 'q': exit(0); break;
+      case 'h':
+        this.toggleHelp();
+        break;
+      case 't':
+        this.toggleCache();
+        break;
+      case 'p':
+        await this.togglePause();
+        break;
+      case 'a':
+        await this.rerunAllTests();
+        break;
+      case 'r':
+        await this.rerunLastTests();
+        break;
+      case 'c':
+        this.clearConsole();
+        break;
+      case 'q':
+        exit(0);
+        break;
     }
   }
 
+  private async rerunLastTests() {
+    this.clearConsole();
+    await this.runTests();
+  }
+
   private async rerunAllTests() {
+    this.clearConsole();
     this.changedFiles.clear();
     await this.runTests();
   }
@@ -122,9 +150,11 @@ export class Watcher {
       await this.watcher.close();
       this.showToggleInfo(!this.isWatching, 'File watch');
     } else {
+      this.clearConsole();
+      this.watcher = this.createWatcher();
       await this.start();
     }
-    this.isWatching = !this.isWatching
+    this.isWatching = !this.isWatching;
   }
 
   private toggleCache() {
@@ -144,6 +174,8 @@ export class Watcher {
   }
 
   private showToggleInfo(switchValue: boolean, switchName: string) {
-    switchValue ? console.log(`${switchName} enabled`.yellow.bold) : console.log(`${switchName} disabled`.yellow.bold);
+    switchValue
+      ? console.log(`${switchName} enabled`.yellow.bold)
+      : console.log(`${switchName} disabled`.yellow.bold);
   }
 }
