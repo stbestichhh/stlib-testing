@@ -23,7 +23,7 @@ class MockModuleTests {
 
     mockModule.restoreMethod('readFileSync');
     const fs = require('fs');
-    const content = fs.readFileSync(path.resolve(__dirname, '../../stest.config.json'));
+    const content = fs.readFileSync(path.resolve(__dirname, '../../stest.config.ts'));
 
     assertThat(content).toNotEqual('mocked content');
   }

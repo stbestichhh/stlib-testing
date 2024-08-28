@@ -1,7 +1,7 @@
 import { StestConfig } from "@stlib/testing";
 
 const config: StestConfig = {
-  pattern: 'test/**/*.{spec,test}.ts',
+  pattern: 'example/**/*.ts',
   ignore: ['node_modules'],
   autoClearMocks: true,
   cacheWatcher: false,
