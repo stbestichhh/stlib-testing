@@ -15,10 +15,7 @@ export class TestRunner {
     try {
       for (const { testName, target } of TestRegistry.get()) {
         await this.runTestSuite(testName, target);
-      }
-      // TestRegistry.get().forEach(({ testName, target }: ITestSuite) => {
-      //   this.runTestSuite(testName, target);
-      // });
+      }      
     } finally {
       if (!this.isAllPassed && !Cli.getOptions('watch')) {
         exit(1);
@@ -73,10 +70,7 @@ export class TestRunner {
         if (result instanceof Promise) {
           await result;
         }
-      }
-      // lifecycleMethods.forEach(({ methodName }: IAfter_Before) => {
-      //   testSuiteInstance[methodName]();
-      // });
+      }      
     } catch (e) {
       console.error(`    ⚠︎ Error during ${lifecyclePhase}: ${e}`.brightRed);
     }
