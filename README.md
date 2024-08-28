@@ -20,7 +20,7 @@
 
 ## About
 
-**stlib/testing** - is an testing framework for node.js applications, which provides new testing experience to the TypeScript.
+**sTest** - is an testing framework for node.js applications, which provides new testing experience to the TypeScript.
 
 ## Getting started
 
@@ -98,7 +98,7 @@ $ npx stest
 | `@AfterEach(description?: string)`  | Runs after each test case                 |
 | `@BeforeEach(description?: string)` | Runs before each test case                |
 
-#### Asserions API
+#### Assertions API
 `assertThat(actual).to*(expected);`
 
 | Method                                                         | Description                                                                                                                                             |
@@ -107,7 +107,8 @@ $ npx stest
 | `toNotEqual(expected: any)`                                    | Check if actual and expected are not equal                                                                                                              |
 | `toStrictEqual(expected: any)`                                 | Check strict equality between actual and expected                                                                                                       |
 | `toStrictNotEqual(expected: any)`                              | Check if actual and expected are strict not equal                                                                                                       |
-| `toBe(expected: any)`                                          | Check if actual is expected                                                                                                                             |
+| `toBe(expected: any)`                                          | Check if actual is an expected                                                                                                                          |
+| `toNotBe(expected: any)`                                       | Check if actual is not an expected                                                                                                                      |
 | `toBeTruthy()`                                                 | Check if actual is true                                                                                                                                 |
 | `toBeFalsy()`                                                  | Check if actual is false                                                                                                                                |
 | `toBeGreaterThan(expected: number)`                            | Check if actual is greater than expected                                                                                                                |
