@@ -13,6 +13,7 @@ import { LifecycleType } from '../../lib/types';
 import { Cli } from '../cli';
 import { Config } from '../config';
 import { MockRegistry } from '../../lib';
+import { isTable } from '../../utils';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
@@ -106,7 +107,7 @@ export class TestRunner {
       );
 
       if (dataTable && dataTable.length > 0) {
-        await this.runTestCaseWithTable(
+        await this.runTestCaseWithData(
           testSuiteInstance,
           methodName,
           dataTable,
@@ -125,24 +126,14 @@ export class TestRunner {
   private static async runTestCaseWithData(
     testSuiteInstance: any,
     methodName: string,
-    dataSets: IDataSet[][],
+    dataArray: IDataSet[][] | IDataTable[],
   ) {
-    for (const dataSet of dataSets) {
-      const result = testSuiteInstance[methodName](...dataSet);
-
-      if (result instanceof Promise) {
-        await result;
+    for (let data of dataArray) {
+      if (isTable(data)) {
+        data = [...data.inputs, data.expected];
       }
-    }
-  }
 
-  private static async runTestCaseWithTable(
-    testSuiteInstance: any,
-    methodName: string,
-    dataTable: IDataTable[],
-  ) {
-    for (const row of dataTable) {
-      const result = testSuiteInstance[methodName](...row.inputs, row.expected);
+      const result = testSuiteInstance[methodName](...data);
 
       if (result instanceof Promise) {
         await result;
