@@ -1,5 +1,11 @@
 import { TestRegistry } from '../testRegistry';
-import { IAfter_Before, ITestCase } from '../../lib/interfaces';
+import {
+  IAfter_Before,
+  IDataSet,
+  IDataTable,
+  IDataTableArray,
+  ITestCase,
+} from '../../lib/interfaces';
 import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
 import exit from 'exit';
@@ -7,6 +13,7 @@ import { LifecycleType } from '../../lib/types';
 import { Cli } from '../cli';
 import { Config } from '../config';
 import { MockRegistry } from '../../lib';
+import { isTable } from '../../utils';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
@@ -15,7 +22,7 @@ export class TestRunner {
     try {
       for (const { testName, target } of TestRegistry.get()) {
         await this.runTestSuite(testName, target);
-      }      
+      }
     } finally {
       if (!this.isAllPassed && !Cli.getOptions('watch')) {
         exit(1);
@@ -34,6 +41,9 @@ export class TestRunner {
 
   private static async runTestCycle(target: any, testSuite: any) {
     const testCases: ITestCase[] = target.testCases || [];
+    const dataSetsArray: IDataSet[] = target.testCasesDataSets || [];
+    const dataTableArray: IDataTableArray[] = target.testCasesDataTable || [];
+
     const beforeAll: IAfter_Before[] = target.beforeAll || [];
     const beforeEach: IAfter_Before[] = target.beforeEach || [];
     const afterAll: IAfter_Before[] = target.afterAll || [];
@@ -42,7 +52,13 @@ export class TestRunner {
     await this.runLifecycleMethods(testSuite, beforeAll, 'beforeAll');
     for (const { methodName, caseDescription } of testCases) {
       await this.runLifecycleMethods(testSuite, beforeEach, 'beforeEach');
-      await this.runTestCase(testSuite, methodName, caseDescription);
+      await this.runTestCase(
+        testSuite,
+        methodName,
+        caseDescription,
+        dataSetsArray,
+        dataTableArray,
+      );
       await this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
       this.clearMocks();
     }
@@ -70,7 +86,7 @@ export class TestRunner {
         if (result instanceof Promise) {
           await result;
         }
-      }      
+      }
     } catch (e) {
       console.error(`    ⚠︎ Error during ${lifecyclePhase}: ${e}`.brightRed);
     }
@@ -80,12 +96,24 @@ export class TestRunner {
     testSuiteInstance: any,
     methodName: string,
     caseDescription: string,
+    dataSetsArray: IDataSet[],
+    dataTableArray: IDataTableArray[],
   ) {
     try {
-      const result = testSuiteInstance[methodName]();
+      const { dataTable, dataSets } = this.getCaseData(
+        dataTableArray,
+        dataSetsArray,
+        methodName,
+      );
 
-      if (result instanceof Promise) {
-        await result;
+      if (dataTable && dataTable.length > 0) {
+        await this.runTestCaseWithData(
+          testSuiteInstance,
+          methodName,
+          dataTable,
+        );
+      } else {
+        await this.runTestCaseWithData(testSuiteInstance, methodName, dataSets);
       }
 
       this.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
@@ -93,6 +121,41 @@ export class TestRunner {
       this.isAllPassed = false;
       this.handleError(e, methodName, caseDescription, testSuiteInstance);
     }
+  }
+
+  private static async runTestCaseWithData(
+    testSuiteInstance: any,
+    methodName: string,
+    dataArray: IDataSet[][] | IDataTable[],
+  ) {
+    for (let data of dataArray) {
+      if (isTable(data)) {
+        data = [...data.inputs, data.expected];
+      }
+
+      const result = testSuiteInstance[methodName](...data);
+
+      if (result instanceof Promise) {
+        await result;
+      }
+    }
+  }
+
+  private static getCaseData(
+    dataTableArray: IDataTableArray[],
+    dataSetsArray: IDataSet[],
+    methodName: string,
+  ) {
+    const dataTable =
+      dataTableArray.find(
+        (dataTableObject) => dataTableObject.methodName === methodName,
+      )?.dataTable || [];
+    const dataSets =
+      dataSetsArray.find(
+        (dataSetObject) => dataSetObject.methodName === methodName,
+      )?.dataSets || [];
+
+    return { dataTable, dataSets };
   }
 
   private static logTestResult(

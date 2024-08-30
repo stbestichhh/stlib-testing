@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### Patch 1.0.3
+## Unreleased
+### Added:
+* Data decorators for tests
+
+## Patch 1.0.3
 ### Added:
 * Now test cases can be asynchronous
 * toNotBe assertion
@@ -15,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Security Updates:
 * Updated `micromatch` from 4.0.7 to 4.0.8
 
-### Patch 1.0.2
+## Patch 1.0.2
 ### Added:
 * Caching option in config for watch mode. Now it can be disabled
 * Auto clear mocks & restore all mocks function
@@ -27,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Watch mode events running
 * Error while running tests after unlink event
 
-### Patch 1.0.1
+## Patch 1.0.1
 ### Updated:
 * Now watch mode runs only new or changed tests
 
@@ -35,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Multiple running tests when started watch mode
 * Not formatted error output in watch mode
 
-### Version 1.0.0
+## Version 1.0.0
 ### Added:
 * Watch mode
 * Lifecycle decorators 
@@ -47,7 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed toBeFalsy() assertion
 * Fixed mocking api docs 
 
-### Patch 0.0.6
+## Patch 0.0.6
 ### Added:
 * Mocking functionality
 * Yaml parser for config. Now configurations can be written using both formats, `yaml` and `json`.
