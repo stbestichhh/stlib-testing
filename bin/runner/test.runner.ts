@@ -1,5 +1,5 @@
 import { TestRegistry } from '../testRegistry';
-import { IAfter_Before, IDataSet, ITestCase } from '../../lib/interfaces';
+import { IAfter_Before, IDataSet, IDataTable, IDataTableArray, ITestCase } from '../../lib/interfaces';
 import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
 import exit from 'exit';
@@ -35,6 +35,7 @@ export class TestRunner {
   private static async runTestCycle(target: any, testSuite: any) {
     const testCases: ITestCase[] = target.testCases || [];
     const dataSetsArray: IDataSet[] = target.testCasesDataSets || [];
+    const dataTableArray: IDataTableArray[] = target.testCasesDataTable || [];
 
     const beforeAll: IAfter_Before[] = target.beforeAll || [];
     const beforeEach: IAfter_Before[] = target.beforeEach || [];
@@ -49,6 +50,7 @@ export class TestRunner {
         methodName,
         caseDescription,
         dataSetsArray,
+        dataTableArray,
       );
       await this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
       this.clearMocks();
@@ -88,19 +90,15 @@ export class TestRunner {
     methodName: string,
     caseDescription: string,
     dataSetsArray: IDataSet[],
+    dataTableArray: IDataTableArray[],
   ) {
     try {
-      const dataSets =
-        dataSetsArray.find(
-          (dataSetObject) => dataSetObject.methodName === methodName,
-        )?.dataSets || [];
+      const { dataTable, dataSets } = this.getCaseData(dataTableArray, dataSetsArray, methodName);
 
-      for (const dataSet of dataSets) {
-        const result = testSuiteInstance[methodName](...dataSet);
-
-        if (result instanceof Promise) {
-          await result;
-        }
+      if (dataTable && dataTable.length > 0) {
+        await this.runTestCaseWithTable(testSuiteInstance, methodName, dataTable);
+      } else {
+        await this.runTestCaseWithData(testSuiteInstance, methodName, dataSets);
       }
 
       this.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
@@ -108,6 +106,36 @@ export class TestRunner {
       this.isAllPassed = false;
       this.handleError(e, methodName, caseDescription, testSuiteInstance);
     }
+  }
+
+  private static async runTestCaseWithData(testSuiteInstance: any, methodName: string, dataSets: IDataSet[][]) {
+    for (const dataSet of dataSets) {
+      const result = testSuiteInstance[methodName](...dataSet);
+
+      if (result instanceof Promise) {
+        await result;
+      }
+    }
+  }
+
+  private static async runTestCaseWithTable(testSuiteInstance: any, methodName: string, dataTable: IDataTable[]) {
+    for (const row of dataTable) {
+      const result = testSuiteInstance[methodName](...row.inputs, row.expected);
+
+      if (result instanceof Promise) {
+        await result;
+      }
+    }
+  }
+
+  private static getCaseData(dataTableArray: IDataTableArray[], dataSetsArray: IDataSet[], methodName: string) {
+    const dataTable = dataTableArray.find((dataTableObject) => dataTableObject.methodName === methodName)?.dataTable || [];
+    const dataSets =
+      dataSetsArray.find(
+        (dataSetObject) => dataSetObject.methodName === methodName,
+      )?.dataSets || [];
+
+    return { dataTable, dataSets };
   }
 
   private static logTestResult(
