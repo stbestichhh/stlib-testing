@@ -70,6 +70,7 @@ export function assertThat(actual: any): IAssertion;
 // Decorators
 
 export function Case(caseDescription?: string): MethodDecorator;
+export function DataSet(...dataSets: any[][]): MethodDecorator;
 export function Test(testName?: string): ClassDecorator;
 export function BeforeAll(description?: string): MethodDecorator;
 export function BeforeEach(description?: string): MethodDecorator;
