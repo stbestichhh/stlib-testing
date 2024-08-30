@@ -1,5 +1,11 @@
 import { TestRegistry } from '../testRegistry';
-import { IAfter_Before, IDataSet, IDataTable, IDataTableArray, ITestCase } from '../../lib/interfaces';
+import {
+  IAfter_Before,
+  IDataSet,
+  IDataTable,
+  IDataTableArray,
+  ITestCase,
+} from '../../lib/interfaces';
 import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
 import exit from 'exit';
@@ -93,10 +99,18 @@ export class TestRunner {
     dataTableArray: IDataTableArray[],
   ) {
     try {
-      const { dataTable, dataSets } = this.getCaseData(dataTableArray, dataSetsArray, methodName);
+      const { dataTable, dataSets } = this.getCaseData(
+        dataTableArray,
+        dataSetsArray,
+        methodName,
+      );
 
       if (dataTable && dataTable.length > 0) {
-        await this.runTestCaseWithTable(testSuiteInstance, methodName, dataTable);
+        await this.runTestCaseWithTable(
+          testSuiteInstance,
+          methodName,
+          dataTable,
+        );
       } else {
         await this.runTestCaseWithData(testSuiteInstance, methodName, dataSets);
       }
@@ -108,7 +122,11 @@ export class TestRunner {
     }
   }
 
-  private static async runTestCaseWithData(testSuiteInstance: any, methodName: string, dataSets: IDataSet[][]) {
+  private static async runTestCaseWithData(
+    testSuiteInstance: any,
+    methodName: string,
+    dataSets: IDataSet[][],
+  ) {
     for (const dataSet of dataSets) {
       const result = testSuiteInstance[methodName](...dataSet);
 
@@ -118,7 +136,11 @@ export class TestRunner {
     }
   }
 
-  private static async runTestCaseWithTable(testSuiteInstance: any, methodName: string, dataTable: IDataTable[]) {
+  private static async runTestCaseWithTable(
+    testSuiteInstance: any,
+    methodName: string,
+    dataTable: IDataTable[],
+  ) {
     for (const row of dataTable) {
       const result = testSuiteInstance[methodName](...row.inputs, row.expected);
 
@@ -128,8 +150,15 @@ export class TestRunner {
     }
   }
 
-  private static getCaseData(dataTableArray: IDataTableArray[], dataSetsArray: IDataSet[], methodName: string) {
-    const dataTable = dataTableArray.find((dataTableObject) => dataTableObject.methodName === methodName)?.dataTable || [];
+  private static getCaseData(
+    dataTableArray: IDataTableArray[],
+    dataSetsArray: IDataSet[],
+    methodName: string,
+  ) {
+    const dataTable =
+      dataTableArray.find(
+        (dataTableObject) => dataTableObject.methodName === methodName,
+      )?.dataTable || [];
     const dataSets =
       dataSetsArray.find(
         (dataSetObject) => dataSetObject.methodName === methodName,
