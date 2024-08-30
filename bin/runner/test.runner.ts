@@ -1,5 +1,5 @@
 import { TestRegistry } from '../testRegistry';
-import { IAfter_Before, ITestCase } from '../../lib/interfaces';
+import { IAfter_Before, IDataSet, ITestCase } from '../../lib/interfaces';
 import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
 import exit from 'exit';
@@ -34,6 +34,8 @@ export class TestRunner {
 
   private static async runTestCycle(target: any, testSuite: any) {
     const testCases: ITestCase[] = target.testCases || [];
+    const dataSetsArray: IDataSet[] = target.testCasesDataSets || [];
+
     const beforeAll: IAfter_Before[] = target.beforeAll || [];
     const beforeEach: IAfter_Before[] = target.beforeEach || [];
     const afterAll: IAfter_Before[] = target.afterAll || [];
@@ -42,7 +44,7 @@ export class TestRunner {
     await this.runLifecycleMethods(testSuite, beforeAll, 'beforeAll');
     for (const { methodName, caseDescription } of testCases) {
       await this.runLifecycleMethods(testSuite, beforeEach, 'beforeEach');
-      await this.runTestCase(testSuite, methodName, caseDescription);
+      await this.runTestCase(testSuite, methodName, caseDescription, dataSetsArray);
       await this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
       this.clearMocks();
     }
@@ -80,12 +82,17 @@ export class TestRunner {
     testSuiteInstance: any,
     methodName: string,
     caseDescription: string,
+    dataSetsArray: IDataSet[]
   ) {
     try {
-      const result = testSuiteInstance[methodName]();
+      const dataSets = dataSetsArray.find((dataSetObject) => dataSetObject.methodName === methodName)?.dataSets || [];
 
-      if (result instanceof Promise) {
-        await result;
+      for (const dataSet of dataSets) {
+        const result = testSuiteInstance[methodName](...dataSet);
+
+        if (result instanceof Promise) {
+          await result;
+        }
       }
 
       this.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
