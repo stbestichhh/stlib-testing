@@ -15,7 +15,7 @@ export class TestRunner {
     try {
       for (const { testName, target } of TestRegistry.get()) {
         await this.runTestSuite(testName, target);
-      }      
+      }
     } finally {
       if (!this.isAllPassed && !Cli.getOptions('watch')) {
         exit(1);
@@ -44,7 +44,12 @@ export class TestRunner {
     await this.runLifecycleMethods(testSuite, beforeAll, 'beforeAll');
     for (const { methodName, caseDescription } of testCases) {
       await this.runLifecycleMethods(testSuite, beforeEach, 'beforeEach');
-      await this.runTestCase(testSuite, methodName, caseDescription, dataSetsArray);
+      await this.runTestCase(
+        testSuite,
+        methodName,
+        caseDescription,
+        dataSetsArray,
+      );
       await this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
       this.clearMocks();
     }
@@ -72,7 +77,7 @@ export class TestRunner {
         if (result instanceof Promise) {
           await result;
         }
-      }      
+      }
     } catch (e) {
       console.error(`    ⚠︎ Error during ${lifecyclePhase}: ${e}`.brightRed);
     }
@@ -82,10 +87,13 @@ export class TestRunner {
     testSuiteInstance: any,
     methodName: string,
     caseDescription: string,
-    dataSetsArray: IDataSet[]
+    dataSetsArray: IDataSet[],
   ) {
     try {
-      const dataSets = dataSetsArray.find((dataSetObject) => dataSetObject.methodName === methodName)?.dataSets || [];
+      const dataSets =
+        dataSetsArray.find(
+          (dataSetObject) => dataSetObject.methodName === methodName,
+        )?.dataSets || [];
 
       for (const dataSet of dataSets) {
         const result = testSuiteInstance[methodName](...dataSet);

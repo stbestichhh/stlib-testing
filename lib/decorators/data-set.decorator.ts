@@ -1,5 +1,9 @@
 export function DataSet(...dataSets: any[][]): MethodDecorator {
-  return function(target: any, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
+  return function (
+    target: any,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<any>,
+  ) {
     const constructor = target.constructor as any;
 
     if (!constructor.testCasesDataSets) {
@@ -12,5 +16,5 @@ export function DataSet(...dataSets: any[][]): MethodDecorator {
     });
 
     return descriptor;
-  }
+  };
 }
