@@ -1,5 +1,7 @@
 // Assertions
 
+import { IDataTable } from './lib/interfaces';
+
 export interface IAssertion
   extends IEqualityAssertion,
     ITruthinessAssertion,
@@ -69,8 +71,14 @@ export function assertThat(actual: any): IAssertion;
 
 // Decorators
 
+export interface IDataTable {
+  readonly inputs: any[];
+  readonly expected: any;
+}
+
 export function Case(caseDescription?: string): MethodDecorator;
 export function DataSet(...dataSets: any[][]): MethodDecorator;
+export function DataTable(dataTable: IDataTable[]): MethodDecorator;
 export function Test(testName?: string): ClassDecorator;
 export function BeforeAll(description?: string): MethodDecorator;
 export function BeforeEach(description?: string): MethodDecorator;
