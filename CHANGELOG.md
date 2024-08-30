@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added:
-* DataSet decorators for tests
+* Data decorators for tests
 
 ## Patch 1.0.3
 ### Added:
