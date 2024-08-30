@@ -93,16 +93,16 @@ $ npx stest
 > [!NOTE]
 > You can see test examples [here](example)
 
-| Decorator                                                   | Description                                                              |
-|-------------------------------------------------------------|--------------------------------------------------------------------------|
-| `@Test(description?: string)`                               | Define a class as a test suite                                           |
-| `@Case(description?: string)`                               | Define method as a test case                                             |
-| `@DataSet(...dataSets: any[][])`                            | Define data sets for multiple running one test case with different data  |
-| `@DataTable(dataTable: { inputs: any[], expected: any }[])` | Define data table for multiple running one test case with different data |
-| `@AfterAll(description?: string)`                           | Force method to run after all test cases                                 |
-| `@BeforeAll(description?: string)`                          | Force method to run before all test cases                                |
-| `@AfterEach(description?: string)`                          | Runs after each test case                                                |
-| `@BeforeEach(description?: string)`                         | Runs before each test case                                               |
+| Decorator                                                   | Description                                                                                                                     |
+|-------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| `@Test(description?: string)`                               | Define a class as a test suite                                                                                                  |
+| `@Case(description?: string)`                               | Define method as a test case                                                                                                    |
+| `@DataSet(...dataSets: any[][])`                            | Define data sets for multiple running one test case with different data                                                         |
+| `@DataTable(dataTable: { inputs: any[], expected: any }[])` | Define data table for multiple running one test case with different data. **Data table prevents running tests with data sets.** |
+| `@AfterAll(description?: string)`                           | Force method to run after all test cases                                                                                        |
+| `@BeforeAll(description?: string)`                          | Force method to run before all test cases                                                                                       |
+| `@AfterEach(description?: string)`                          | Runs after each test case                                                                                                       |
+| `@BeforeEach(description?: string)`                         | Runs before each test case                                                                                                      |
 
 #### Assertions API
 `assertThat(actual).to*(expected);`
