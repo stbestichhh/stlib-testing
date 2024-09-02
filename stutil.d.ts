@@ -1,8 +1,5 @@
 // Assertions
-
-import { IDataTable } from './lib/interfaces';
-
-export interface IAssertion
+interface IAssertion
   extends IEqualityAssertion,
     ITruthinessAssertion,
     IComparisonAssertion,
@@ -14,7 +11,7 @@ export interface IAssertion
   toSatisfy(predicate: (value: any) => boolean): IAssertion;
 }
 
-export interface IEqualityAssertion {
+interface IEqualityAssertion {
   toEqual(expected: any): IAssertion;
   toNotEqual(expected: any): IAssertion;
   toStrictEqual(expected: any): IAssertion;
@@ -22,19 +19,19 @@ export interface IEqualityAssertion {
   toBe(expected: any): IAssertion;
 }
 
-export interface ITruthinessAssertion {
+interface ITruthinessAssertion {
   toBeTruthy(): IAssertion;
   toBeFalsy(): IAssertion;
 }
 
-export interface IComparisonAssertion {
+interface IComparisonAssertion {
   toBeGreaterThan(expected: number): IAssertion;
   toBeGreaterThanOrEqual(expected: number): IAssertion;
   toBeLessThan(expected: number): IAssertion;
   toBeLessThanOrEqual(expected: number): IAssertion;
 }
 
-export interface ITypeAssertion {
+interface ITypeAssertion {
   toBeDefined(): IAssertion;
   toBeUndefined(): IAssertion;
   toBeNull(): IAssertion;
@@ -44,24 +41,24 @@ export interface ITypeAssertion {
   toBeTypeOf(type: any): IAssertion;
 }
 
-export interface IPropertyAssertion {
+interface IPropertyAssertion {
   toHaveProperty(property: any): IAssertion;
   toHaveLength(expected: number): IAssertion;
 }
 
-export interface IErrorAssertion {
+interface IErrorAssertion {
   toThrow(error?: ErrorConstructor, ...args: any[]): IAssertion;
   toNotThrow(error?: ErrorConstructor, ...args: any[]): IAssertion;
 }
 
-export interface ICollectionAssertion {
+interface ICollectionAssertion {
   toContain(expected: any): IAssertion;
   toContainEqual(expected: any): IAssertion;
   toIncludeAllMembers(expected: any[]): IAssertion;
   toIncludeAnyMembers(expected: any[]): IAssertion;
 }
 
-export interface IStringAssertion {
+interface IStringAssertion {
   toMatch(expected: RegExp | string): IAssertion;
   toStartWith(expected: string): IAssertion;
   toEndWith(expected: string): IAssertion;
@@ -70,8 +67,7 @@ export interface IStringAssertion {
 export function assertThat(actual: any): IAssertion;
 
 // Decorators
-
-export interface IDataTable {
+interface IDataTable {
   readonly inputs: any[];
   readonly expected: any;
 }
@@ -86,10 +82,9 @@ export function AfterAll(description?: string): MethodDecorator;
 export function AfterEach(description?: string): MethodDecorator;
 
 // Mocking
+type AnyFunction = (...args: any[]) => any;
 
-export type AnyFunction = (...args: any[]) => any;
-
-export type MethodNames<T> = {
+type MethodNames<T> = {
   [K in keyof T]: T[K] extends AnyFunction ? K : never;
 }[keyof T];
 
@@ -136,6 +131,21 @@ export class MockModule {
   public restoreAll(): void;
 }
 
+// Spy
+class Spy {
+  constructor(originalFunction: AnyFunction, context?: any);
+  get spyFn(): (...args: any[]) => unknown;
+  public getCallCount(): number;
+  public getCallOrder(): number[];
+  public getCallResults(callIndex?: number): any[];
+  public getCallArgs(callIndex?: number): any[][];
+  public getThrownErrors(callIndex?: number): any[];
+  public wasCalled(): boolean;
+  public wasCalledWith(...args: any[]): boolean;
+}
+
+export function spyOn(object: any, methodName: string): Spy;
+
 // Config Type
 export type StestConfig = {
   pattern?: string;
@@ -143,3 +153,5 @@ export type StestConfig = {
   cacheWatcher?: boolean;
   autoClearMocks?: boolean;
 };
+
+export {};
