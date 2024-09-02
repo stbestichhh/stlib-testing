@@ -134,15 +134,15 @@ export class TestRunner {
     }
 
     for (let data of dataArray) {
+      if (isTable(data)) {
+        data = [...data.inputs, data.expected];
+      }
+      
       await this.getTestResult(testSuiteInstance, methodName, data);
     }
   }
 
   private static async getTestResult(testSuiteInstance: any, methodName: string, data: IDataSet[] | IDataTable) {
-    if (isTable(data)) {
-      data = [...data.inputs, data.expected];
-    }
-
     const result = testSuiteInstance[methodName](...data);
 
     if (result instanceof Promise) {
