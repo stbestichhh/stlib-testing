@@ -13,4 +13,8 @@ export class MockRegistry {
       mock instanceof MockFn ? mock.restore() : mock.restoreAll();
     });
   }
+
+  public static deleteAll() {
+    this.activeMocks.length = 0;
+  }
 }

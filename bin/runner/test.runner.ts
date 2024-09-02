@@ -60,18 +60,19 @@ export class TestRunner {
         dataTableArray,
       );
       await this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
-      this.clearMocks();
+      this.clearMocks('afterEach');
     }
     await this.runLifecycleMethods(testSuite, afterAll, 'afterAll');
+    this.clearMocks('afterAll');
   }
 
-  private static clearMocks() {
+  private static clearMocks(state: 'afterAll' | 'afterEach') {
     const isAutoClearMocksEnabled = Config.getConfig('autoClearMocks');
     if (
       isAutoClearMocksEnabled &&
       typeof isAutoClearMocksEnabled === 'boolean'
     ) {
-      MockRegistry.restoreAll();
+      state === 'afterEach' ? MockRegistry.restoreAll() : MockRegistry.deleteAll();
     }
   }
 
@@ -106,7 +107,7 @@ export class TestRunner {
         methodName,
       );
 
-      if (dataTable && dataTable.length > 0) {
+      if (dataTable) {
         await this.runTestCaseWithData(
           testSuiteInstance,
           methodName,
@@ -128,16 +129,24 @@ export class TestRunner {
     methodName: string,
     dataArray: IDataSet[][] | IDataTable[],
   ) {
+    if (dataArray.length <= 0) {
+      return await this.getTestResult(testSuiteInstance, methodName, []);
+    }
+
     for (let data of dataArray) {
-      if (isTable(data)) {
-        data = [...data.inputs, data.expected];
-      }
+      await this.getTestResult(testSuiteInstance, methodName, data);
+    }
+  }
 
-      const result = testSuiteInstance[methodName](...data);
+  private static async getTestResult(testSuiteInstance: any, methodName: string, data: IDataSet[] | IDataTable) {
+    if (isTable(data)) {
+      data = [...data.inputs, data.expected];
+    }
 
-      if (result instanceof Promise) {
-        await result;
-      }
+    const result = testSuiteInstance[methodName](...data);
+
+    if (result instanceof Promise) {
+      await result;
     }
   }
 
