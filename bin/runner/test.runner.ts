@@ -135,11 +135,7 @@ export class TestRunner {
       return await this.getTestResult(testSuiteInstance, methodName, []);
     }
 
-    for (let data of dataArray) {
-      if (isTable(data)) {
-        data = [...data.inputs, data.expected];
-      }
-
+    for (const data of dataArray) {
       await this.getTestResult(testSuiteInstance, methodName, data);
     }
   }
@@ -149,6 +145,10 @@ export class TestRunner {
     methodName: string,
     data: IDataSet[] | IDataTable,
   ) {
+    if (isTable(data)) {
+      data = [...data.inputs, data.expected];
+    }
+
     const result = testSuiteInstance[methodName](...data);
 
     if (result instanceof Promise) {
