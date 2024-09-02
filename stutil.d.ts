@@ -1,5 +1,4 @@
 // Assertions
-
 export interface IAssertion
   extends IEqualityAssertion,
     ITruthinessAssertion,
@@ -68,7 +67,6 @@ export interface IStringAssertion {
 export function assertThat(actual: any): IAssertion;
 
 // Decorators
-
 export interface IDataTable {
   readonly inputs: any[];
   readonly expected: any;
@@ -84,7 +82,6 @@ export function AfterAll(description?: string): MethodDecorator;
 export function AfterEach(description?: string): MethodDecorator;
 
 // Mocking
-
 export type AnyFunction = (...args: any[]) => any;
 
 export type MethodNames<T> = {
