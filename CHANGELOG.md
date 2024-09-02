@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Added:
 * Data decorators for tests
+* Optimized mocks registry and test running
+* Spy functionality
 
 ## Patch 1.0.3
 ### Added:
