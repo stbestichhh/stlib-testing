@@ -1,7 +1,5 @@
 // Assertions
 
-import { IDataTable } from './lib/interfaces';
-
 export interface IAssertion
   extends IEqualityAssertion,
     ITruthinessAssertion,
