@@ -72,7 +72,9 @@ export class TestRunner {
       isAutoClearMocksEnabled &&
       typeof isAutoClearMocksEnabled === 'boolean'
     ) {
-      state === 'afterEach' ? MockRegistry.restoreAll() : MockRegistry.deleteAll();
+      state === 'afterEach'
+        ? MockRegistry.restoreAll()
+        : MockRegistry.deleteAll();
     }
   }
 
@@ -137,12 +139,16 @@ export class TestRunner {
       if (isTable(data)) {
         data = [...data.inputs, data.expected];
       }
-      
+
       await this.getTestResult(testSuiteInstance, methodName, data);
     }
   }
 
-  private static async getTestResult(testSuiteInstance: any, methodName: string, data: IDataSet[] | IDataTable) {
+  private static async getTestResult(
+    testSuiteInstance: any,
+    methodName: string,
+    data: IDataSet[] | IDataTable,
+  ) {
     const result = testSuiteInstance[methodName](...data);
 
     if (result instanceof Promise) {

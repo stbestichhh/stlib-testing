@@ -140,12 +140,11 @@ class Spy {
   public getCallResults(callIndex?: number): any[];
   public getCallArgs(callIndex?: number): any[][];
   public getThrownErrors(callIndex?: number): any[];
-  public wasCalled(): boolean
-  public wasCalledWith(...args: any[]): boolean
+  public wasCalled(): boolean;
+  public wasCalledWith(...args: any[]): boolean;
 }
 
-
-export function spyOn(object: any, methodName: string): Spy
+export function spyOn(object: any, methodName: string): Spy;
 
 // Config Type
 export type StestConfig = {
