@@ -144,13 +144,23 @@ export class TestRunner {
     methodName: string,
     data: IDataSet[] | IDataTable,
   ) {
-    const result = isTable(data)
-      ? testSuiteInstance[methodName](...data.inputs, data.expected)
-      : testSuiteInstance[methodName](...data);
+    const testPromise = new Promise<void>((resolve, reject) => {
+      const result = isTable(data)
+        ? testSuiteInstance[methodName](...data.inputs, data.expected)
+        : testSuiteInstance[methodName](...data);
 
-    if (result instanceof Promise) {
-      await result;
-    }
+      if (result instanceof Promise) {
+        result.then(resolve).catch(reject);
+      } else {
+        resolve()
+      }
+    });
+
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(reject, 5000, new Error('Time out'));
+    });
+
+    await Promise.race([testPromise, timeoutPromise]);
   }
 
   private static getCaseData(
