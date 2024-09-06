@@ -34,7 +34,7 @@ export class TestRunner {
 
   private static async runTestSuite(testName: string, target: any) {
     const testSuite = new target();
-    console.log(colors.white.bold(`\nTest Suite: ${testName}`));
+    console.log(colors.white.bold(`\n${testName}`));
 
     await this.runTestCycle(target, testSuite);
   }
