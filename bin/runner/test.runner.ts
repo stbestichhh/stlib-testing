@@ -20,21 +20,21 @@ export class TestRunner {
 
   public static async run() {
     try {
-      for (const { testName, target } of TestRegistry.get()) {
+      const testSuites = TestRegistry.get();
+      for (const { testName, target } of testSuites) {
         await this.runTestSuite(testName, target);
       }
     } finally {
       if (!this.isAllPassed && !Cli.getOptions('watch')) {
         exit(1);
       }
-
       TestRegistry.clear();
     }
   }
 
   private static async runTestSuite(testName: string, target: any) {
     const testSuite = new target();
-    console.log(colors.white.bold(`\nTest Suite: ${testName}`));
+    console.log(colors.white.bold(`\n${testName}`));
 
     await this.runTestCycle(target, testSuite);
   }
@@ -50,6 +50,7 @@ export class TestRunner {
     const afterEach: IAfter_Before[] = target.afterEach || [];
 
     await this.runLifecycleMethods(testSuite, beforeAll, 'beforeAll');
+
     for (const { methodName, caseDescription } of testCases) {
       await this.runLifecycleMethods(testSuite, beforeEach, 'beforeEach');
       await this.runTestCase(
@@ -62,16 +63,14 @@ export class TestRunner {
       await this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
       this.clearMocks('afterEach');
     }
+
     await this.runLifecycleMethods(testSuite, afterAll, 'afterAll');
     this.clearMocks('afterAll');
   }
 
   private static clearMocks(state: 'afterAll' | 'afterEach') {
     const isAutoClearMocksEnabled = Config.getConfig('autoClearMocks');
-    if (
-      isAutoClearMocksEnabled &&
-      typeof isAutoClearMocksEnabled === 'boolean'
-    ) {
+    if (isAutoClearMocksEnabled) {
       state === 'afterEach'
         ? MockRegistry.restoreAll()
         : MockRegistry.deleteAll();
@@ -109,7 +108,7 @@ export class TestRunner {
         methodName,
       );
 
-      if (dataTable) {
+      if (dataTable.length > 0) {
         await this.runTestCaseWithData(
           testSuiteInstance,
           methodName,
@@ -145,11 +144,9 @@ export class TestRunner {
     methodName: string,
     data: IDataSet[] | IDataTable,
   ) {
-    if (isTable(data)) {
-      data = [...data.inputs, data.expected];
-    }
-
-    const result = testSuiteInstance[methodName](...data);
+    const result = isTable(data)
+      ? testSuiteInstance[methodName](...data.inputs, data.expected)
+      : testSuiteInstance[methodName](...data);
 
     if (result instanceof Promise) {
       await result;
