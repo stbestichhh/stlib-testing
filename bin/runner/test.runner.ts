@@ -20,7 +20,8 @@ export class TestRunner {
 
   public static async run() {
     try {
-      for (const { testName, target } of TestRegistry.get()) {
+      const testSuites = TestRegistry.get();
+      for (const { testName, target } of testSuites) {
         await this.runTestSuite(testName, target);
       }
     } finally {
@@ -109,7 +110,7 @@ export class TestRunner {
         methodName,
       );
 
-      if (dataTable) {
+      if (dataTable.length > 0) {
         await this.runTestCaseWithData(
           testSuiteInstance,
           methodName,
