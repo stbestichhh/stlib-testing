@@ -14,6 +14,7 @@ import { Cli } from '../cli';
 import { Config } from '../config';
 import { MockRegistry } from '../../lib';
 import { isTable } from '../../utils';
+import { TimeoutException } from '../../lib/exceptions';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
@@ -157,7 +158,7 @@ export class TestRunner {
     });
 
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(reject, 5000, new Error('Time out'));
+      setTimeout(reject, 5000, new TimeoutException(`Test timed out in 5000ms`));
     });
 
     await Promise.race([testPromise, timeoutPromise]);
