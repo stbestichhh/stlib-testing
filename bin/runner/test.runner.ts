@@ -144,7 +144,9 @@ export class TestRunner {
     methodName: string,
     data: IDataSet[] | IDataTable,
   ) {
-    const result = isTable(data) ? testSuiteInstance[methodName](...data.inputs, data.expected) : testSuiteInstance[methodName](...data);
+    const result = isTable(data)
+      ? testSuiteInstance[methodName](...data.inputs, data.expected)
+      : testSuiteInstance[methodName](...data);
 
     if (result instanceof Promise) {
       await result;
