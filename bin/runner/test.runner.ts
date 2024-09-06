@@ -123,7 +123,12 @@ export class TestRunner {
           timeout,
         );
       } else {
-        await this.runTestCaseWithData(testSuiteInstance, methodName, dataSets, timeout);
+        await this.runTestCaseWithData(
+          testSuiteInstance,
+          methodName,
+          dataSets,
+          timeout,
+        );
       }
 
       this.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
@@ -140,7 +145,12 @@ export class TestRunner {
     timeout: number,
   ) {
     if (dataArray.length <= 0) {
-      return await this.getTestResult(testSuiteInstance, methodName, [], timeout);
+      return await this.getTestResult(
+        testSuiteInstance,
+        methodName,
+        [],
+        timeout,
+      );
     }
 
     for (const data of dataArray) {
@@ -162,12 +172,16 @@ export class TestRunner {
       if (result instanceof Promise) {
         result.then(resolve).catch(reject);
       } else {
-        resolve()
+        resolve();
       }
     });
 
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(reject, timeout, new TimeoutException(`Test timed out in ${timeout}ms`));
+      setTimeout(
+        reject,
+        timeout,
+        new TimeoutException(`Test timed out in ${timeout}ms`),
+      );
     });
 
     await Promise.race([testPromise, timeoutPromise]);

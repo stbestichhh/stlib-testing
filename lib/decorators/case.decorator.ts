@@ -1,4 +1,6 @@
-export function Case(options?: string | { description?: string, timeout?: number }): MethodDecorator {
+export function Case(
+  options?: string | { description?: string; timeout?: number },
+): MethodDecorator {
   return function (
     target: object,
     key: string | symbol,
@@ -10,7 +12,8 @@ export function Case(options?: string | { description?: string, timeout?: number
       constructor.testCases = [];
     }
 
-    const caseDescription = typeof options === 'string' ? options : options?.description;
+    const caseDescription =
+      typeof options === 'string' ? options : options?.description;
     const timeout = typeof options !== 'string' ? options?.timeout : undefined;
 
     constructor.testCases.push({
