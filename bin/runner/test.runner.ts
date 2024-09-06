@@ -28,7 +28,6 @@ export class TestRunner {
       if (!this.isAllPassed && !Cli.getOptions('watch')) {
         exit(1);
       }
-
       TestRegistry.clear();
     }
   }
@@ -51,6 +50,7 @@ export class TestRunner {
     const afterEach: IAfter_Before[] = target.afterEach || [];
 
     await this.runLifecycleMethods(testSuite, beforeAll, 'beforeAll');
+
     for (const { methodName, caseDescription } of testCases) {
       await this.runLifecycleMethods(testSuite, beforeEach, 'beforeEach');
       await this.runTestCase(
@@ -63,16 +63,14 @@ export class TestRunner {
       await this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
       this.clearMocks('afterEach');
     }
+
     await this.runLifecycleMethods(testSuite, afterAll, 'afterAll');
     this.clearMocks('afterAll');
   }
 
   private static clearMocks(state: 'afterAll' | 'afterEach') {
     const isAutoClearMocksEnabled = Config.getConfig('autoClearMocks');
-    if (
-      isAutoClearMocksEnabled &&
-      typeof isAutoClearMocksEnabled === 'boolean'
-    ) {
+    if (isAutoClearMocksEnabled) {
       state === 'afterEach'
         ? MockRegistry.restoreAll()
         : MockRegistry.deleteAll();
@@ -146,11 +144,7 @@ export class TestRunner {
     methodName: string,
     data: IDataSet[] | IDataTable,
   ) {
-    if (isTable(data)) {
-      data = [...data.inputs, data.expected];
-    }
-
-    const result = testSuiteInstance[methodName](...data);
+    const result = isTable(data) ? testSuiteInstance[methodName](...data.inputs, data.expected) : testSuiteInstance[methodName](...data);
 
     if (result instanceof Promise) {
       await result;
