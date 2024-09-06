@@ -26,10 +26,14 @@ export class TestRunner {
         await this.runTestSuite(testName, target);
       }
     } finally {
-      if (!this.isAllPassed && !Cli.getOptions('watch')) {
-        exit(1);
-      }
       TestRegistry.clear();
+      process.nextTick(() => {
+        if (!this.isAllPassed && !Cli.getOptions('watch')) {
+          exit(1);
+        } else {
+          exit(0);
+        }
+      });
     }
   }
 
@@ -52,7 +56,7 @@ export class TestRunner {
 
     await this.runLifecycleMethods(testSuite, beforeAll, 'beforeAll');
 
-    for (const { methodName, caseDescription } of testCases) {
+    for (const { methodName, caseDescription, timeout } of testCases) {
       await this.runLifecycleMethods(testSuite, beforeEach, 'beforeEach');
       await this.runTestCase(
         testSuite,
@@ -60,6 +64,7 @@ export class TestRunner {
         caseDescription,
         dataSetsArray,
         dataTableArray,
+        timeout,
       );
       await this.runLifecycleMethods(testSuite, afterEach, 'afterEach');
       this.clearMocks('afterEach');
@@ -101,6 +106,7 @@ export class TestRunner {
     caseDescription: string,
     dataSetsArray: IDataSet[],
     dataTableArray: IDataTableArray[],
+    timeout: number,
   ) {
     try {
       const { dataTable, dataSets } = this.getCaseData(
@@ -114,9 +120,10 @@ export class TestRunner {
           testSuiteInstance,
           methodName,
           dataTable,
+          timeout,
         );
       } else {
-        await this.runTestCaseWithData(testSuiteInstance, methodName, dataSets);
+        await this.runTestCaseWithData(testSuiteInstance, methodName, dataSets, timeout);
       }
 
       this.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
@@ -130,13 +137,14 @@ export class TestRunner {
     testSuiteInstance: any,
     methodName: string,
     dataArray: IDataSet[][] | IDataTable[],
+    timeout: number,
   ) {
     if (dataArray.length <= 0) {
-      return await this.getTestResult(testSuiteInstance, methodName, []);
+      return await this.getTestResult(testSuiteInstance, methodName, [], timeout);
     }
 
     for (const data of dataArray) {
-      await this.getTestResult(testSuiteInstance, methodName, data);
+      await this.getTestResult(testSuiteInstance, methodName, data, timeout);
     }
   }
 
@@ -144,6 +152,7 @@ export class TestRunner {
     testSuiteInstance: any,
     methodName: string,
     data: IDataSet[] | IDataTable,
+    timeout: number = 5000,
   ) {
     const testPromise = new Promise<void>((resolve, reject) => {
       const result = isTable(data)
@@ -158,7 +167,7 @@ export class TestRunner {
     });
 
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(reject, 5000, new TimeoutException(`Test timed out in 5000ms`));
+      setTimeout(reject, timeout, new TimeoutException(`Test timed out in ${timeout}ms`));
     });
 
     await Promise.race([testPromise, timeoutPromise]);
