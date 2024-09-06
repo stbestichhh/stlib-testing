@@ -72,7 +72,7 @@ interface IDataTable {
   readonly expected: any;
 }
 
-export function Case(caseDescription?: string): MethodDecorator;
+export function Case(options?: string | { description?: string; timeout?: number }): MethodDecorator;
 export function DataSet(...dataSets: any[][]): MethodDecorator;
 export function DataTable(dataTable: IDataTable[]): MethodDecorator;
 export function Test(testName?: string): ClassDecorator;
