@@ -97,6 +97,7 @@ $ npx stest
 |-------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
 | `@Test(description?: string)`                               | Define a class as a test suite                                                                                                  |
 | `@Case(description?: string)`                               | Define method as a test case                                                                                                    |
+| `@Case({ description?: string, timeout?: number })`         | Define method as a test case with custom timeout time                                                                           |
 | `@DataSet(...dataSets: any[][])`                            | Define data sets for multiple running one test case with different data                                                         |
 | `@DataTable(dataTable: { inputs: any[], expected: any }[])` | Define data table for multiple running one test case with different data. **Data table prevents running tests with data sets.** |
 | `@AfterAll(description?: string)`                           | Force method to run after all test cases                                                                                        |
