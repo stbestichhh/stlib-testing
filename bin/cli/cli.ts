@@ -7,8 +7,6 @@ import { TestRunner } from '../runner';
 import { StestOptions } from '../../lib/interfaces';
 import { ConfigType } from '../../lib/types';
 
-export type InitValue = boolean | 'js' | 'ts' | 'json' | 'yml';
-
 export class Cli {
   private static options: StestOptions = {};
   private static config: ConfigType | undefined = {};

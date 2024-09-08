@@ -1,4 +1,4 @@
-export const patterns = {
+export const patterns: { [k: string]: string } = {
   ts: `import { StestConfig } from "@stlib/testing";
 
 const config: StestConfig = {
