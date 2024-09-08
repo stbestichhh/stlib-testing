@@ -54,7 +54,7 @@ export class Spy {
   }
 
   public wasCalled(amount?: number) {
-    return this.callCount > amount || 0;
+    return amount ? this.callCount > amount : this.callCount > 0;
   }
 
   public wasCalledWith(...args: any[]) {
