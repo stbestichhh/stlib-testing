@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Patch 1.0.5
+### Fixed:
+* Missing package contents
+* Watch mode exiting process
+
+### Updated:
+* Now `wasCalled` spy function can accept custom calls amount. See [usage](README.md#spy-api) for more information.
+
 ## Patch 1.0.4
 ### Added:
 * Data decorators for tests
