@@ -167,6 +167,25 @@ $ npx stest
 |                | `mockClass.restoreMethod(methodName: string)`                               | Restores original function logic                          |
 |                | `mockClass.restoreAll()`                                                    | Restores all functios                                     |
 
+#### Spy API
+
+Create a new spy by `spyOn` function:
+```TypeScript
+const example = new ExampleClass();
+const greetSpy = spyOn(example, 'greet');
+```
+
+| Class                                    | Method                                | Description                                                                 |
+|------------------------------------------|---------------------------------------|-----------------------------------------------------------------------------|
+| `spyOn(object: any, methodName: string)` |                                       | Creates new spy on class method                                             |
+|                                          | `getCallCount()`                      | Returns amount of method calls                                              |
+|                                          | `getCallOrder()`                      | Returns an array with call order                                            |
+|                                          | `getCallResults(callIndex?: number)`  | Returns an array with call results                                          |
+|                                          | `getCallArgs(callIndex?: number)`     | Returns an array with arguments passed                                      |
+|                                          | `getThrownErrors(callIndex?: number)` | Returns an array with with all thrown errors                                |
+|                                          | `wasCalled(amount?: number)`          | Returns true if method was called at least once or more than `amount` times |
+|                                          | `wasCalledWith(...args: any[])`       | Returns true if method was called with specified arguments at least once    |
+
 #### Configuration
 To provide custom configuration for `stest` create `stest.config.{json,yml,ts,js}` file in project base directory. \
 Or use this command to initialize config file. By default it has `json` format. Override it by adding one of the possible options for the `--init` flag: `ts, js, json, yml`

@@ -53,8 +53,8 @@ export class Spy {
     return callIndex ? this.thrownExceptions[callIndex] : this.thrownExceptions;
   }
 
-  public wasCalled() {
-    return this.callCount > 0;
+  public wasCalled(amount?: number) {
+    return amount ? this.callCount > amount : this.callCount > 0;
   }
 
   public wasCalledWith(...args: any[]) {
