@@ -1,9 +1,15 @@
-[![Node.js CI](https://github.com/stbestichhh/stlib-testing/actions/workflows/node.js.yml/badge.svg)](https://github.com/stbestichhh/stlib-utils/actions/workflows/node.js.yml)
-[![NPM Version](https://img.shields.io/npm/v/@stlib/testing)](https://www.npmjs.com/package/@stlib/testing)
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+<div align="center">
 
-# @stlib/testing
+# sTest
+
+[![NPM Version](https://img.shields.io/npm/v/@stlib/testing)](https://www.npmjs.com/package/@stlib/testing)
+![NPM Downloads](https://img.shields.io/npm/d18m/%40stlib%2Ftesting)
+
+[![Node.js CI](https://github.com/stbestichhh/stlib-testing/actions/workflows/node.js.yml/badge.svg)](https://github.com/stbestichhh/stlib-utils/actions/workflows/node.js.yml)
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+</div>
 
 ## Table of contents
 
