@@ -28,10 +28,9 @@ export class TestRunner {
     } finally {
       TestRegistry.clear();
       process.nextTick(() => {
-        if (!this.isAllPassed && !Cli.getOptions('watch')) {
-          exit(1);
-        } else {
-          exit(0);
+        const isWatchMode = Cli.getOptions('watch');
+        if (!isWatchMode) {
+          this.isAllPassed ? exit(0) : exit(1);
         }
       });
     }
