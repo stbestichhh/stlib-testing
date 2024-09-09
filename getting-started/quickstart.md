@@ -1,23 +1,73 @@
+---
+description: How to install, set up and start writing tests
+---
+
 # Quickstart
 
-<figure><img src="https://gitbookio.github.io/onboarding-template-images/quickstart-hero.png" alt=""><figcaption></figcaption></figure>
-
-Beautiful documentation starts with the content you create — and GitBook makes it easy to get started with any pre-existing content.
-
-{% hint style="info" %}
-Want to learn about writing content from scratch? Head to the [Basics](https://github.com/GitbookIO/onboarding-template/blob/main/getting-started/broken-reference/README.md) section to learn more.
+{% hint style="warning" %}
+Node.js 18.x+ has to be installed.
 {% endhint %}
 
-### Import
+## Installation
 
-GitBook supports importing content from many popular writing tools and formats. If your content already exists, you can upload a file or group of files to be imported.
+1. Add dependency to you project
 
-<div data-full-width="false">
+{% code fullWidth="false" %}
+```bash
+yarn add --dev @stlib/testing
+# or
+npm install --save-dev @stlib/testing
+```
+{% endcode %}
 
-<figure><img src="https://gitbookio.github.io/onboarding-template-images/quickstart-import.png" alt=""><figcaption></figcaption></figure>
+2. Enable **eperimentalDecorators** in your **tsconfig.json**
 
-</div>
+{% code title="tsconfig.json" %}
+```json
+{
+    ...
+    "experimentalDecorators": true,
+    ...
+}
+```
+{% endcode %}
 
-### Sync a repository
+Now you can write tests.
 
-GitBook also allows you to set up a bi-directional sync with an existing repository on GitHub or GitLab. Setting up Git Sync allows you and your team to write content in GitBook or in code, and never have to worry about your content becoming out of sync.
+## Writing tests
+
+First you need is to create a `.spec.ts` or `.test.ts` file.
+
+This testing framework uses decorators to define tests. You need to create a class with `@Test('Test suite name')` decorator. Each test must be a class method with decorator `@Case('test case description')`. `@Case` description and `@Test` name can be ignored
+
+**Example:**
+
+{% code title="example.spec.ts" overflow="wrap" lineNumbers="true" %}
+```typescript
+import { assertThat, Test, Case } from '@stlib/testing';
+
+@Test('Example testing suite')
+class MyTests {
+
+  @Case('Example pass test case')
+  checkIfTenIsMoreThatFive() {
+    assertThat(10).toBeGreaterThan(5);
+  }
+  
+  @Case()
+  checkIfTenIsString() {
+    assertThat(10).toBeTypeOf('string');
+  }
+}
+```
+{% endcode %}
+
+Run tests with command:
+
+```bash
+npx stest
+```
+
+And get result:
+
+<figure><img src="../.gitbook/assets/image.png" alt="Command output with test results"><figcaption></figcaption></figure>
