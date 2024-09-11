@@ -1,23 +1,19 @@
 import path from 'node:path';
-import { isExists } from '@stlib/utils';
 import fs from 'fs';
 import YAML from 'yaml';
 import { ConfigException } from '../../lib/exceptions';
-import { Cli } from '../cli';
 import { ConfigType } from '../../lib/types';
+import { options } from '../cli';
+import { isExists } from '../../utils';
 
 export class Config {
   private static configPath?: string;
   private static useYml = false;
   private static isScriptFile = false;
-  private static projectPath: string;
   private static configuration: ConfigType | undefined = {};
+  private static readonly projectPath = path.resolve('../../../');
 
-  public static async handleConfiguration(
-    projectPath: string,
-  ): Promise<ConfigType | undefined> {
-    this.projectPath = projectPath;
-
+  public static async handleConfiguration(): Promise<ConfigType | undefined> {
     await this.setConfigPath();
     return (this.configuration = this.configPath
       ? await this.parseConfig()
@@ -38,10 +34,8 @@ export class Config {
       'stest.config.ts',
     ];
 
-    const configOption = Cli.getOptions('config');
-
-    if (configOption && typeof configOption === 'string') {
-      await this.setConfigPathIterator([configOption]);
+    if (options?.config) {
+      await this.setConfigPathIterator([options.config]);
     } else {
       await this.setConfigPathIterator(configFileNames);
     }

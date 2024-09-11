@@ -5,7 +5,10 @@ import exit from 'exit';
 
 export async function initializeConfig(initValue: boolean | string) {
   const supportedExtension = ['ts', 'js', 'json', 'yml'];
-  const fileExtension = typeof initValue === 'string' && supportedExtension.includes(initValue) ? initValue : 'json';
+  const fileExtension =
+    typeof initValue === 'string' && supportedExtension.includes(initValue)
+      ? initValue
+      : 'json';
 
   const fileName = `stest.config.${fileExtension}`;
   const filePath = path.resolve('../../../', fileName);

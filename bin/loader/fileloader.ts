@@ -4,10 +4,8 @@ import { Config } from '../config';
 import { LoadFileException } from '../../lib/exceptions';
 import { ConfigType } from '../../lib/types';
 
-//? Commented code is only for testing while developing
 export class FileLoader {
-  private static readonly projectPath = path.resolve('../../../'); //* prod
-  // private static readonly projectPath = path.resolve(); //* dev
+  private static readonly projectPath = path.resolve('../../../');
 
   public static async loadTestFiles(changedFiles: string[] = []) {
     const testFiles =
@@ -26,13 +24,11 @@ export class FileLoader {
   }
 
   private static async getAllTestFiles() {
-    const config: ConfigType | undefined = await Config.handleConfiguration(
-      this.projectPath,
-    );
+    const config: ConfigType | undefined = await Config.handleConfiguration();
 
     const files = await glob(config?.pattern || '**/*.{spec,test}.ts', {
       ignore: config?.ignore || ['node_modules/**'],
-      cwd: this.projectPath, //* prod
+      cwd: this.projectPath,
     });
 
     return files.map((file) => path.join(this.projectPath, file));

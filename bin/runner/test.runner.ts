@@ -10,11 +10,11 @@ import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
 import exit from 'exit';
 import { LifecycleType } from '../../lib/types';
-import { Cli } from '../cli';
 import { Config } from '../config';
 import { MockRegistry } from '../../lib';
 import { isTable } from '../../utils';
 import { TimeoutException } from '../../lib/exceptions';
+import { options } from '../cli';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
@@ -28,8 +28,7 @@ export class TestRunner {
     } finally {
       TestRegistry.clear();
       process.nextTick(() => {
-        const isWatchMode = Cli.getOptions('watch');
-        if (!isWatchMode) {
+        if (!options.watch) {
           this.isAllPassed ? exit(0) : exit(1);
         }
       });
