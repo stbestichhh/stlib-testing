@@ -36,13 +36,15 @@
 > **Node.js 18.x+** version must be installed in your OS.
 
 ### CLI
-```shell
-$ npx stest       Runs tests
+```text
+Usage: stest [options]
+
+Testing framework for TypeScript Node.js applications
 
 Options:
-  --config                      Define custom path to the config file
-  --init <'ts|js|json|yml'>     Creates new config file. JSON format by default
-  --watch                       Runs tests in the watch mode
+  --init [extension]   initialise configuration file [json | yml | ts | js]
+  -w, --watch          run tests in watch mode
+  -c, --config <path>  define custom config file path
 ```
 
 ### Installation
