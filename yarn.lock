@@ -1051,6 +1051,7 @@ __metadata:
     "@colors/colors": "npm:^1.6.0"
     "@commitlint/cli": "npm:^19.5.0"
     "@commitlint/config-conventional": "npm:^19.5.0"
+    "@commitlint/types": "npm:^19.5.0"
     "@stlib/utils": "npm:^0.0.13"
     "@types/exit": "npm:^0.1.33"
     "@types/jest": "npm:^29.5.12"
