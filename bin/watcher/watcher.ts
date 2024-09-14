@@ -33,9 +33,8 @@ export class Watcher {
   }
 
   public async start() {
-    const isCachingEnabledConf = Config.getConfig('cacheWatcher');
-    this.isCachingEnabled =
-      typeof isCachingEnabledConf === 'boolean' ? isCachingEnabledConf : true;
+    const isCachingEnabledConf = Config.getConfig('cacheWatcher') as boolean;
+    this.isCachingEnabled = isCachingEnabledConf ?? true;
 
     this.watcher.on('change', (filePath) =>
       this.onFileChange(filePath, 'change'),
