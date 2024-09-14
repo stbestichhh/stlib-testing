@@ -97,7 +97,7 @@ export class TestRunner {
         }
       }
     } catch (e) {
-      this.log.error(`    ⚠︎ Error during ${lifecyclePhase}: ${e}`.brightRed)
+      this.log.error(`    ⚠︎ Error during ${lifecyclePhase}: ${e}`.brightRed);
     }
   }
 

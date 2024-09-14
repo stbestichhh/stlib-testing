@@ -91,7 +91,9 @@ export class Config {
       const importedConfig = await import(filePath);
       return importedConfig.default || importedConfig;
     } catch (error) {
-      this.log.error(new ConfigException(`Failed to load configuration from ${filePath}`))
+      this.log.error(
+        new ConfigException(`Failed to load configuration from ${filePath}`),
+      );
       return undefined;
     }
   }

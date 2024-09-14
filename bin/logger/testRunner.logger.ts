@@ -1,7 +1,7 @@
 import { LoggerService } from './logger.service';
 import { findWhereErrorHasBeenThrown } from '../errorInfo';
 
-export class TestRunnerLogger extends LoggerService{
+export class TestRunnerLogger extends LoggerService {
   public logTestResult(
     description: string,
     result: 'PASSED' | 'FAILED',

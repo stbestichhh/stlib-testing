@@ -81,14 +81,16 @@ export class Watcher {
       this.showBindingsHelp();
     } catch (e) {
       spinner.error();
-      this.log.error(e)
+      this.log.error(e);
     }
   }
 
   private showBindingsHelp() {
     if (this.showHelp) {
-      this.log.info('\nR - rerun previous tests\nA - run all tests\nP - pause file watching\nT - toggle test caching\nC - clear console\nH - show/hide key bindings\nQ - Exit\n'
-        .bold);
+      this.log.info(
+        '\nR - rerun previous tests\nA - run all tests\nP - pause file watching\nT - toggle test caching\nC - clear console\nH - show/hide key bindings\nQ - Exit\n'
+          .bold,
+      );
     }
   }
 
