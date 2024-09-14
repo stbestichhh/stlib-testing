@@ -37,7 +37,7 @@
 
 ### CLI
 ```text
-Usage: stest [options]
+Usage: npx stest [options]
 
 Testing framework for TypeScript Node.js applications
 
