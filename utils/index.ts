@@ -1,1 +1,2 @@
-export * from './isTable.util';
+export * from './isTable';
+export * from './isExists';

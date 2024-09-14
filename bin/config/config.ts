@@ -1,36 +1,42 @@
 import path from 'node:path';
-import { isExists } from '@stlib/utils';
 import fs from 'fs';
 import YAML from 'yaml';
 import { ConfigException } from '../../lib/exceptions';
-import { Cli } from '../cli';
 import { ConfigType } from '../../lib/types';
+import { isExists } from '../../utils';
+import { StestOptions } from '../../lib/interfaces';
+import { LoggerService } from '../logger';
 
 export class Config {
-  private static configPath?: string;
-  private static useYml = false;
-  private static isScriptFile = false;
-  private static projectPath: string;
+  private configPath?: string;
+  private useYml = false;
+  private isScriptFile = false;
+  private readonly cliOptions: StestOptions;
+  private readonly projectPath = path.resolve('../../../');
+  private readonly log: LoggerService = new LoggerService();
   private static configuration: ConfigType | undefined = {};
 
-  public static async handleConfiguration(
-    projectPath: string,
-  ): Promise<ConfigType | undefined> {
-    this.projectPath = projectPath;
+  constructor(options: StestOptions) {
+    this.cliOptions = options;
+  }
 
+  public async handleConfiguration(): Promise<void> {
     await this.setConfigPath();
-    return (this.configuration = this.configPath
+    Config.configuration = this.configPath
       ? await this.parseConfig()
-      : undefined);
+      : undefined;
   }
 
-  public static getConfig(key?: keyof ConfigType) {
-    return key && this.configuration
-      ? this.configuration[key]
-      : this.configuration;
+  public static getConfig<K extends keyof ConfigType>(
+    key?: K,
+  ): ConfigType | ConfigType[K] | undefined {
+    if (this.configuration) {
+      return key ? this.configuration[key] : this.configuration;
+    }
+    return undefined;
   }
 
-  private static async setConfigPath(): Promise<void> {
+  private async setConfigPath(): Promise<void> {
     const configFileNames = [
       'stest.config.json',
       'stest.config.yml',
@@ -38,16 +44,16 @@ export class Config {
       'stest.config.ts',
     ];
 
-    const configOption = Cli.getOptions('config');
-
-    if (configOption && typeof configOption === 'string') {
-      await this.setConfigPathIterator([configOption]);
+    if (this.cliOptions?.config) {
+      await this.setConfigPathIterator([this.cliOptions.config]);
     } else {
       await this.setConfigPathIterator(configFileNames);
     }
   }
 
-  private static async setConfigPathIterator(configFileNames: string[]) {
+  private async setConfigPathIterator(
+    configFileNames: string[],
+  ): Promise<void> {
     for (const fileName of configFileNames) {
       const configPath = path.join(this.projectPath, fileName);
       if (await isExists(configPath)) {
@@ -60,7 +66,7 @@ export class Config {
     }
   }
 
-  private static async parseConfig(): Promise<ConfigType | undefined> {
+  private async parseConfig(): Promise<ConfigType | undefined> {
     if (this.isScriptFile) {
       return this.importConfigFromScript(this.configPath!);
     } else {
@@ -69,23 +75,23 @@ export class Config {
     }
   }
 
-  private static async readConfigFile(): Promise<string | Buffer> {
+  private async readConfigFile(): Promise<string | Buffer> {
     return fs.promises.readFile(this.configPath!);
   }
 
-  private static parseFileContent(content: string | Buffer): ConfigType {
+  private parseFileContent(content: string | Buffer): ConfigType {
     const contentStr = content.toString();
     return this.useYml ? YAML.parse(contentStr) : JSON.parse(contentStr);
   }
 
-  private static async importConfigFromScript(
+  private async importConfigFromScript(
     filePath: string,
   ): Promise<ConfigType | undefined> {
     try {
       const importedConfig = await import(filePath);
       return importedConfig.default || importedConfig;
     } catch (error) {
-      console.error(
+      this.log.error(
         new ConfigException(`Failed to load configuration from ${filePath}`),
       );
       return undefined;

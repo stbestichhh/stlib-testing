@@ -1,54 +1,38 @@
-import { Config, initializeConfig } from '../config';
-import { Watcher } from '../watcher';
-import path from 'node:path';
-import { spinnerWrapper } from '../spinner';
-import { FileLoader } from '../loader';
-import { TestRunner } from '../runner';
+import { program } from 'commander';
 import { StestOptions } from '../../lib/interfaces';
-import { ConfigType } from '../../lib/types';
+import { Config, initializeConfig } from '../config';
+import { startWatcher } from '../watcher';
+import { runTests } from '../bootstrap/runTests';
 
-export class Cli {
-  private static options: StestOptions = {};
-  private static config: ConfigType | undefined = {};
-  private static readonly projectPath = path.resolve('../../../'); //* prod
-  // private static readonly projectPath = path.resolve(); //* dev
-
-  public static async handleOptions(options: StestOptions) {
-    this.options = options;
-    this.config = await Config.handleConfiguration(this.projectPath);
-    await this.executeOptionMethods();
+const handleOptionsAndExecuteAction = async (options: StestOptions) => {
+  if (options.init) {
+    await initializeConfig(options.init);
   }
 
-  public static getOptions(key?: keyof StestOptions) {
-    return key ? this.options[key] : this.options;
+  await new Config(options).handleConfiguration();
+  if (options.watch) {
+    await startWatcher();
+  } else {
+    await runTests();
   }
+};
 
-  private static async executeOptionMethods() {
-    const { init, watch } = this.options;
+program
+  .name('stest')
+  .description('Testing framework for TypeScript Node.js applications')
+  .version('1.0.5');
 
-    if (init) {
-      await initializeConfig(this.options.init!);
-    } else if (watch) {
-      await this.startWatcher();
-    } else {
-      await this.runTests();
-    }
-  }
+program
+  .option(
+    '--init [extension]',
+    'initialise configuration file [json | yml | ts | js]',
+  )
+  .option('-w, --watch', 'run tests in watch mode')
+  .option('-c, --config <path>', 'define custom config file path')
+  .allowUnknownOption()
+  .action(async (options: StestOptions) => {
+    await handleOptionsAndExecuteAction(options);
+  });
 
-  private static async startWatcher() {
-    const watcher = new Watcher(
-      [this.config?.pattern || '**/*.{spec,test}.ts'],
-      {
-        ignored: this.config?.ignore,
-        persistent: true,
-        ignoreInitial: true,
-      },
-    );
-    await watcher.start();
-  }
-
-  private static async runTests() {
-    await spinnerWrapper(FileLoader.loadTestFiles, [], 'Loading test files');
-    await TestRunner.run();
-  }
-}
+program.parse(process.argv);
+export const options: StestOptions = program.opts<StestOptions>();

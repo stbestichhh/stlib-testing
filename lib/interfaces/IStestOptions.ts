@@ -1,7 +1,7 @@
-import { OptionsType } from '@stlib/utils';
+import { OptionValues } from 'commander';
 
-export interface StestOptions extends Partial<OptionsType> {
+export interface StestOptions extends OptionValues {
   config?: string;
-  init?: boolean | string;
+  init?: string;
   watch?: boolean;
 }
