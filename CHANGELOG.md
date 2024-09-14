@@ -10,13 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * New command line interface
 
 ### Fixed:
+* Config initialization error, when choosing wrong file extension
 * Not working `cacheWatcher` option in configuration file
 
 ### Other:
 * Provided some optimisation
-
-### Fixed:
-* Config initialization error, when choosing wrong file extension
 
 ## Patch 1.0.5
 ### Fixed:
