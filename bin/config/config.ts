@@ -5,6 +5,7 @@ import { ConfigException } from '../../lib/exceptions';
 import { ConfigType } from '../../lib/types';
 import { isExists } from '../../utils';
 import { StestOptions } from '../../lib/interfaces';
+import { LoggerService } from '../logger';
 
 export class Config {
   private configPath?: string;
@@ -12,6 +13,7 @@ export class Config {
   private isScriptFile = false;
   private readonly cliOptions: StestOptions;
   private readonly projectPath = path.resolve('../../../');
+  private readonly log: LoggerService = new LoggerService();
   private static configuration: ConfigType | undefined = {};
 
   constructor(options: StestOptions) {
@@ -89,9 +91,7 @@ export class Config {
       const importedConfig = await import(filePath);
       return importedConfig.default || importedConfig;
     } catch (error) {
-      console.error(
-        new ConfigException(`Failed to load configuration from ${filePath}`),
-      );
+      this.log.error(new ConfigException(`Failed to load configuration from ${filePath}`))
       return undefined;
     }
   }

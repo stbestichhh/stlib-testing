@@ -7,6 +7,7 @@ import { Config } from '../config';
 import { actionSymbol, ActionSymbolType } from '../../lib/types';
 import * as readline from 'readline';
 import exit from 'exit';
+import { LoggerService } from '../logger';
 
 export class Watcher {
   private watcher: chokidar.FSWatcher;
@@ -15,6 +16,7 @@ export class Watcher {
   private isWatching: boolean = true;
   private showHelp: boolean = true;
   private readonly projectPath = path.resolve('../../../');
+  private readonly log: LoggerService = new LoggerService();
 
   constructor(
     private patterns: string[],
@@ -79,18 +81,14 @@ export class Watcher {
       this.showBindingsHelp();
     } catch (e) {
       spinner.error();
-      if (e instanceof Error) {
-        console.error(e.message);
-      }
+      this.log.error(e)
     }
   }
 
   private showBindingsHelp() {
     if (this.showHelp) {
-      console.log(
-        '\nR - rerun previous tests\nA - run all tests\nP - pause file watching\nT - toggle test caching\nC - clear console\nH - show/hide key bindings\nQ - Exit\n'
-          .bold,
-      );
+      this.log.info('\nR - rerun previous tests\nA - run all tests\nP - pause file watching\nT - toggle test caching\nC - clear console\nH - show/hide key bindings\nQ - Exit\n'
+        .bold);
     }
   }
 
@@ -174,7 +172,7 @@ export class Watcher {
 
   private showToggleInfo(switchValue: boolean, switchName: string) {
     switchValue
-      ? console.log(`${switchName} enabled`.yellow.bold)
-      : console.log(`${switchName} disabled`.yellow.bold);
+      ? this.log.info(`${switchName} enabled`.yellow.bold)
+      : this.log.info(`${switchName} disabled`.yellow.bold);
   }
 }

@@ -6,7 +6,6 @@ import {
   IDataTableArray,
   ITestCase,
 } from '../../lib/interfaces';
-import { findWhereErrorHasBeenThrown } from '../errorInfo';
 import colors from '@colors/colors';
 import exit from 'exit';
 import { LifecycleType } from '../../lib/types';
@@ -15,9 +14,11 @@ import { MockRegistry } from '../../lib';
 import { isTable } from '../../utils';
 import { TimeoutException } from '../../lib/exceptions';
 import { options } from '../cli';
+import { TestRunnerLogger } from '../logger';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
+  private static log: TestRunnerLogger = new TestRunnerLogger();
 
   public static async run() {
     try {
@@ -96,7 +97,7 @@ export class TestRunner {
         }
       }
     } catch (e) {
-      console.error(`    ⚠︎ Error during ${lifecyclePhase}: ${e}`.brightRed);
+      this.log.error(`    ⚠︎ Error during ${lifecyclePhase}: ${e}`.brightRed)
     }
   }
 
@@ -131,10 +132,10 @@ export class TestRunner {
         );
       }
 
-      this.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
+      this.log.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
     } catch (e: unknown) {
       this.isAllPassed = false;
-      this.handleError(e, methodName, caseDescription, testSuiteInstance);
+      this.log.handleError(e, methodName, caseDescription, testSuiteInstance);
     }
   }
 
@@ -202,28 +203,5 @@ export class TestRunner {
       )?.dataSets || [];
 
     return { dataTable, dataSets };
-  }
-
-  private static logTestResult(
-    description: string,
-    result: 'PASSED' | 'FAILED',
-    textColor: 'brightGreen' | 'brightRed' | 'grey',
-  ) {
-    const statusBadge = result === 'PASSED' ? '✓'.brightGreen : '✗'.brightRed;
-    console.log(`  ${statusBadge} ${description[textColor]}`);
-  }
-
-  private static handleError(
-    e: unknown,
-    methodName: string,
-    caseDescription: string,
-    testSuite: string,
-  ) {
-    this.logTestResult(caseDescription || methodName, 'FAILED', 'grey');
-    if (e instanceof Error) {
-      const testClassName = testSuite.constructor.name;
-      const errorInfo = findWhereErrorHasBeenThrown(e, testClassName);
-      console.error(`    ⚠︎ ${errorInfo || e}`.brightRed);
-    }
   }
 }

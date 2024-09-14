@@ -1,7 +1,7 @@
 import { program } from 'commander';
 import { StestOptions } from '../../lib/interfaces';
 import { Config, initializeConfig } from '../config';
-import { startWatcher } from '../watcher/startWatcher';
+import { startWatcher } from '../watcher';
 import { runTests } from '../bootstrap/runTests';
 
 const handleOptionsAndExecuteAction = async (options: StestOptions) => {
