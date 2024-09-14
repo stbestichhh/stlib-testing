@@ -73,7 +73,9 @@ export class TestRunner {
   }
 
   private static clearMocks(state: 'afterAll' | 'afterEach') {
-    const isAutoClearMocksEnabled = Config.getConfig('autoClearMocks') as boolean;
+    const isAutoClearMocksEnabled = Config.getConfig(
+      'autoClearMocks',
+    ) as boolean;
     if (isAutoClearMocksEnabled) {
       state === 'afterEach'
         ? MockRegistry.restoreAll()

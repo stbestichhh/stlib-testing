@@ -22,10 +22,12 @@ export class Config {
     await this.setConfigPath();
     Config.configuration = this.configPath
       ? await this.parseConfig()
-      : undefined
+      : undefined;
   }
 
-  public static getConfig<K extends keyof ConfigType>(key?: K): ConfigType | ConfigType[K] | undefined {
+  public static getConfig<K extends keyof ConfigType>(
+    key?: K,
+  ): ConfigType | ConfigType[K] | undefined {
     if (this.configuration) {
       return key ? this.configuration[key] : this.configuration;
     }
@@ -47,7 +49,9 @@ export class Config {
     }
   }
 
-  private async setConfigPathIterator(configFileNames: string[]): Promise<void> {
+  private async setConfigPathIterator(
+    configFileNames: string[],
+  ): Promise<void> {
     for (const fileName of configFileNames) {
       const configPath = path.join(this.projectPath, fileName);
       if (await isExists(configPath)) {
