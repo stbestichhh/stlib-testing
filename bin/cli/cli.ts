@@ -1,6 +1,6 @@
 import { program } from 'commander';
 import { StestOptions } from '../../lib/interfaces';
-import { initializeConfig } from '../config';
+import { Config, initializeConfig } from '../config';
 import { startWatcher } from '../watcher/startWatcher';
 import { runTests } from '../bootstrap/runTests';
 
@@ -9,6 +9,7 @@ const handleOptionsAndExecuteAction = async (options: StestOptions) => {
     await initializeConfig(options.init);
   }
 
+  await new Config(options).handleConfiguration();
   if (options.watch) {
     await startWatcher();
   } else {

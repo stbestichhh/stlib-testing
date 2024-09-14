@@ -24,7 +24,7 @@ export class FileLoader {
   }
 
   private static async getAllTestFiles() {
-    const config: ConfigType | undefined = await Config.handleConfiguration();
+    const config = await Config.getConfig() as ConfigType;
 
     const files = await glob(config?.pattern || '**/*.{spec,test}.ts', {
       ignore: config?.ignore || ['node_modules/**'],
