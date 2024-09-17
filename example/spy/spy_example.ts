@@ -38,10 +38,10 @@ class SpyingTestSuite {
 
   @Case('should track errors thrown by the function')
   testFunctionThrowsError() {
-    const example = new ExampleClass()
-    const spy = spyOn(example, 'greet')
+    const example = new ExampleClass();
     const mock = new Mock(example);
     mock.mockMethod('greet', () => { throw new Error });
+    const spy = spyOn(example, 'greet');
 
 
     let errorCaught = false;
@@ -52,5 +52,6 @@ class SpyingTestSuite {
     }
 
     assertThat(errorCaught).toBeTruthy();
+    assertThat(spy.getThrownErrors()).toHaveLength(1);
   }
 }
