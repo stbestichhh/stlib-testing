@@ -3,5 +3,5 @@ export interface ITestResult {
   caseName: string;
   status: 'PASSED' | 'FAILED';
   duration: number;
-  error?: string
+  error?: string;
 }

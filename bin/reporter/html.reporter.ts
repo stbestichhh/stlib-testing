@@ -34,7 +34,12 @@ export class HtmlReporter {
       </html>
     `;
 
-    const reportPath = path.join(this.projectPath, '.stest', 'reports', `${new Date().toISOString()}.html`);
+    const reportPath = path.join(
+      this.projectPath,
+      '.stest',
+      'reports',
+      `${new Date().toISOString()}.html`,
+    );
     if (!(await isExists(path.dirname(reportPath)))) {
       await fs.promises.mkdir(path.dirname(reportPath), { recursive: true });
     }
@@ -46,12 +51,14 @@ export class HtmlReporter {
   private static renderResults(results: ITestResult[]): string {
     const groupedResults = this.groupResultsBySuite(results);
     return groupedResults
-      .map(([suiteName, cases]) => `
+      .map(
+        ([suiteName, cases]) => `
         <div class="test-suite">
           <h2>Test Suite: ${suiteName}</h2>
           ${cases.map(this.renderTestCase).join('')}
         </div>
-      `)
+      `,
+      )
       .join('');
   }
 
@@ -68,12 +75,17 @@ export class HtmlReporter {
     `;
   }
 
-  private static groupResultsBySuite(results: ITestResult[]): [string, ITestResult[]][] {
+  private static groupResultsBySuite(
+    results: ITestResult[],
+  ): [string, ITestResult[]][] {
     return Object.entries(
-      results.reduce((acc, result) => {
-        (acc[result.suiteName] = acc[result.suiteName] || []).push(result);
-        return acc;
-      }, {} as { [suiteName: string]: ITestResult[] })
+      results.reduce(
+        (acc, result) => {
+          (acc[result.suiteName] = acc[result.suiteName] || []).push(result);
+          return acc;
+        },
+        {} as { [suiteName: string]: ITestResult[] },
+      ),
     );
   }
 }

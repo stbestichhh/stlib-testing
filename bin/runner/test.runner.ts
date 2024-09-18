@@ -4,7 +4,7 @@ import {
   IDataSet,
   IDataTable,
   IDataTableArray,
-  ITestCase
+  ITestCase,
 } from '../../lib/interfaces';
 import colors from '@colors/colors';
 import exit from 'exit';
@@ -111,7 +111,10 @@ export class TestRunner {
     dataTableArray: IDataTableArray[],
     timeout: number,
   ) {
-    const reportBuilder = new ReportBuilder(testSuiteInstance.constructor.name, methodName);
+    const reportBuilder = new ReportBuilder(
+      testSuiteInstance.constructor.name,
+      methodName,
+    );
     const startTime = performance.now();
 
     try {

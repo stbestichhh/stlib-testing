@@ -4,7 +4,7 @@ export class Report {
   private readonly suiteName: string;
   private readonly caseName: string;
   private duration: number = 0;
-  private status: "PASSED" | "FAILED" = 'FAILED';
+  private status: 'PASSED' | 'FAILED' = 'FAILED';
   private error: string | undefined;
 
   constructor(suiteName: string, caseName: string) {
@@ -18,7 +18,7 @@ export class Report {
       caseName: this.caseName,
       status: this.status,
       duration: this.duration,
-      error: this.error
+      error: this.error,
     };
   }
 
