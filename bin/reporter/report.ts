@@ -1,10 +1,10 @@
 import { ITestResult } from '../../lib/interfaces';
 
-export class Report implements ITestResult {
+export class Report {
   private readonly suiteName: string;
   private readonly caseName: string;
-  private duration: number;
-  private status: "PASSED" | "FAILED";
+  private duration: number = 0;
+  private status: "PASSED" | "FAILED" = 'FAILED';
   private error: string | undefined;
 
   constructor(suiteName: string, caseName: string) {
