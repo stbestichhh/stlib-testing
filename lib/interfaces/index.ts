@@ -5,3 +5,4 @@ export * from './IAfter_Before';
 export * from './IStestOptions';
 export * from './IDataSet';
 export * from './IDataTable';
+export * from './ITestResult'
