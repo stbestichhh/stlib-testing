@@ -4,7 +4,7 @@ import {
   IDataSet,
   IDataTable,
   IDataTableArray,
-  ITestCase,
+  ITestCase
 } from '../../lib/interfaces';
 import colors from '@colors/colors';
 import exit from 'exit';
@@ -15,6 +15,7 @@ import { isTable } from '../../utils';
 import { TimeoutException } from '../../lib/exceptions';
 import { options } from '../cli';
 import { TestRunnerLogger } from '../logger';
+import { ReportBuilder, TestReporter } from '../reporter';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
@@ -109,6 +110,9 @@ export class TestRunner {
     dataTableArray: IDataTableArray[],
     timeout: number,
   ) {
+    const reportBuilder = new ReportBuilder(testSuiteInstance.constructor.name, methodName);
+    const startTime = performance.now();
+
     try {
       const { dataTable, dataSets } = this.getCaseData(
         dataTableArray,
@@ -132,8 +136,23 @@ export class TestRunner {
         );
       }
 
+      const endTime = performance.now();
+      const testReport = reportBuilder
+        .status('PASSED')
+        .duration(endTime - startTime)
+        .getReport();
+      TestReporter.addResult(testReport);
+
       this.log.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
     } catch (e: unknown) {
+      const endTime = performance.now();
+      const testReport = reportBuilder
+        .status('FAILED')
+        .duration(endTime - startTime)
+        .thrown(e instanceof Error ? e.message : `Unknown error: ${e}`)
+        .getReport();
+      TestReporter.addResult(testReport);
+
       this.isAllPassed = false;
       this.log.handleError(e, methodName, caseDescription, testSuiteInstance);
     }
