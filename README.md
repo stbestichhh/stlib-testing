@@ -20,7 +20,7 @@
   * [Command Line Interface](#cli)
   * [Installation](#installation)
   * [Usage](#usage)
-  * [Configuration](#configuration)
+  * [Configuration](#configuration)  
 * [Contributing](#contributing)
 * [Changelog](#changelog)
 * [Authors](#authors)
@@ -213,6 +213,11 @@ Config properties:
 * ignore - files and directories to ignore
 * autoClearMocks - clears all created mocks after each test,
 * cacheWatcher - enables caching in watch mode, to run only new or changed tests
+* enableReporting - enables generating test reports.
+To enable it install a reporting package: 
+  ```shell
+  $ yarn add @stlib/testing-reporter
+  ```
 
 Config file example:
 
@@ -222,7 +227,8 @@ Config file example:
       "pattern": "test/**/*.{spec,test}.ts",
       "ignore": ["node_modules", "lib"],
       "autoClearMocks": true,
-      "cacheWatcher": false
+      "cacheWatcher": false,
+      "enableReporting": false
     }
     ```
 
@@ -234,6 +240,7 @@ Config file example:
       - lib
     autoClearMocks: true
     cacheWatcher: false
+    enableReporting: false
     ```
   
   * TS/JS:
@@ -245,6 +252,7 @@ Config file example:
       ignore: ["node_modules", "lib"],
       autoClearMocks: true,
       cacheWatcher: false,
+      enableReporting: false,
     };
     export default config;
     ```

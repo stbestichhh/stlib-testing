@@ -20,7 +20,7 @@ const handleOptionsAndExecuteAction = async (options: StestOptions) => {
 program
   .name('stest')
   .description('Testing framework for TypeScript Node.js applications')
-  .version('1.0.7.beta');
+  .version('1.0.7.beta.1');
 
 program
   .option(
