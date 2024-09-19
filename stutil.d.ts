@@ -154,6 +154,7 @@ export type StestConfig = {
   ignore?: string[];
   cacheWatcher?: boolean;
   autoClearMocks?: boolean;
+  enableReporting?: boolean;
 };
 
 export {};
