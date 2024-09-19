@@ -15,7 +15,11 @@ import { isTable } from '../../utils';
 import { TimeoutException } from '../../lib/exceptions';
 import { options } from '../cli';
 import { TestRunnerLogger } from '../logger';
-import { HtmlReporter, ReportBuilder, TestReporter } from '../reporter';
+import {
+  HtmlReporter,
+  ReportBuilder,
+  ReportsRegistry,
+} from '@stlib/testing-reporter';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
@@ -30,6 +34,7 @@ export class TestRunner {
     } finally {
       TestRegistry.clear();
       await HtmlReporter.generateReport();
+      ReportsRegistry.clearRegistry();
       process.nextTick(() => {
         if (!options.watch) {
           this.isAllPassed ? exit(0) : exit(1);
@@ -141,24 +146,21 @@ export class TestRunner {
       }
 
       const endTime = performance.now();
-      const testReport = reportBuilder
-        .status('PASSED')
-        .duration(endTime - startTime)
-        .getReport();
-      TestReporter.addResult(testReport.read());
+      reportBuilder.status('PASSED').duration(endTime - startTime);
 
       this.log.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
     } catch (e: unknown) {
       const endTime = performance.now();
-      const testReport = reportBuilder
+      reportBuilder
         .status('FAILED')
         .duration(endTime - startTime)
-        .thrown(e instanceof Error ? e.message : `Unknown error: ${e}`)
-        .getReport();
-      TestReporter.addResult(testReport.read());
+        .thrown(e instanceof Error ? e.message : `Unknown error: ${e}`);
 
       this.isAllPassed = false;
       this.log.handleError(e, methodName, caseDescription, testSuiteInstance);
+    } finally {
+      const testReport = reportBuilder.getReport().read();
+      ReportsRegistry.addReport(testReport);
     }
   }
 
