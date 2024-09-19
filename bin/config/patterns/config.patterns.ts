@@ -6,6 +6,7 @@ const config: StestConfig = {
   ignore: ['node_modules'],
   autoClearMocks: true,
   cacheWatcher: false,
+  enableReporting: false,
 };
 export default config;
 `,
@@ -14,6 +15,7 @@ export default config;
   ignore: ['node_modules'],
   autoClearMocks: true,
   cacheWatcher: false,
+  enableReporting: false,
 };
 module.exports = config;
 `,
@@ -21,11 +23,13 @@ module.exports = config;
   "pattern": "test/**/*.{spec,test}.ts",
   "ignore": ["node_modules"],
   "autoClearMocks": true,
-  "cacheWatcher": false
+  "cacheWatcher": false,
+  "enableReporting": false
 }`,
   yml: `pattern: "test/**/*.{spec,test}.ts"
 ignore:
   - node_modules
 autoClearMocks: true,
-cacheWatcher: false`,
+cacheWatcher: false
+enableReporting: false`,
 };

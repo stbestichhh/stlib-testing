@@ -3,4 +3,5 @@ export type ConfigType = {
   ignore?: string[];
   cacheWatcher?: boolean;
   autoClearMocks?: boolean;
+  enableReporting?: boolean;
 };

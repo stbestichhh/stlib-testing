@@ -15,26 +15,53 @@ import { isTable } from '../../utils';
 import { TimeoutException } from '../../lib/exceptions';
 import { options } from '../cli';
 import { TestRunnerLogger } from '../logger';
-import { HtmlReporter, ReportBuilder, TestReporter } from '../reporter';
 
 export class TestRunner {
   private static isAllPassed: boolean = true;
+  private static isReportingEnabled = false;
+  private static reporterModule: Record<any, any> = {};
   private static log: TestRunnerLogger = new TestRunnerLogger();
 
   public static async run() {
     try {
+      this.isReportingEnabled =
+        (Config.getConfig('enableReporting') as boolean) || false;
+
+      if (this.isReportingEnabled) {
+        await this.enableReporting();
+      }
+
       const testSuites = TestRegistry.get();
       for (const { testName, target } of testSuites) {
         await this.runTestSuite(testName, target);
       }
     } finally {
       TestRegistry.clear();
-      await HtmlReporter.generateReport();
+
+      if (this.isReportingEnabled && this.reporterModule?.HtmlReporter) {
+        await this.reporterModule.HtmlReporter.generateReport();
+        this.reporterModule.ReportsRegistry.clearRegistry();
+      }
+
       process.nextTick(() => {
         if (!options.watch) {
           this.isAllPassed ? exit(0) : exit(1);
         }
       });
+    }
+  }
+
+  private static async enableReporting() {
+    try {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore This import is for optional dependency.
+      this.reporterModule = await import('@stlib/testing-reporter');
+    } catch (e) {
+      this.log.error(
+        colors.yellow(
+          `\n⚠︎ For using test reporting feature, install '@stlib/testing-reporter' first.`,
+        ),
+      );
     }
   }
 
@@ -111,11 +138,10 @@ export class TestRunner {
     dataTableArray: IDataTableArray[],
     timeout: number,
   ) {
-    const reportBuilder = new ReportBuilder(
-      testSuiteInstance.constructor.name,
-      methodName,
-    );
     const startTime = performance.now();
+    let status: 'PASSED' | 'FAILED' = 'FAILED';
+    let error: string = '';
+    let duration: number = 0;
 
     try {
       const { dataTable, dataSets } = this.getCaseData(
@@ -123,42 +149,59 @@ export class TestRunner {
         dataSetsArray,
         methodName,
       );
+      const dataToUse = dataTable.length > 0 ? dataTable : dataSets;
 
-      if (dataTable.length > 0) {
-        await this.runTestCaseWithData(
-          testSuiteInstance,
-          methodName,
-          dataTable,
-          timeout,
-        );
-      } else {
-        await this.runTestCaseWithData(
-          testSuiteInstance,
-          methodName,
-          dataSets,
-          timeout,
-        );
-      }
+      await this.runTestCaseWithData(
+        testSuiteInstance,
+        methodName,
+        dataToUse,
+        timeout,
+      );
 
-      const endTime = performance.now();
-      const testReport = reportBuilder
-        .status('PASSED')
-        .duration(endTime - startTime)
-        .getReport();
-      TestReporter.addResult(testReport.read());
-
-      this.log.logTestResult(caseDescription || methodName, 'PASSED', 'grey');
+      status = 'PASSED';
+      this.log.logTestResult(caseDescription || methodName, status, 'grey');
     } catch (e: unknown) {
-      const endTime = performance.now();
-      const testReport = reportBuilder
-        .status('FAILED')
-        .duration(endTime - startTime)
-        .thrown(e instanceof Error ? e.message : `Unknown error: ${e}`)
-        .getReport();
-      TestReporter.addResult(testReport.read());
-
+      status = 'FAILED';
+      error = e instanceof Error ? e.message : `Unknown error: ${e}`;
       this.isAllPassed = false;
       this.log.handleError(e, methodName, caseDescription, testSuiteInstance);
+    } finally {
+      duration = performance.now() - startTime;
+      this.reportTestResult(
+        testSuiteInstance,
+        methodName,
+        status,
+        duration,
+        error,
+      );
+    }
+  }
+
+  private static reportTestResult(
+    testSuiteInstance: any,
+    methodName: string,
+    status: 'PASSED' | 'FAILED',
+    duration: number,
+    error: string,
+  ) {
+    if (
+      this.isReportingEnabled &&
+      this.reporterModule?.ReportBuilder &&
+      this.reporterModule?.ReportsRegistry
+    ) {
+      const reportBuilder = new this.reporterModule.ReportBuilder(
+        testSuiteInstance.constructor.name,
+        methodName,
+      )
+        .status(status)
+        .duration(duration);
+
+      if (error) {
+        reportBuilder.thrown(error);
+      }
+
+      const testReport = reportBuilder.getReport().read();
+      this.reporterModule.ReportsRegistry.addReport(testReport);
     }
   }
 
