@@ -1044,10 +1044,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stlib/testing-reporter@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "@stlib/testing-reporter@npm:0.0.1"
-  checksum: 10c0/c5f23f783184f7d001017b925bff9f5e05f131de7b0d6b3baa9eb6dbbdcfceb88c1b9c97c040b829da20837e29d2ba58e4b304a98ecaf24396830fd66e61e38e
+"@stlib/testing-reporter@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "@stlib/testing-reporter@npm:0.0.2"
+  checksum: 10c0/1ad11327967530f7438c9140603bd5eeec0b984a12d4c79ad85ea082e3ffc1c25fc757bd55482a8546d68fe8a3268ee4ae2e4d6ea13fb927c3ac70cf918e22ce
   languageName: node
   linkType: hard
 
@@ -1059,7 +1059,7 @@ __metadata:
     "@commitlint/cli": "npm:^19.5.0"
     "@commitlint/config-conventional": "npm:^19.5.0"
     "@commitlint/types": "npm:^19.5.0"
-    "@stlib/testing-reporter": "npm:^0.0.1"
+    "@stlib/testing-reporter": "npm:^0.0.2"
     "@types/exit": "npm:^0.1.33"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.12.10"
