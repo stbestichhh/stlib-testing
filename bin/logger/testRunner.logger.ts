@@ -22,6 +22,7 @@ export class TestRunnerLogger extends LoggerService {
       const testClassName = testSuite.constructor.name;
       const errorInfo = findWhereErrorHasBeenThrown(e, testClassName);
       console.error(`    ⚠︎ ${errorInfo || e}`.brightRed);
+      return errorInfo;
     }
   }
 }

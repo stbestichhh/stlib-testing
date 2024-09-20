@@ -140,7 +140,7 @@ export class TestRunner {
   ) {
     const startTime = performance.now();
     let status: 'PASSED' | 'FAILED' = 'FAILED';
-    let error: string = '';
+    let error: string | undefined = '';
     let duration: number = 0;
 
     try {
@@ -162,9 +162,13 @@ export class TestRunner {
       this.log.logTestResult(caseDescription || methodName, status, 'grey');
     } catch (e: unknown) {
       status = 'FAILED';
-      error = e instanceof Error ? e.message : `Unknown error: ${e}`;
       this.isAllPassed = false;
-      this.log.handleError(e, methodName, caseDescription, testSuiteInstance);
+      error = this.log.handleError(
+        e,
+        methodName,
+        caseDescription,
+        testSuiteInstance,
+      );
     } finally {
       duration = performance.now() - startTime;
       this.reportTestResult(
@@ -182,7 +186,7 @@ export class TestRunner {
     methodName: string,
     status: 'PASSED' | 'FAILED',
     duration: number,
-    error: string,
+    error?: string,
   ) {
     if (
       this.isReportingEnabled &&

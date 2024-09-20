@@ -1,4 +1,7 @@
-export function findWhereErrorHasBeenThrown(e: Error, testClassName: string) {
+export function findWhereErrorHasBeenThrown(
+  e: Error,
+  testClassName: string,
+): string | undefined {
   const stackLines = e.stack?.split('\n');
   if (stackLines) {
     const relevantLine = stackLines.find((line) =>
