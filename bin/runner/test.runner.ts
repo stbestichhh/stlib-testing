@@ -69,10 +69,14 @@ export class TestRunner {
     const testSuite = new target();
     console.log(colors.white.bold(`\n${testName}`));
 
-    await this.runTestCycle(target, testSuite);
+    await this.runTestCycle(target, testSuite, testName);
   }
 
-  private static async runTestCycle(target: any, testSuite: any) {
+  private static async runTestCycle(
+    target: any,
+    testSuite: any,
+    testSuiteName: string,
+  ) {
     const testCases: ITestCase[] = target.testCases || [];
     const dataSetsArray: IDataSet[] = target.testCasesDataSets || [];
     const dataTableArray: IDataTableArray[] = target.testCasesDataTable || [];
@@ -88,6 +92,7 @@ export class TestRunner {
       await this.runLifecycleMethods(testSuite, beforeEach, 'beforeEach');
       await this.runTestCase(
         testSuite,
+        testSuiteName,
         methodName,
         caseDescription,
         dataSetsArray,
@@ -132,6 +137,7 @@ export class TestRunner {
 
   private static async runTestCase(
     testSuiteInstance: any,
+    testSuiteName: string,
     methodName: string,
     caseDescription: string,
     dataSetsArray: IDataSet[],
@@ -140,7 +146,7 @@ export class TestRunner {
   ) {
     const startTime = performance.now();
     let status: 'PASSED' | 'FAILED' = 'FAILED';
-    let error: string = '';
+    let error: string | undefined = '';
     let duration: number = 0;
 
     try {
@@ -162,14 +168,18 @@ export class TestRunner {
       this.log.logTestResult(caseDescription || methodName, status, 'grey');
     } catch (e: unknown) {
       status = 'FAILED';
-      error = e instanceof Error ? e.message : `Unknown error: ${e}`;
       this.isAllPassed = false;
-      this.log.handleError(e, methodName, caseDescription, testSuiteInstance);
+      error = this.log.handleError(
+        e,
+        methodName,
+        caseDescription,
+        testSuiteInstance,
+      );
     } finally {
       duration = performance.now() - startTime;
       this.reportTestResult(
-        testSuiteInstance,
-        methodName,
+        testSuiteName,
+        caseDescription || methodName,
         status,
         duration,
         error,
@@ -178,11 +188,11 @@ export class TestRunner {
   }
 
   private static reportTestResult(
-    testSuiteInstance: any,
+    testSuiteName: string,
     methodName: string,
     status: 'PASSED' | 'FAILED',
     duration: number,
-    error: string,
+    error?: string,
   ) {
     if (
       this.isReportingEnabled &&
@@ -190,7 +200,7 @@ export class TestRunner {
       this.reporterModule?.ReportsRegistry
     ) {
       const reportBuilder = new this.reporterModule.ReportBuilder(
-        testSuiteInstance.constructor.name,
+        testSuiteName,
         methodName,
       )
         .status(status)
