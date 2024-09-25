@@ -151,6 +151,7 @@ $ npx stest
 | `toSatisfy(predicate: (value: any) => boolean)`                | Check if actual satisfies a predicate                                                                                                                   |
 | `toIncludeAllMembers(expected: any[])`                         | Check if actual includes all members of expected array                                                                                                  |
 | `toIncludeAnyMembers(expected: any[])`                         | Check if actual includes at least one member of expected array                                                                                          |
+| `toMatchSnapshot(snapshotName?: string)`                       | Matches actual data with the last created snapshot, or chosen one with using name                                                                       |
 
 #### Mocking API
  
@@ -179,10 +180,21 @@ $ npx stest
 
 #### Spy API
 
-Create a new spy by `spyOn` function:
+Create a new spy by `spyOn(instance: any, methodName: string)` function:
 ```TypeScript
 const example = new ExampleClass();
 const greetSpy = spyOn(example, 'greet');
+```
+
+#### Snapshots API
+
+Create a new snapshot by `shot(snapshotName: string, data: any)` function:
+```TypeScript
+shot('snap', '<h1>Hello</h1>');
+shot('other snap', '<h1>Bye</h1>');
+
+assertThat('<h1>Bye</h1>').toMatchSnapshot();
+assertThat('<h1>Hello</h1>').toMatchSnapshot('snap');
 ```
 
 | Class                                    | Method                                | Description                                                                 |

@@ -1,5 +1,6 @@
 import { IAssertion } from '../interfaces';
 import { AssertionException } from '../exceptions';
+import { SnapshotsRegistry } from '../snapshots/snapshotsRegistry';
 
 export function assertThat(actual: any): IAssertion {
   function assertFunction() {
@@ -379,6 +380,20 @@ export function assertThat(actual: any): IAssertion {
       if (!found) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to include at least one element of ${JSON.stringify(expected)}`,
+        );
+      }
+
+      return this;
+    },
+
+    toMatchSnapshot(name?: string): IAssertion {
+      const reg = name
+        ? SnapshotsRegistry.getReg(name)
+        : SnapshotsRegistry.last();
+
+      if (!reg.snapshot.match(actual, name)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to match snapshot ${JSON.stringify(reg.name)}`,
         );
       }
 
