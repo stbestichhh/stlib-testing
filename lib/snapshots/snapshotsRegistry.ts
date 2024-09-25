@@ -1,4 +1,5 @@
 import { SnapshotReg } from '../types';
+import { SnapshotException } from '../exceptions';
 
 export class SnapshotsRegistry {
   private static snapshotsRegistry: SnapshotReg[] = [];
@@ -8,10 +9,20 @@ export class SnapshotsRegistry {
   }
 
   public static getReg(name: string) {
-    return this.snapshotsRegistry.find((reg) => reg.name === name);
+    const reg = this.snapshotsRegistry.find((reg) => reg.name === name);
+
+    if (!reg) {
+      throw new SnapshotException(`No snapshot found with name ${name}`);
+    }
+
+    return reg;
   }
 
   public static get() {
     return Array.from(this.snapshotsRegistry);
+  }
+
+  public static last() {
+    return this.snapshotsRegistry[this.snapshotsRegistry.length - 1];
   }
 }

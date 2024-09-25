@@ -1,6 +1,5 @@
 import path from 'node:path';
 import fs from 'fs';
-import { SnapshotException } from '../exceptions';
 
 export class Snapshot {
   private lastSnapshotName: string;
@@ -24,12 +23,10 @@ export class Snapshot {
     const storedData = JSON.parse(fs.readFileSync(snapshotPath, 'utf-8'));
 
     if (JSON.stringify(storedData) !== JSON.stringify(data)) {
-      throw new SnapshotException(
-        `Expected ${JSON.stringify(storedData)} to match ${JSON.stringify(data)}`,
-      );
+      return false;
     }
-
     this.removeSnapshot(name);
+    return true;
   }
 
   private snapshotPath(name: string) {

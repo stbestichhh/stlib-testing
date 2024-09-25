@@ -7,7 +7,7 @@ export interface IAssertion
     IErrorAssertion,
     ICollectionAssertion,
     IStringAssertion,
-    ISnapshotAsserion {
+    ISnapshotAssertion {
   toSatisfy(predicate: (value: any) => boolean): IAssertion;
 }
 
@@ -65,6 +65,6 @@ interface IStringAssertion {
   toEndWith(expected: string): IAssertion;
 }
 
-interface ISnapshotAsserion {
-  toMatchSnapshot(name: string);
+interface ISnapshotAssertion {
+  toMatchSnapshot(name: string): IAssertion;
 }

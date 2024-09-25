@@ -387,10 +387,16 @@ export function assertThat(actual: any): IAssertion {
     },
 
     toMatchSnapshot(name?: string): IAssertion {
-      const { snapshot } = name
+      const reg = name
         ? SnapshotsRegistry.getReg(name)
-        : SnapshotsRegistry.get()[0];
-      snapshot.match(actual, name);
+        : SnapshotsRegistry.last();
+
+      if (!reg.snapshot.match(actual, name)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to match snapshot ${JSON.stringify(reg.name)}`,
+        );
+      }
+
       return this;
     },
   };
