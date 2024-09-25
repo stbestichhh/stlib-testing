@@ -1,1 +1,1 @@
-export * from './snapshotClass';
+export * from './snapshot';
