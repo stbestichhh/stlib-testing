@@ -7,7 +7,8 @@ interface IAssertion
     IPropertyAssertion,
     IErrorAssertion,
     ICollectionAssertion,
-    IStringAssertion {
+    IStringAssertion,
+    ISnapshotAsserion {
   toSatisfy(predicate: (value: any) => boolean): IAssertion;
 }
 
@@ -62,6 +63,10 @@ interface IStringAssertion {
   toMatch(expected: RegExp | string): IAssertion;
   toStartWith(expected: string): IAssertion;
   toEndWith(expected: string): IAssertion;
+}
+
+interface ISnapshotAsserion {
+  toMatchSnapshot(name?: string): IAssertion;
 }
 
 export function assertThat(actual: any): IAssertion;
@@ -149,10 +154,7 @@ class Spy {
 export function spyOn(object: any, methodName: string): Spy;
 
 // Snapshot
-export class Snapshot {
-  public static save(name: string, data: any): void;
-  public static match(name: string, data: any): void;
-}
+export function shot(name: string, data: any): void;
 
 // Config Type
 export type StestConfig = {

@@ -1,5 +1,6 @@
 import { IAssertion } from '../interfaces';
 import { AssertionException } from '../exceptions';
+import { SnapshotsRegistry } from '../snapshots/snapshotsRegistry';
 
 export function assertThat(actual: any): IAssertion {
   function assertFunction() {
@@ -382,6 +383,14 @@ export function assertThat(actual: any): IAssertion {
         );
       }
 
+      return this;
+    },
+
+    toMatchSnapshot(name?: string): IAssertion {
+      const { snapshot } = name
+        ? SnapshotsRegistry.getReg(name)
+        : SnapshotsRegistry.get()[0];
+      snapshot.match(actual, name);
       return this;
     },
   };
