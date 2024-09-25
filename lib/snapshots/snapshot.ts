@@ -21,6 +21,10 @@ export class Snapshot {
     }
   }
 
+  private static removeSnapshot(name: string) {
+    fs.rmSync(this.snapshotPath(name));
+  }
+
   public static save(name: string, data: any) {
     const snapshotPath = this.snapshotPath(name);
 
@@ -37,5 +41,7 @@ export class Snapshot {
         `Expected ${JSON.stringify(storedData)} to match ${JSON.stringify(data)}`,
       );
     }
+
+    this.removeSnapshot(name);
   }
 }
