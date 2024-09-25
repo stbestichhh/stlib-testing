@@ -150,10 +150,8 @@ export function spyOn(object: any, methodName: string): Spy;
 
 // Snapshot
 export class Snapshot {
-  public static save(name: string, data: any): Promise<void>;
-  public static saveSync(name: string, data: any): void;
-  public static match(name: string, data: any): Promise<void>;
-  public static matchSync(name: string, data: any): void;
+  public static save(name: string, data: any): void;
+  public static match(name: string, data: any): void;
 }
 
 // Config Type
