@@ -4,7 +4,7 @@ import { TestRunner } from '../runner';
 import { FileLoader } from '../loader';
 import { spinner, spinnerWrapper } from '../spinner';
 import { Config } from '../config';
-import { actionSymbol, ActionSymbolType } from '../../lib/types';
+import { actionSymbol, ActionSymbolType, AnyFunction } from '../../lib/types';
 import * as readline from 'readline';
 import exit from 'exit';
 import { LoggerService } from '../logger';
@@ -108,29 +108,19 @@ export class Watcher {
   }
 
   private async handleKeyAction(key: string) {
-    switch (key) {
-      case 'h':
-        this.toggleHelp();
-        break;
-      case 't':
-        this.toggleCache();
-        break;
-      case 'p':
-        await this.togglePause();
-        break;
-      case 'a':
-        await this.rerunAllTests();
-        break;
-      case 'r':
-        await this.rerunLastTests();
-        break;
-      case 'c':
-        this.clearConsole();
-        break;
-      case 'q':
-        exit(0);
-        break;
+    if (key === 'q') {
+      exit(0);
     }
+
+    const bindActions: Record<string, AnyFunction> = {
+      h: this.toggleHelp.bind(this),
+      t: this.toggleCache.bind(this),
+      p: this.togglePause.bind(this),
+      a: this.rerunAllTests.bind(this),
+      r: this.rerunLastTests.bind(this),
+      c: this.clearConsole.bind(this),
+    };
+    await bindActions[key]();
   }
 
   private async rerunLastTests() {
@@ -164,6 +154,9 @@ export class Watcher {
   private toggleHelp() {
     this.showHelp = !this.showHelp;
     this.showToggleInfo(this.showHelp, 'Help');
+    if (this.showHelp) {
+      this.showBindingsHelp();
+    }
   }
 
   private clearConsole() {
