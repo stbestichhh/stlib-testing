@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added:
 * Snapshot testing
 * Time log
+* Small watch mode improvement
 
 ## Patch 1.0.7
 ### Added:
