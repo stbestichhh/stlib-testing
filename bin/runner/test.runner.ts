@@ -23,6 +23,8 @@ export class TestRunner {
   private static log: TestRunnerLogger = new TestRunnerLogger();
 
   public static async run() {
+    const startTime = performance.now();
+
     try {
       this.isReportingEnabled =
         (Config.getConfig('enableReporting') as boolean) || false;
@@ -36,6 +38,9 @@ export class TestRunner {
         await this.runTestSuite(testName, target);
       }
     } finally {
+      this.log.info(
+        `\nTime: ${((performance.now() - startTime) / 1000).toFixed(2)} s`,
+      );
       TestRegistry.clear();
 
       if (this.isReportingEnabled && this.reporterModule?.HtmlReporter) {
