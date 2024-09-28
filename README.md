@@ -186,17 +186,6 @@ const example = new ExampleClass();
 const greetSpy = spyOn(example, 'greet');
 ```
 
-#### Snapshots API
-
-Create a new snapshot by `shot(snapshotName: string, data: any)` function:
-```TypeScript
-shot('snap', '<h1>Hello</h1>');
-shot('other snap', '<h1>Bye</h1>');
-
-assertThat('<h1>Bye</h1>').toMatchSnapshot();
-assertThat('<h1>Hello</h1>').toMatchSnapshot('snap');
-```
-
 | Class                                    | Method                                | Description                                                                 |
 |------------------------------------------|---------------------------------------|-----------------------------------------------------------------------------|
 | `spyOn(object: any, methodName: string)` |                                       | Creates new spy on class method                                             |
@@ -207,6 +196,17 @@ assertThat('<h1>Hello</h1>').toMatchSnapshot('snap');
 |                                          | `getThrownErrors(callIndex?: number)` | Returns an array with with all thrown errors                                |
 |                                          | `wasCalled(amount?: number)`          | Returns true if method was called at least once or more than `amount` times |
 |                                          | `wasCalledWith(...args: any[])`       | Returns true if method was called with specified arguments at least once    |
+
+#### Snapshots API
+
+Create a new snapshot by `shot(snapshotName: string, data: any)` function:
+```TypeScript
+shot('snap', '<h1>Hello</h1>');
+shot('other snap', '<h1>Bye</h1>');
+
+assertThat('<h1>Bye</h1>').toMatchSnapshot();
+assertThat('<h1>Hello</h1>').toMatchSnapshot('snap');
+```
 
 #### Configuration
 To provide custom configuration for `stest` create `stest.config.{json,yml,ts,js}` file in project base directory. \
