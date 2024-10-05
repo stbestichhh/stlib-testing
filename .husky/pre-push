@@ -1,3 +1,0 @@
-rm -rf ./dist
-yarn build
-yarn test

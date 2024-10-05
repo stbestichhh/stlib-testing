@@ -35,6 +35,17 @@ export class FileLoader {
   }
 
   private static deleteModuleCache(filePath: string) {
-    delete require.cache[require.resolve(filePath)];
+    const resolvedPath = require.resolve(filePath);
+
+    if (require.cache[resolvedPath]?.children) {
+      require.cache[resolvedPath]?.children.forEach((child: any) => {
+        delete require.cache[child.id];
+      });
+    }
+
+    if (require.cache[resolvedPath]) {
+      console.log(require.cache[resolvedPath]);
+      delete require.cache[resolvedPath];
+    }
   }
 }
