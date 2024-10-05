@@ -1,4 +1,4 @@
-import chokidar from 'chokidar';
+import * as chokidar from 'chokidar';
 import path from 'node:path';
 import { TestRunner } from '../runner';
 import { FileLoader } from '../loader';
@@ -20,7 +20,7 @@ export class Watcher {
 
   constructor(
     private patterns: string[],
-    private options: chokidar.WatchOptions = {},
+    private options: chokidar.ChokidarOptions = {},
   ) {
     this.watcher = this.createWatcher();
 
