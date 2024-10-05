@@ -5,10 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
-### Updated:
-* New chokidar version & other deps. More info [here](https://github.com/stbestichhh/stlib-testing/pull/87)
-
 ## Update 1.1.0
 ### Added:
 * Snapshot testing
