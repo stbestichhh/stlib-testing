@@ -120,7 +120,7 @@ export class Watcher {
       r: this.rerunLastTests.bind(this),
       c: this.clearConsole.bind(this),
     };
-    await bindActions[key]();
+    await bindActions[key]?.();
   }
 
   private async rerunLastTests() {
