@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ## Added:
-* New assertions. See [assertions API](README.md#assertions-api) 
+* New assertions. See [assertions API](README.md#assertions-api)
+* New spy method `call(...args: any[])`, which allows to run function with spying it 
 
 ## Fix:
 * Fixed error on wrong keybinding pressed

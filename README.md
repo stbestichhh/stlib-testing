@@ -185,10 +185,27 @@ $ npx stest
 #### Spy API
 
 Create a new spy by `spyOn(instance: any, methodName: string)` function:
-```TypeScript
-const example = new ExampleClass();
-const greetSpy = spyOn(example, 'greet');
-```
+
+* Spy methods:
+  ```TypeScript
+  const example = new ExampleClass();
+  const greetSpy = spyOn(example, 'greet');
+  
+  // Call method
+  example.greet('Hello, World!');
+  ```
+* Spy functions
+  ```TypeScript
+  const func = () => { return 'Hello' };
+  const greetSpy = spyOn(func);
+  
+  // Call function  
+  greetSpy.call('Hello, World!');
+  greetSpy.getCallCount(); // 1
+  
+  // Spy won't work for calling function directly
+  func('Hello, World!'); // still 1
+  ```
 
 | Class                                    | Method                                | Description                                                                 |
 |------------------------------------------|---------------------------------------|-----------------------------------------------------------------------------|
@@ -200,6 +217,7 @@ const greetSpy = spyOn(example, 'greet');
 |                                          | `getThrownErrors(callIndex?: number)` | Returns an array with with all thrown errors                                |
 |                                          | `wasCalled(amount?: number)`          | Returns true if method was called at least once or more than `amount` times |
 |                                          | `wasCalledWith(...args: any[])`       | Returns true if method was called with specified arguments at least once    |
+|                                          | `call(...args: any[])`                | Calls spied function                                                        |
 
 #### Snapshots API
 

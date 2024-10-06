@@ -154,9 +154,10 @@ class Spy {
   public getThrownErrors(callIndex?: number): any[];
   public wasCalled(): boolean;
   public wasCalledWith(...args: any[]): boolean;
+  public call(...args: any[]): void;
 }
 
-export function spyOn(object: any, methodName: string): Spy;
+export function spyOn(object: any, methodName?: string): Spy;
 
 // Snapshot
 export function shot(name: string, data: any): void;

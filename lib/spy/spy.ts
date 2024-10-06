@@ -2,12 +2,12 @@ import { AnyFunction } from '../types';
 
 export class Spy {
   private originalFunction: AnyFunction;
-  private context: any;
   private callCount: number = 0;
   private callArgs: any[][] = [];
   private callResults: any[] = [];
   private callOrder: number[] = [];
   private thrownExceptions: any[] = [];
+  private readonly context: any;
 
   constructor(originalFunction: AnyFunction, context: any = null) {
     this.originalFunction = originalFunction;
@@ -59,6 +59,10 @@ export class Spy {
 
   public wasCalledWith(...args: any[]) {
     return this.callArgs.some((callArgs) => this.compareArgs(callArgs, args));
+  }
+
+  public call(...args: any[]) {
+    this.spyWrapper(...args);
   }
 
   private compareArgs(args1: any[], args2: any[]) {
