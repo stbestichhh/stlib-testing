@@ -6,10 +6,26 @@ class ExampleClass {
   }
 }
 
+const greet = (name: string) => {
+  return `Hello, ${name}!`;
+}
+
 @Test('Spying Example')
 class SpyingTestSuite {
 
   @Case('should track function calls')
+  testFunctionSpying() {
+    const greetSpy = spyOn(greet);
+
+    greetSpy.call('Alice');
+    greetSpy.call('Bob');
+
+    assertThat(greetSpy.getCallCount()).toEqual(2);
+    assertThat(greetSpy.wasCalledWith('Alice')).toBeTruthy();
+    assertThat(greetSpy.getCallArgs(1)[0]).toEqual('Bob');
+  }
+
+  @Case('should track method calls')
   testFunctionSpying() {
     const example = new ExampleClass();
     const greetSpy = spyOn(example, 'greet');
@@ -22,7 +38,7 @@ class SpyingTestSuite {
     assertThat(greetSpy.getCallArgs(1)[0]).toEqual('Bob');
   }
 
-  @Case('should track the order of function calls')
+  @Case('should track the order of method calls')
   testFunctionCallOrder() {
     const example = new ExampleClass();
     const greetSpy = spyOn(example, 'greet');
@@ -36,7 +52,7 @@ class SpyingTestSuite {
     assertThat(callOrder[1]).toEqual(2);
   }
 
-  @Case('should track errors thrown by the function')
+  @Case('should track errors thrown by the method')
   testFunctionThrowsError() {
     const example = new ExampleClass();
     const mock = new Mock(example);

@@ -236,7 +236,7 @@ export function assertThat(actual: any): IAssertion {
       return this;
     },
 
-    toHaveProperties(properties: any[]): IAssertion {
+    toHaveAllProperties(properties: any[]): IAssertion {
       for (const prop of properties) {
         if (!Object.hasOwn(actual, prop)) {
           throw new AssertionException(
