@@ -2,6 +2,13 @@ import { Spy } from './spy';
 import { MockRegistry } from '../mocking';
 
 export function spyOn(object: any, methodName?: string) {
+  if (
+    methodName === '__proto__' ||
+    methodName === 'constructor' ||
+    methodName === 'prototype'
+  ) {
+    throw new Error('Invalid method name');
+  }
   const isFunctionSpy = typeof object === 'function' && !methodName;
 
   const originalMethod = isFunctionSpy ? object : object[methodName!];
