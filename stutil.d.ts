@@ -18,6 +18,8 @@ interface IEqualityAssertion {
   toStrictEqual(expected: any): IAssertion;
   toStrictNotEqual(expected: any): IAssertion;
   toBe(expected: any): IAssertion;
+  toNotBe(expected: any): IAssertion;
+  toObjectEqual(expected: any): IAssertion;
 }
 
 interface ITruthinessAssertion {
@@ -44,6 +46,9 @@ interface ITypeAssertion {
 
 interface IPropertyAssertion {
   toHaveProperty(property: any): IAssertion;
+  toHaveProperties(properties: any[]): IAssertion;
+  toHaveAnyProperties(properties: any[]): IAssertion;
+  toHavePropertyEqual(property: any, value: any): IAssertion;
   toHaveLength(expected: number): IAssertion;
 }
 

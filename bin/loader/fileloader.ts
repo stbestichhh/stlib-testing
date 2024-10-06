@@ -44,7 +44,6 @@ export class FileLoader {
     }
 
     if (require.cache[resolvedPath]) {
-      console.log(require.cache[resolvedPath]);
       delete require.cache[resolvedPath];
     }
   }

@@ -58,6 +58,20 @@ export function assertThat(actual: any): IAssertion {
       return this.toNotEqual(expected);
     },
 
+    toObjectEqual(expected: any): IAssertion {
+      if (actual instanceof Object && expected instanceof Object) {
+        const actualStr = JSON.stringify(actual);
+        const expectedStr = JSON.stringify(expected);
+        if (expectedStr !== actualStr) {
+          throw new AssertionException(
+            `Expected ${JSON.stringify(actual)} to equal ${JSON.stringify(expected)}`,
+          );
+        }
+      }
+
+      return this;
+    },
+
     toBeTruthy(): IAssertion {
       if (!actual) {
         throw new AssertionException(
@@ -200,6 +214,46 @@ export function assertThat(actual: any): IAssertion {
       if (!Object.hasOwn(actual, property)) {
         throw new AssertionException(
           `Expected ${JSON.stringify(actual)} to has own property ${JSON.stringify(property)}`,
+        );
+      }
+
+      return this;
+    },
+
+    toHavePropertyEqual(property: any, value: any): IAssertion {
+      if (!Object.hasOwn(actual, property)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to has own property ${JSON.stringify(property)}`,
+        );
+      }
+
+      if (!Object.values(actual).includes(value)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to has own property ${JSON.stringify(property)} equal ${JSON.stringify(value)}`,
+        );
+      }
+
+      return this;
+    },
+
+    toHaveProperties(properties: any[]): IAssertion {
+      for (const prop of properties) {
+        if (!Object.hasOwn(actual, prop)) {
+          throw new AssertionException(
+            `Expected ${JSON.stringify(actual)} to has all own properties of ${JSON.stringify(properties)}, but missing ${JSON.stringify(prop)}`,
+          );
+        }
+      }
+
+      return this;
+    },
+
+    toHaveAnyProperties(properties: any[]): IAssertion {
+      const found = properties.some((prop) => Object.hasOwn(actual, prop));
+
+      if (!found) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to has at least one own properties of ${JSON.stringify(properties)}`,
         );
       }
 
