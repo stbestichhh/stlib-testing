@@ -58,6 +58,20 @@ export function assertThat(actual: any): IAssertion {
       return this.toNotEqual(expected);
     },
 
+    toObjectEqual(expected: any): IAssertion {
+      if (actual instanceof Object && expected instanceof Object) {
+        const actualStr = JSON.stringify(actual);
+        const expectedStr = JSON.stringify(expected);
+        if (expectedStr !== actualStr) {
+          throw new AssertionException(
+            `Expected ${JSON.stringify(actual)} to equal ${JSON.stringify(expected)}`,
+          );
+        }
+      }
+
+      return this;
+    },
+
     toBeTruthy(): IAssertion {
       if (!actual) {
         throw new AssertionException(

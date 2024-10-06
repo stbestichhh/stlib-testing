@@ -18,6 +18,8 @@ interface IEqualityAssertion {
   toStrictEqual(expected: any): IAssertion;
   toStrictNotEqual(expected: any): IAssertion;
   toBe(expected: any): IAssertion;
+  toNotBe(expected: any): IAssertion;
+  toObjectEqual(expected: any): IAssertion;
 }
 
 interface ITruthinessAssertion {

@@ -126,6 +126,7 @@ $ npx stest
 | `toStrictNotEqual(expected: any)`                              | Check if actual and expected are strict not equal                                                                                                       |
 | `toBe(expected: any)`                                          | Check if actual is an expected                                                                                                                          |
 | `toNotBe(expected: any)`                                       | Check if actual is not an expected                                                                                                                      |
+| `toObjectEqual(expected: any)`                                 | Check if two objects or arrays are equal                                                                                                                |
 | `toBeTruthy()`                                                 | Check if actual is true                                                                                                                                 |
 | `toBeFalsy()`                                                  | Check if actual is false                                                                                                                                |
 | `toBeGreaterThan(expected: number)`                            | Check if actual is greater than expected                                                                                                                |
