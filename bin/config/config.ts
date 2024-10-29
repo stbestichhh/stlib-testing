@@ -3,9 +3,9 @@ import fs from 'fs';
 import YAML from 'yaml';
 import { ConfigException } from '../../lib/exceptions';
 import { ConfigType } from '../../lib/types';
-import { isExists } from '../../utils';
 import { StestOptions } from '../../lib/interfaces';
 import { LoggerService } from '../logger';
+import { isExists } from '@stlib/is-exists';
 
 export class Config {
   private configPath?: string;
