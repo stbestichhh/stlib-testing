@@ -1044,10 +1044,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stlib/is-exists@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "@stlib/is-exists@npm:0.0.1"
-  checksum: 10c0/ca10f2a8db49ee39702e2fa194589ab43c632dba5d97d061fb539f436a247a25bc687e1879c7d97c09e7de594f6e0761c83746e47614998144eb2ed63a1752c5
+"@stlib/is-exists@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "@stlib/is-exists@npm:0.0.2"
+  checksum: 10c0/247acfff356d63d233127c5e7f85f3546098143f6849a1e0074dc167b88d0551556be947b927597a457e104ee6b990622224a1dd3cd3f7221f726406bfda2b7a
   languageName: node
   linkType: hard
 
@@ -1066,7 +1066,7 @@ __metadata:
     "@commitlint/cli": "npm:^19.5.0"
     "@commitlint/config-conventional": "npm:^19.5.0"
     "@commitlint/types": "npm:^19.5.0"
-    "@stlib/is-exists": "npm:^0.0.1"
+    "@stlib/is-exists": "npm:^0.0.2"
     "@stlib/testing-reporter": "npm:^0.0.2"
     "@types/exit": "npm:^0.1.33"
     "@types/jest": "npm:^29.5.12"
