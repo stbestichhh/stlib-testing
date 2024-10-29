@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@colors/colors": "^1.6.0",
+    "@stlib/is-exists": "^0.0.2",
     "@types/exit": "^0.1.33",
     "chokidar": "^3.6.0",
     "commander": "^12.1.0",
