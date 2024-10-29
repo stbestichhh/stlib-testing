@@ -10,11 +10,17 @@ Configuration file for sTest can be writen using four different file extension. 
 
 **pattern -** defines path and test files name patterns. By default is: `test/**/*.{spec,test}.ts`. This pattern looks for `test` directory in your project base directory, and finds there all files, which name contains `.spec.ts` or `.test.ts`
 
-**ignore -** defines an array with path patterns, which have to be ignored and not looked for tests. Useful for reducing time needed to find and load test files. Be default is: `["node_modules"]`
+**ignore -** defines an array with path patterns, which have to be ignored and not looked for tests. Useful for reducing time needed to find and load test files. Be default is: `["node_modules"].`
 
 **autoClearMocks -** using this options, auto clearing mocks can be disabled or enabled. By default option is `enabled`. Mocks are cleared after each tests and are deleted after all tests which were in the test file.
 
-**cacheWatcher -** enables or disables caching test results. If enabled, watch mode will rerun only those test files, which have been added to your project or changed. If disabled, it will always run all test files
+**cacheWatcher -** enables or disables caching test results. If enabled, watch mode will rerun only those test files, which have been added to your project or changed. If disabled, it will always run all test files.
+
+**enableReporting -** enables generating html reports every time tests running. To enable it, install a reporting package:
+
+```sh
+$ yarn add --dev @stlib/testing-reporter
+```
 
 ## Config files examples
 
@@ -28,7 +34,8 @@ const config: StestConfig = {
   pattern: "test/**/*.{spec,test}.ts",
   ignore: ["node_modules", "lib"],
   autoClearMocks: true,
-  cacheWatcher: false,
+  cacheWatcher: true,
+  enableReporting: false,
 };
 export default config;
 ```
@@ -42,7 +49,8 @@ const config = {
   pattern: "test/**/*.{spec,test}.ts",
   ignore: ["node_modules", "lib"],
   autoClearMocks: true,
-  cacheWatcher: false,
+  cacheWatcher: true,
+  enableReporting: false,
 };
 module.exports = config
 ```
@@ -56,7 +64,8 @@ module.exports = config
   "pattern": "test/**/*.{spec,test}.ts",
   "ignore": ["node_modules", "lib"],
   "autoClearMocks": true,
-  "cacheWatcher": false
+  "cacheWatcher": true,
+  "enableReporting": false
 }
 ```
 {% endcode %}
@@ -70,6 +79,7 @@ ignore:
   - node_modules
   - lib
 autoClearMocks: true
-cacheWatcher: false
+cacheWatcher: true
+enableReporting: false
 ```
 {% endcode %}

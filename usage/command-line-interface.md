@@ -20,7 +20,7 @@ Example:
 npx stest --config ./.configs/stest.config.e2e.ts
 ```
 
-**Initialise:** creates new config file in your project directory.
+* **Initialise:** creates new config file in your project directory.
 
 Values:&#x20;
 
@@ -36,9 +36,9 @@ Example:
 npx stest --init yml
 ```
 
-**Watch mode:** runs tests in watch mode. For more about watch mode, see [Usage section](watch-mode.md).
+* **Watch mode:** runs tests in watch mode. For more about watch mode, see [Usage section](watch-mode.md).
 
-Examle:
+Example:
 
 ```bash
 npx stest --watch

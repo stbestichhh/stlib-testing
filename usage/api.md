@@ -28,6 +28,7 @@ sTest framework provides custom assertions to make your tests easier to write. P
 | `toNotEqual(expected: any)`                                    | Check if actual and expected are not equal                                                                                                              |
 | `toStrictEqual(expected: any)`                                 | Check strict equality between actual and expected                                                                                                       |
 | `toStrictNotEqual(expected: any)`                              | Check if actual and expected are strict not equal                                                                                                       |
+| `toObjectEqual(expected: any)`                                 | Checks if two objects or arrays are equal                                                                                                               |
 | `toBe(expected: any)`                                          | Check if actual is an expected                                                                                                                          |
 | `toNotBe(expected: any)`                                       | Check if actual is not an expected                                                                                                                      |
 | `toBeTruthy()`                                                 | Check if actual is true                                                                                                                                 |
@@ -44,6 +45,9 @@ sTest framework provides custom assertions to make your tests easier to write. P
 | `toBeFinite()`                                                 | Check if actual is finite number                                                                                                                        |
 | `toBeTypeOf(type: any)`                                        | Check if actual is type of expected. Example: `assertThat('a').toBeTypeOf('string')`, `assertThat(TypeError).toBeTypeOf(Error)`                         |
 | `toHaveProperty(property: any)`                                | Check if actual has expected property                                                                                                                   |
+| `toHavePropertyEqual(property: any, value: any)`               | Check if actual has expected property which is equal to value                                                                                           |
+| `toHaveAllProperties(properties: any[])`                       | Check if actual has all of expected properties                                                                                                          |
+| `toHaveAnyProperties(properties: any[])`                       | Check if actual has any of expected properties                                                                                                          |
 | `toThrow(expectedError?: ErrorConstructor, ...args: any[])`    | Check if actual throw an error or expected error. Also you can provide arguments for actual function                                                    |
 | `toNotThrow(expectedError?: ErrorConstructor, ...args: any[])` | Check if actual do not throw an error or do not throw an error provided to as 'expectedError' param. Also you can provide arguments for actual function |
 | `toContain(expected: any)`                                     | Check if actual contains a value from expected                                                                                                          |
@@ -55,6 +59,7 @@ sTest framework provides custom assertions to make your tests easier to write. P
 | `toSatisfy(predicate: (value: any) => boolean)`                | Check if actual satisfies a predicate                                                                                                                   |
 | `toIncludeAllMembers(expected: any[])`                         | Check if actual includes all members of expected array                                                                                                  |
 | `toIncludeAnyMembers(expected: any[])`                         | Check if actual includes at least one member of expected array                                                                                          |
+| `toMatchSnapshot(snapshotName?: string)`                       | Matches actual data with the last created snapshot, or chosen one with using name                                                                       |
 
 ## Mocking
 
@@ -95,11 +100,24 @@ Code examples can be found [here](../examples/spy.md)
 
 sTest also provided spying functionality, to track function calls.
 
-Create a new spy using `spyOn` function:
+Create a new spy using `spyOn(instance: any, methodName: string)` function:
 
-```TypeScript
+```typescript
 const example = new ExampleClass();
 const greetSpy = spyOn(example, 'greet');
+example.greet('Hello, World');
+```
+
+```typescript
+const func = () => { return 'Hello' };
+const greetSpy = spyOn(func);
+
+// Call function  
+greetSpy.call('Hello, World!');
+greetSpy.getCallCount(); // 1
+
+// Spy won't work for calling function directly
+func('Hello, World!'); // still 1
 ```
 
 | Class                                    | Method                                | Description                                                                 |
@@ -112,3 +130,16 @@ const greetSpy = spyOn(example, 'greet');
 |                                          | `getThrownErrors(callIndex?: number)` | Returns an array with with all thrown errors                                |
 |                                          | `wasCalled(amount?: number)`          | Returns true if method was called at least once or more than `amount` times |
 |                                          | `wasCalledWith(...args: any[])`       | Returns true if method was called with specified arguments at least once    |
+|                                          | `call(...args: any[])`                | Calls spied function                                                        |
+
+## Snapshots
+
+Create a new snapshot by `shot(snapshotName: string, data: any)` function:
+
+```typescript
+shot('snap', '<h1>Hello</h1>');
+shot('other snap', '<h1>Bye</h1>');
+
+assertThat('<h1>Bye</h1>').toMatchSnapshot();
+assertThat('<h1>Hello</h1>').toMatchSnapshot('snap');
+```
