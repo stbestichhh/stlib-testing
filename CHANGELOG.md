@@ -5,12 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Patch 1.2.1
+Full changelog [here](https://github.com/stbestichhh/stlib-testing/pull/94)
+
 ## Update 1.2.0
-## Added:
+### Added:
 * New assertions. See [assertions API](README.md#assertions-api)
 * New spy method `call(...args: any[])`, which allows to run function with spying it 
 
-## Fix:
+### Fix:
 * Fixed error on wrong keybinding pressed
 * Updated module cache deleting. If function were changed, watch mode reruns tests for new implementation
 
