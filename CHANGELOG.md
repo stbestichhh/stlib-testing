@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Patch 1.2.2
+### Updated:
+* Updated `nanospinner` dependency from 1.1.0 to 1.2.0
+* Updated `yaml` dependency from 2.5.0 to 2.6.0
+* Updated `husky` dependency from 9.1.5 to 9.1.6
+
 ## Patch 1.2.1
 Full changelog [here](https://github.com/stbestichhh/stlib-testing/pull/94)
 
