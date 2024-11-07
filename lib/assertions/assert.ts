@@ -58,6 +58,16 @@ export function assertThat(actual: any): IAssertion {
       return this.toNotEqual(expected);
     },
 
+    toDeepEqual(expected: any): IAssertion {
+      if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+        throw new AssertionException(
+          `Expected ${JSON.stringify(actual)} to deep equal ${JSON.stringify(expected)}`,
+        );
+      }
+
+      return this;
+    },
+
     toObjectEqual(expected: any): IAssertion {
       if (actual instanceof Object && expected instanceof Object) {
         const actualStr = JSON.stringify(actual);
@@ -265,7 +275,11 @@ export function assertThat(actual: any): IAssertion {
 
       let threw: boolean = false;
       try {
-        actual(...args);
+        const result = actual(...args);
+
+        if (result instanceof Promise) {
+          result.then().catch((e) => { throw e });
+        }
       } catch (e: unknown) {
         threw = true;
 
@@ -291,7 +305,11 @@ export function assertThat(actual: any): IAssertion {
       assertFunction();
 
       try {
-        actual(...args);
+        const result = actual(...args);
+
+        if (result instanceof Promise) {
+          result.then().catch((e) => { throw e });
+        }
       } catch (e: unknown) {
         if (expectedError && e instanceof expectedError) {
           throw new AssertionException(
