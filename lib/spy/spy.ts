@@ -25,7 +25,20 @@ export class Spy {
 
     try {
       const result = this.originalFunction.apply(this.context, args);
-      this.callResults.push(result);
+
+      if (result instanceof Promise) {
+        this.callResults.push('Promise<Pending>');
+        const index = this.callResults.indexOf('Promise<Pending>');
+        result.then((resolvedValue) => {
+          if (index > -1) this.callResults[index] = resolvedValue;
+        }).catch((e) => {
+          if (index > -1) this.callResults[index] = e;
+          this.thrownExceptions.push(e);
+        })
+      } else {
+        this.callResults.push(result);
+      }
+
       return result;
     } catch (e) {
       this.thrownExceptions.push(e);
