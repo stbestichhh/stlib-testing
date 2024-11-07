@@ -275,7 +275,11 @@ export function assertThat(actual: any): IAssertion {
 
       let threw: boolean = false;
       try {
-        actual(...args);
+        const result = actual(...args);
+
+        if (result instanceof Promise) {
+          result.then().catch((e) => { throw e });
+        }
       } catch (e: unknown) {
         threw = true;
 
@@ -301,7 +305,11 @@ export function assertThat(actual: any): IAssertion {
       assertFunction();
 
       try {
-        actual(...args);
+        const result = actual(...args);
+
+        if (result instanceof Promise) {
+          result.then().catch((e) => { throw e });
+        }
       } catch (e: unknown) {
         if (expectedError && e instanceof expectedError) {
           throw new AssertionException(
